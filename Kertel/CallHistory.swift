@@ -9,19 +9,21 @@
 import Foundation
 
 struct CallHistory {
-    let callId: String?
+    let isIncoming: Bool
+    let callId: String
     let name: String
-    let state: String?
-    let number: String?
-    let duration: DateInterval?
-    let date: Date?
+    let state: String
+    let number: String
+    let duration: DateInterval
+    let date: Date
     
-    init(name: String, number : String) {
+    init(callId: String, name: String, number: String, state: String, duration: DateInterval, date: Date, isIncoming: Bool) {
         self.name = name
-        self.callId = nil
-        self.state = nil
-        self.duration = nil
-        self.date = nil
+        self.callId = callId
+        self.state = state
+        self.duration = duration
+        self.date = date
         self.number = number
+        self.isIncoming = isIncoming
     }
 }

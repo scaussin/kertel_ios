@@ -10,12 +10,14 @@ import UIKit
 
 class CallHistoryController: UITableViewController{
 
-    var dataTest: [CallHistory] = [CallHistory(name: "André Sanfraper", number: "0634543244"),
-                                   CallHistory(name: "Jacques Célère",number: "0634543255"),
-                                   CallHistory(name: "Brice Denisse",number: "0634543266"),
-                                   CallHistory(name: "Sacha Touille",number: "0634543277"),
-                                   CallHistory(name: "Yves Rogne",number: "0634543288"),
-                                   CallHistory(name: "Alain Terrieur",number: "0634543299")]
+    var dataTest: [CallHistory] = [
+                                    CallHistory(callId: "", name: "", number: "", state: "", duration: DateInterval(), date: Date(), isIncoming: true),
+                                    CallHistory(callId: "", name: "André Sanfraper", number: "0634543244", state: "", duration: DateInterval(), date: Date(), isIncoming: true),
+                                    CallHistory(callId: "", name: "Jacques Célère",number: "0634543255", state: "", duration: DateInterval(), date: Date(), isIncoming: true),
+                                    CallHistory(callId: "", name: "Brice Denisse", number: "0634543266", state: "", duration: DateInterval(), date: Date(), isIncoming: true),
+                                    CallHistory(callId: "", name: "Sacha Touille", number: "0634543277", state: "", duration: DateInterval(), date: Date(), isIncoming: true),
+                                    CallHistory(callId: "", name: "Yves Rogne", number: "0634543288", state: "", duration: DateInterval(), date: Date(), isIncoming: true),
+                                    CallHistory(callId: "", name: "Alain Terrieur", number: "0634543299", state: "", duration: DateInterval(), date: Date(), isIncoming: true)]
     
    
     override func viewDidLoad() {
