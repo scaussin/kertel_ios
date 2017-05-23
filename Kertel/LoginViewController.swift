@@ -11,10 +11,18 @@ import UIKit
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
+    var apiController : APIController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+        print("LoginViewController -> viewDidLoad")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("LoginViewController -> viewDidAppear")
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,6 +30,22 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+   /* func success()
+    {
+        performSegue(withIdentifier: "toMainSegue", sender: self)
+    }
+    
+    func fail(msgError : String)
+    {
+        let alertController = UIAlertController(title: "Erreur", message: "Echec de l'authentification.\nVérifiez vos identifiants.", preferredStyle: .alert)
+        
+        let OKAction = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction!) in
+        }
+        alertController.addAction(OKAction)
+        
+        self.present(alertController, animated: true, completion:nil)
+    }*/
+
     
     func keyboardWillShow(notification:NSNotification){
         //give room at the bottom of the scroll view, so it doesn't cover up anything the user needs to tap
@@ -38,14 +62,20 @@ class LoginViewController: UIViewController {
         let contentInset:UIEdgeInsets = UIEdgeInsets.zero
         scrollView.contentInset = contentInset
     }
-    /*
-    // MARK: - Navigation
+    
+    @IBAction func connectButton(_ sender: Any) {
+        performSegue(withIdentifier: "toConnectSegue", sender: self)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if (segue.identifier == "toConnectSegue")
+        {
+            let vc = segue.destination as! ConnectViewController
+            vc.toMain = true
+        }
+    }
+
 
 }

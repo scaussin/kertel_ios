@@ -13,3 +13,10 @@ protocol APIDelegate
     func receiveData(data : [AnyObject])
     func error(msgError : String)
 }
+
+
+protocol APIDelegateConnect
+{
+    func success()
+    func fail(msgError : String)
+}

@@ -8,8 +8,16 @@
 
 import UIKit
 
-class CallHistoryController: UITableViewController{
+class CallHistoryController: UITableViewController, APIDelegate{
 
+    var apiController : APIController?
+    {
+        didSet
+        {
+            print("apiController set !")
+        }
+    }
+    
     var dataTest: [CallHistory] = [
                                     CallHistory(callId: "", name: "", number: "", state: "", duration: DateInterval(), date: Date(), isIncoming: true),
                                     CallHistory(callId: "", name: "André Sanfraper", number: "0634543244", state: "", duration: DateInterval(), date: Date(), isIncoming: true),
@@ -30,8 +38,23 @@ class CallHistoryController: UITableViewController{
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        print("call history load")
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("call history appear")
+    }
+    
+    func receiveData(data : [AnyObject])
+    {
+        
+    }
+    
+    func error(msgError : String)
+    {
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

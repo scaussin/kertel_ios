@@ -12,11 +12,17 @@ import Foundation
 class APIController {
     
     
-    var delegate: APIDelegate!
+    var delegateHistoryCall: APIDelegate?
+    var delegateMevo: APIDelegate?
+    var delegateConnect: APIDelegateConnect?
+    var token : String!
     
-    init(delegate : APIDelegate!)
+    
+    func getToken(delegate : APIDelegateConnect, username : String?, company : String?, password : String?)
     {
-        self.delegate = delegate
+        self.delegateConnect = delegate
+        delegateConnect?.success()
     }
+    
     
 }
