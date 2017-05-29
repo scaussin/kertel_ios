@@ -8,15 +8,22 @@
 
 import Foundation
 
-protocol APIDelegate
+protocol APIDelegate : APIControllerProtocol
 {
-    func receiveData(data : [AnyObject])
-    func error(msgError : String)
+
+    func success(data : [AnyObject])
+    func fail(msgError : String)
+
 }
 
-
+/*
 protocol APIDelegateConnect
 {
     func success()
-    func fail(msgError : String)
+    
+}*/
+
+protocol APIControllerProtocol
+{
+    var apiController : APIController? {get set}
 }

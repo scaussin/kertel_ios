@@ -10,6 +10,7 @@ import UIKit
 
 class CallHistoryController: UITableViewController, APIDelegate{
 
+
     var apiController : APIController?
     {
         didSet
@@ -31,6 +32,7 @@ class CallHistoryController: UITableViewController, APIDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //navigationItem.rightBarButtonItem = editButton
         
         // Uncomment the following line to preserve selection between presentations
@@ -42,15 +44,15 @@ class CallHistoryController: UITableViewController, APIDelegate{
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         print("call history appear")
     }
-    
-    func receiveData(data : [AnyObject])
-    {
-        
+
+    func success(data: [AnyObject]) {
+         
     }
-    
-    func error(msgError : String)
+
+    func fail(msgError : String)
     {
         
     }

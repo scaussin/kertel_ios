@@ -14,14 +14,14 @@ class APIController {
     
     var delegateHistoryCall: APIDelegate?
     var delegateMevo: APIDelegate?
-    var delegateConnect: APIDelegateConnect?
+    var delegateConnect: APIDelegate?
     var token : String!
     
     
-    func getToken(delegate : APIDelegateConnect, username : String?, company : String?, password : String?)
+    func getToken(delegate : APIDelegate, username : String?, company : String?, password : String?)
     {
         self.delegateConnect = delegate
-        delegateConnect?.success()
+        delegateConnect?.success(data: [AnyObject]())
     }
     
     

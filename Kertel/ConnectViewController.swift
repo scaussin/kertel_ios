@@ -9,10 +9,9 @@
 import UIKit
 import CoreData
 
-class ConnectViewController: UIViewController,  APIDelegateConnect{
+class ConnectViewController: UIViewController,  APIDelegate{
 
-    let apiController : APIController = APIController()
-    var toMain = false
+    var apiController : APIController?
     var logins : [Login] = []
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -43,10 +42,6 @@ class ConnectViewController: UIViewController,  APIDelegateConnect{
     }
     override func viewDidAppear(_ animated: Bool) {
         print("ConnectViewController -> viewDidAppear")
-        if toMain == true
-        {
-            performSegue(withIdentifier: "toMainSegue", sender: self)
-        }
         getData()
         if (logins.count > 0 && logins[0].username != nil && logins[0].company != nil && logins[0].password != nil)
         {
@@ -57,22 +52,20 @@ class ConnectViewController: UIViewController,  APIDelegateConnect{
             print("username: \(String(describing: username))")
             print("company: \(String(describing: company))")
             print("password: \(String(describing: password))")
-            
-            apiController.getToken(delegate: self, username: username!, company: company!, password: password!)
+            apiController = APIController()
+            apiController?.getToken(delegate: self, username: username!, company: company!, password: password!)
         }
         else
         {
             performSegue(withIdentifier: "toLoginSegue", sender: self)
         }
-        
         //apiController.getToken(delegate: self, username: "usr", company: "comp", password: "pass")
-
-
     }
 
     
-    func success()
+    func success(data : [AnyObject])
     {
+
         performSegue(withIdentifier: "toMainSegue", sender: self)
     }
     
@@ -84,7 +77,7 @@ class ConnectViewController: UIViewController,  APIDelegateConnect{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toLoginSegue" {
-            let vc = segue.destination as! LoginNavigationController
+            let vc = segue.destination as! NavigationController
             vc.apiController = self.apiController
         }
         else if segue.identifier == "toMainSegue" {
