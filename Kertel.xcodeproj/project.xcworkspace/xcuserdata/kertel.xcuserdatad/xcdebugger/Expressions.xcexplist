@@ -10,5 +10,13 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "APIController.(getToken(delegate : APIDelegate, username : String?, company : String?, password : String?) -&gt; ()).(closure #1):APIController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "(HTTPURLResponse?)httpResponse">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

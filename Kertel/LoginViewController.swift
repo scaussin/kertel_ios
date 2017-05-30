@@ -6,12 +6,18 @@
 //  Copyright © 2017 Kertel. All rights reserved.
 //
 
-import UIKit
+import UIKit 
 
 class LoginViewController: UIViewController, APIControllerProtocol {
 
     @IBOutlet weak var scrollView: UIScrollView!
     var apiController : APIController?
+    //var logins : [Login] = []
+    //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+    @IBOutlet weak var username: UITextField!
+    @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var company: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +37,6 @@ class LoginViewController: UIViewController, APIControllerProtocol {
     }
     
     func keyboardWillShow(notification:NSNotification){
-        //give room at the bottom of the scroll view, so it doesn't cover up anything the user needs to tap
         var userInfo = notification.userInfo!
         var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
         keyboardFrame = self.view.convert(keyboardFrame, from: nil)
@@ -47,9 +52,33 @@ class LoginViewController: UIViewController, APIControllerProtocol {
     }
     
     @IBAction func connectButton(_ sender: Any) {
+        let defaults = UserDefaults.standard
+        defaults.set(username.text, forKey: "username")
+        defaults.set(company.text, forKey: "company")
+        defaults.set(password.text, forKey: "password")
+        
+        /*getData()
+        if logins.count > 0
+        {
+            context.delete(logins[0])
+        }
+        
+        let login = Login(context: context) // Link Task & Context*/
+        // Save the data to coredata
+        //(UIApplication.shared.delegate as! AppDelegate).saveContext()
+
         performSegue(withIdentifier: "toConnectSegue", sender: self)
 
     }
+    
+    /*func getData() {
+        do {
+            logins = try context.fetch(Login.fetchRequest())
+        } catch {
+            print("Fetching Failed")
+        }
+    }*/
+
     
    /* override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 

@@ -12,12 +12,12 @@ import CoreData
 class ConnectViewController: UIViewController,  APIDelegate{
 
     var apiController : APIController?
-    var logins : [Login] = []
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    //var logins : [Login] = []
+    //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        apiController = APIController()
         print("ConnectViewController -> viewDidLoad")
         //let task = Login(context: context) // Link Task & Context
         /*getData()
@@ -42,24 +42,24 @@ class ConnectViewController: UIViewController,  APIDelegate{
     }
     override func viewDidAppear(_ animated: Bool) {
         print("ConnectViewController -> viewDidAppear")
-        getData()
-        if (logins.count > 0 && logins[0].username != nil && logins[0].company != nil && logins[0].password != nil)
+        let defaults = UserDefaults.standard
+        let username = defaults.string(forKey: "username")
+        let company = defaults.string(forKey: "company")
+        let password = defaults.string(forKey: "password")
+        //getData()
+        if (username?.isEmpty) == false && (company?.isEmpty) == false && (password?.isEmpty) == false
         {
-            let username = logins[0].username
-            let company = logins[0].company
-            let password = logins[0].password
             
-            print("username: \(String(describing: username))")
+            /*print("username: \(String(describing: username))")
             print("company: \(String(describing: company))")
-            print("password: \(String(describing: password))")
-            apiController = APIController()
+            print("password: \(String(describing: password))")*/
+            
             apiController?.getToken(delegate: self, username: username!, company: company!, password: password!)
         }
         else
         {
             performSegue(withIdentifier: "toLoginSegue", sender: self)
         }
-        //apiController.getToken(delegate: self, username: "usr", company: "comp", password: "pass")
     }
 
     
@@ -86,13 +86,13 @@ class ConnectViewController: UIViewController,  APIDelegate{
         }
     }
     
-    func getData() {
+    /*func getData() {
         do {
             logins = try context.fetch(Login.fetchRequest())
         } catch {
             print("Fetching Failed")
         }
-    }
+    }*/
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
