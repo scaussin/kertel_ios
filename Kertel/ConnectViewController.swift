@@ -12,6 +12,10 @@ import CoreData
 class ConnectViewController: UIViewController,  APIDelegate{
 
     var apiController : APIController?
+    var username : String?
+    var company : String?
+    var password : String?
+    
     //var logins : [Login] = []
     //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -43,16 +47,25 @@ class ConnectViewController: UIViewController,  APIDelegate{
     override func viewDidAppear(_ animated: Bool) {
         print("ConnectViewController -> viewDidAppear")
         let defaults = UserDefaults.standard
-        let username = defaults.string(forKey: "username")
-        let company = defaults.string(forKey: "company")
-        let password = defaults.string(forKey: "password")
-        //getData()
-        if (username?.isEmpty) == false && (company?.isEmpty) == false && (password?.isEmpty) == false
+
+        if (username == nil)
         {
-            
-            /*print("username: \(String(describing: username))")
+            username = defaults.string(forKey: "username")
+        }
+        if (company == nil)
+        {
+            company = defaults.string(forKey: "company")
+        }
+        if (password == nil)
+        {
+            password = defaults.string(forKey: "password")
+        }
+        
+        if username != nil && company != nil && password != nil
+        {
+            print("username: \(String(describing: username))")
             print("company: \(String(describing: company))")
-            print("password: \(String(describing: password))")*/
+            print("password: \(String(describing: password))")
             
             apiController?.getToken(delegate: self, username: username!, company: company!, password: password!)
         }
@@ -65,19 +78,36 @@ class ConnectViewController: UIViewController,  APIDelegate{
     
     func success(data : [AnyObject])
     {
+        DispatchQueue.main.sync {
+            performSegue(withIdentifier: "toMainSegue", sender: self)
+        }
 
-        performSegue(withIdentifier: "toMainSegue", sender: self)
     }
     
     func fail(msgError : String)
     {
         print("fail getToken: \(msgError)")
-        performSegue(withIdentifier: "toLoginSegue", sender: self)
+        
+       /*let alert = UIAlertController(title: "Erreur", message: "Erreur lors de l'authentification", preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add an action (button)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)*/
+        
+        //let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "logvc") as! LoginViewController
+        
+        //self.present(secondViewController, animated: true, completion: nil)
+        DispatchQueue.main.sync {
+            performSegue(withIdentifier: "toLoginSegue", sender: self)
+        }
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toLoginSegue" {
-            let vc = segue.destination as! NavigationController
+            var vc = segue.destination as! APIControllerProtocol
             vc.apiController = self.apiController
         }
         else if segue.identifier == "toMainSegue" {

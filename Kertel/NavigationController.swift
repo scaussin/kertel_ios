@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NavigationController: UINavigationController {
+class NavigationController: UINavigationController, APIControllerProtocol {
 
     var apiController : APIController?
     

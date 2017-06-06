@@ -20,7 +20,7 @@ class APIController {
     let authUrl = "auth"
     
     
-    func getToken(delegate : APIDelegate, username : String?, company : String?, password : String?)
+    func getToken(delegate : APIDelegate, username : String!, company : String!, password : String!)
     {
         self.delegateConnect = delegate
         print("APIController -> getToken()")
@@ -33,8 +33,8 @@ class APIController {
             "cache-control": "no-cache",
             "postman-token": "5031c394-9149-8934-d860-1b3ec97b629c"
         ]
-        
-        let postData : NSData = NSData(data: "\\{\"username\":\"nsemhoun\",\"password\":\"nsemhoun\",\"company\":\"Active\"\\}".data(using: String.Encoding.utf8)!)
+        print("{\"username\":\"\(username!)\",\"password\":\"\(password!)\",\"company\":\"\(company!)\"}")
+        let postData : NSData = NSData(data: "{\"username\":\"\(username!)\",\"password\":\"\(password!)\",\"company\":\"\(company!)\"}".data(using: String.Encoding.utf8)!)
         
         let request = NSMutableURLRequest(url: NSURL(string: baseUrl + authUrl)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
@@ -45,31 +45,34 @@ class APIController {
         
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            
             if (error != nil) {
-                print("auth fail")
-                print(error ?? "empty error")
-                self.delegateConnect?.fail(msgError: error.debugDescription)
+                print("request fail")
+                print(error?.localizedDescription ?? "empty error")
+                self.delegateConnect?.fail(msgError: error?.localizedDescription ?? "erreur")
             } else {
-                print("auth success")
+                print("request success")
                 
                 let httpResponse = response as? HTTPURLResponse
-                if (httpResponse?.statusCode == 400)
+                if (httpResponse?.statusCode == 200)
                 {
                     if let d = data {
                         do {
                             if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
                                 self.token = dic["token_auth"] as? String
+                                print("auth success")
                                 print(self.token)
                                 self.delegateConnect?.success(data: [AnyObject]())
                                 return
                             }
                         }
                         catch (let err) {
+                            print("auth fail")
                             print(err)
                         }
                     }
                 }
-                self.delegateConnect?.fail(msgError: "error HTTP : " + String(describing: httpResponse?.statusCode))
+                self.delegateConnect?.fail(msgError: error?.localizedDescription ?? "erreur")
             }
         })
         

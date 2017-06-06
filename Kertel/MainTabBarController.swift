@@ -27,11 +27,16 @@ class MainTabBarController: UITabBarController, APIControllerProtocol{
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         print(segue.identifier ?? "segue.identifier empty")
         if segue.identifier == "root view controller" {
             var vc = segue.destination as! APIControllerProtocol
             vc.apiController = self.apiController
         }
     }
-  
+    
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+        print("select = " + String(describing: tabBar.selectedItem?.description))
+    }
 
 }
