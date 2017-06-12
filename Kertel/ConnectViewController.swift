@@ -16,6 +16,7 @@ class ConnectViewController: UIViewController,  APIDelegate{
     var company : String?
     var password : String?
     
+  
     //var logins : [Login] = []
     //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -23,6 +24,10 @@ class ConnectViewController: UIViewController,  APIDelegate{
         super.viewDidLoad()
         apiController = APIController()
         print("ConnectViewController -> viewDidLoad")
+        
+      
+        
+        
         //let task = Login(context: context) // Link Task & Context
         /*getData()
         if (logins.count > 0 && logins[0].username != nil && logins[0].company != nil && logins[0].password != nil)

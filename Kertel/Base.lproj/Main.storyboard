@@ -247,7 +247,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9XI-bH-2Z9">
                                 <rect key="frame" x="122" y="318" width="130" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Se deconnecter"/>
+                                <state key="normal" title="Se déconnecter"/>
                                 <connections>
                                     <action selector="disconnect:" destination="k5M-Fz-nLY" eventType="touchUpInside" id="86M-Fr-N5k"/>
                                     <segue destination="UUQ-Mm-29E" kind="showDetail" id="VJp-dZ-0Bd"/>
@@ -374,7 +374,7 @@
                                                                 <rect key="frame" x="53" y="15" width="261" height="30"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                                             </textField>
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -423,7 +423,7 @@
                                                 <color key="textColor" red="0.47058823529999999" green="0.74509803919999995" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbc-Rh-8Yd">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbc-Rh-8Yd" userLabel="Switch Username Company">
                                                 <rect key="frame" x="285" y="550.5" width="51" height="31"/>
                                                 <color key="onTintColor" red="0.53567975759999997" green="0.77473640440000002" blue="0.16238942740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </switch>
@@ -496,7 +496,7 @@
                         <outlet property="password" destination="fHg-Ag-sCQ" id="YsJ-V4-7cg"/>
                         <outlet property="scrollView" destination="UTJ-I8-DXx" id="4cY-Z6-Lc6"/>
                         <outlet property="switchPassword" destination="JgY-pm-zoF" id="cIk-wF-V8I"/>
-                        <outlet property="switchUsernamePassword" destination="gbc-Rh-8Yd" id="JFW-g6-3pe"/>
+                        <outlet property="switchUsernameCompany" destination="gbc-Rh-8Yd" id="fCx-Uj-mtR"/>
                         <outlet property="username" destination="Ekv-xL-FXw" id="ChJ-FH-pRW"/>
                         <segue destination="p6h-Aw-Mqt" kind="showDetail" identifier="toConnectSegue" id="0GI-AW-pMD"/>
                     </connections>
@@ -523,7 +523,7 @@
             </objects>
             <point key="canvasLocation" x="-1063" y="-958"/>
         </scene>
-        <!--connect-->
+        <!--Connexion-->
         <scene sceneID="Aat-RG-ckt">
             <objects>
                 <viewController id="p6h-Aw-Mqt" customClass="ConnectViewController" customModule="Kertel" customModuleProvider="target" sceneMemberID="viewController">
@@ -534,9 +534,26 @@
                     <view key="view" contentMode="scaleToFill" id="ubz-pn-zzG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connexion en cours..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9tP-dH-5DM">
+                                <rect key="frame" x="105" y="323" width="166" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Hz4-Mt-pm9">
+                                <rect key="frame" x="177" y="352" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9tP-dH-5DM" firstAttribute="centerX" secondItem="ubz-pn-zzG" secondAttribute="centerX" id="CXO-KU-rIu"/>
+                            <constraint firstItem="9tP-dH-5DM" firstAttribute="centerY" secondItem="ubz-pn-zzG" secondAttribute="centerY" id="FZz-Nh-eJN"/>
+                            <constraint firstItem="Hz4-Mt-pm9" firstAttribute="centerX" secondItem="ubz-pn-zzG" secondAttribute="centerX" id="qpn-s0-8V3"/>
+                            <constraint firstItem="Hz4-Mt-pm9" firstAttribute="top" secondItem="9tP-dH-5DM" secondAttribute="bottom" constant="8" symbolic="YES" id="yqd-Es-FaQ"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="connect" id="qxE-NC-K4D"/>
+                    <navigationItem key="navigationItem" title="Connexion" id="qxE-NC-K4D"/>
                     <connections>
                         <segue destination="UUQ-Mm-29E" kind="showDetail" identifier="toLoginSegue" id="hpV-C1-yF6"/>
                         <segue destination="bX7-0e-f0k" kind="showDetail" identifier="toMainSegue" id="S3k-1o-po9"/>
@@ -567,7 +584,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="1088.8" y="-1425.3373313343329"/>
+            <point key="canvasLocation" x="1071" y="-1366"/>
         </scene>
         <!--Item-->
         <scene sceneID="NDg-JV-PLZ">
@@ -621,7 +638,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="0GI-AW-pMD"/>
-        <segue reference="VJp-dZ-0Bd"/>
+        <segue reference="hpV-C1-yF6"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.47058823529411764" green="0.74509803921568629" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>
 </document>

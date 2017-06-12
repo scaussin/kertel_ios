@@ -27,16 +27,12 @@ class LoginViewController: UIViewController, APIControllerProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         print("LoginViewController -> viewDidLoad")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print("LoginViewController -> viewDidAppear")
         
         let defaults = UserDefaults.standard
         username.text = defaults.string(forKey: "username")
         company.text = defaults.string(forKey: "company")
         password.text = defaults.string(forKey: "password")
-
+        
         
         var boolSwitchUsernameCompany = true
         
@@ -53,6 +49,10 @@ class LoginViewController: UIViewController, APIControllerProtocol {
         
         switchUsernameCompany.setOn(boolSwitchUsernameCompany , animated: false)
         switchPassword.setOn(boolSwitchPassword, animated: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("LoginViewController -> viewDidAppear")
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,19 +75,42 @@ class LoginViewController: UIViewController, APIControllerProtocol {
         scrollView.contentInset = contentInset
     }
     
+    func switchStateToInt(switchState : Bool!) -> Int
+    {
+        if (switchState == true)
+        {
+            return 1
+        }
+        else
+        {
+            return -1
+        }
+        
+    }
+    
     @IBAction func connectButton(_ sender: Any) {
-        /*      let defaults = UserDefaults.standard
-         let username = defaults.string(forKey: "username")
-         let company = defaults.string(forKey: "company")
-         let password = defaults.string(forKey: "password")*/
+        
+        let alertController = UIAlertController(title: nil, message: "Connexion en cours...\n\n", preferredStyle: .alert)
+        
+        let spinnerIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        
+        spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
+        spinnerIndicator.color = UIColor.black
+        spinnerIndicator.startAnimating()
+        
+        alertController.view.addSubview(spinnerIndicator)
+        self.present(alertController, animated: true, completion: nil)
+        
+        
+        return
         
         username.text = username.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        company.text = username.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        company.text = company.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if ((username.text?.characters.count)! > 0 && (company.text?.characters.count)! > 0 && (password.text?.characters.count)! > 0 )
         {
             let defaults = UserDefaults.standard
-            defaults.set(switchUsernameCompany.isOn, forKey: "switchUsernameCompany")
-            defaults.set(switchPassword.isOn, forKey: "switchPassword")
+            defaults.set(switchStateToInt(switchState: switchUsernameCompany.isOn), forKey: "switchUsernameCompany")
+            defaults.set(switchStateToInt(switchState: switchPassword.isOn), forKey: "switchPassword")
             
             if (switchUsernameCompany.isOn)
             {

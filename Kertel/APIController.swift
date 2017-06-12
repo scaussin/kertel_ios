@@ -15,7 +15,7 @@ class APIController {
     var delegateHistoryCall: APIDelegate?
     var delegateMevo: APIDelegate?
     var delegateConnect: APIDelegate?
-    var token : String!
+    var token : String?
     let baseUrl = "https://at.mosaica.kertel.com/appli/api/"
     let authUrl = "auth"
     
@@ -61,7 +61,7 @@ class APIController {
                             if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
                                 self.token = dic["token_auth"] as? String
                                 print("auth success")
-                                print(self.token)
+                                print(self.token ?? "nil")
                                 self.delegateConnect?.success(data: [AnyObject]())
                                 return
                             }
@@ -77,6 +77,14 @@ class APIController {
         })
         
         dataTask.resume()
+    }
+    
+    func disconnect()
+    {
+        delegateHistoryCall =  nil
+        delegateMevo = nil
+        delegateConnect = nil
+        token = nil
     }
     
     /*func gettToken(_ code: String) {
