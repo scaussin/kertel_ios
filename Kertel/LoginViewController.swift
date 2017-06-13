@@ -8,7 +8,7 @@
 
 import UIKit 
 
-class LoginViewController: UIViewController, APIControllerProtocol {
+class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
 
     @IBOutlet weak var scrollView: UIScrollView!
     var apiController : APIController?
@@ -18,30 +18,44 @@ class LoginViewController: UIViewController, APIControllerProtocol {
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var company: UITextField!
+    var alertController : UIAlertController? = nil
+    var autoConnect = true
     
     @IBOutlet weak var switchUsernameCompany: UISwitch!
     @IBOutlet weak var switchPassword: UISwitch!
+    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         print("LoginViewController -> viewDidLoad")
         
+        apiController = APIController()
         let defaults = UserDefaults.standard
         username.text = defaults.string(forKey: "username")
         company.text = defaults.string(forKey: "company")
         password.text = defaults.string(forKey: "password")
         
+        if (autoConnect && (username.text?.characters.count)! > 0 && (company.text?.characters.count)! > 0 && (password.text?.characters.count)! > 0)
+        {
+            connectButton(0)
+            return
+        }
+        
+        
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        
+        
         
         var boolSwitchUsernameCompany = true
-        
+        var boolSwitchPassword = true
         if defaults.integer(forKey: "switchUsernameCompany") == -1
         {
             boolSwitchUsernameCompany = false
         }
-        
-        var boolSwitchPassword = true
         if defaults.integer(forKey: "switchPassword") == -1
         {
             boolSwitchPassword = false
@@ -49,31 +63,47 @@ class LoginViewController: UIViewController, APIControllerProtocol {
         
         switchUsernameCompany.setOn(boolSwitchUsernameCompany , animated: false)
         switchPassword.setOn(boolSwitchPassword, animated: false)
+        
+        username.delegate = self
+        password.delegate = self
+        company.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         print("LoginViewController -> viewDidAppear")
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func keyboardWillShow(notification : NSNotification){
+        print("keyboardWillShow")
+     
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+                scrollViewHeightConstraint.constant = -keyboardSize.height
+        }
     }
     
-    func keyboardWillShow(notification:NSNotification){
-        var userInfo = notification.userInfo!
-        var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-        keyboardFrame = self.view.convert(keyboardFrame, from: nil)
-        
-        var contentInset:UIEdgeInsets = scrollView.contentInset
-        contentInset.bottom = keyboardFrame.size.height
-        scrollView.contentInset = contentInset
+    func keyboardWillHide(notification : NSNotification){
+            scrollViewHeightConstraint.constant = 0
     }
     
-    func keyboardWillHide(notification:NSNotification){
-        let contentInset:UIEdgeInsets = UIEdgeInsets.zero
-        scrollView.contentInset = contentInset
+   
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == username
+        {
+            company.becomeFirstResponder()
+        }
+        else if textField == company
+        {
+            password.becomeFirstResponder()
+        }
+        else if textField == password
+        {
+            connectButton(0)
+        }
+        return true
     }
+    
     
     func switchStateToInt(switchState : Bool!) -> Int
     {
@@ -85,25 +115,9 @@ class LoginViewController: UIViewController, APIControllerProtocol {
         {
             return -1
         }
-        
     }
     
     @IBAction func connectButton(_ sender: Any) {
-        
-        let alertController = UIAlertController(title: nil, message: "Connexion en cours...\n\n", preferredStyle: .alert)
-        
-        let spinnerIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-        
-        spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
-        spinnerIndicator.color = UIColor.black
-        spinnerIndicator.startAnimating()
-        
-        alertController.view.addSubview(spinnerIndicator)
-        self.present(alertController, animated: true, completion: nil)
-        
-        
-        return
-        
         username.text = username.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         company.text = company.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if ((username.text?.characters.count)! > 0 && (company.text?.characters.count)! > 0 && (password.text?.characters.count)! > 0 )
@@ -131,7 +145,17 @@ class LoginViewController: UIViewController, APIControllerProtocol {
                 defaults.set(nil, forKey: "password")
             }
             
-            performSegue(withIdentifier: "toConnectSegue", sender: self)
+            //connecting
+            alertController = UIAlertController(title: nil, message: "Connexion en cours...\n\n", preferredStyle: .alert)
+            let spinnerIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+            spinnerIndicator.center = CGPoint(x: 135.0, y: 65.5)
+            spinnerIndicator.color = UIColor.black
+            spinnerIndicator.startAnimating()
+            alertController?.view.addSubview(spinnerIndicator)
+            self.present(alertController!, animated: true, completion: nil)
+            
+            apiController?.getToken(delegate: self, username: username.text!, company: company.text!, password: password.text!)
+            
         }
         else
         {
@@ -139,41 +163,38 @@ class LoginViewController: UIViewController, APIControllerProtocol {
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
-        
-        /*getData()
-        if logins.count > 0
-        {
-            context.delete(logins[0])
-        }
-        
-        let login = Login(context: context) // Link Task & Context*/
-        // Save the data to coredata
-        //(UIApplication.shared.delegate as! AppDelegate).saveContext()
-
-       
     }
     
-    /*func getData() {
-        do {
-            logins = try context.fetch(Login.fetchRequest())
-        } catch {
-            print("Fetching Failed")
+    func success(data : [AnyObject])
+    {
+        DispatchQueue.main.sync {
+            performSegue(withIdentifier: "toMainSegue", sender: self)
         }
-    }*/
+    }
+    
+    func fail(msgError : String)
+    {
+        print("fail getToken: \(msgError)")
+        DispatchQueue.main.sync {
+            alertController?.dismiss(animated: false){
+                let alert = UIAlertController(title: "Erreur d'authentification", message: "Veuillez vérifier vos informations de connexion", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
 
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        if (segue.identifier == "toConnectSegue")
-        {
-            let vc = segue.destination as! ConnectViewController
-            vc.username = username.text!
-            vc.company = company.text!
-            vc.password = password.text!
+        if segue.identifier == "toMainSegue" {
+            let vc = segue.destination as! MainTabBarController
+            vc.apiController = self.apiController
         }
     }
 
-
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
 }

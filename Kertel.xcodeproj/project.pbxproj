@@ -16,7 +16,6 @@
 		116F0FB21EDC2EB100E2948C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F0FB11EDC2EB100E2948C /* MainTabBarController.swift */; };
 		116F0FB41EDC67E500E2948C /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F0FB31EDC67E500E2948C /* NavigationController.swift */; };
 		1192ADA41ED332E10008C554 /* MevoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA31ED332E10008C554 /* MevoController.swift */; };
-		1192ADA81ED42E070008C554 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA71ED42E070008C554 /* ConnectViewController.swift */; };
 		1192ADAB1ED43AC00008C554 /* bdd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA91ED43AC00008C554 /* bdd.xcdatamodeld */; };
 		1192D2471EE59B0400D35D33 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192D2461EE59B0400D35D33 /* SettingViewController.swift */; };
 		11F6C1291EA775CA001376BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6C1281EA775CA001376BC /* AppDelegate.swift */; };
@@ -38,7 +37,6 @@
 		116F0FB11EDC2EB100E2948C /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		116F0FB31EDC67E500E2948C /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		1192ADA31ED332E10008C554 /* MevoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MevoController.swift; sourceTree = "<group>"; };
-		1192ADA71ED42E070008C554 /* ConnectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		1192ADAA1ED43AC00008C554 /* bdd.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = bdd.xcdatamodel; sourceTree = "<group>"; };
 		1192D2461EE59B0400D35D33 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		11F6C1251EA775CA001376BC /* Kertel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kertel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,7 +102,6 @@
 				11368EEA1EC21CA300E0F82F /* APIDelegate.swift */,
 				11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */,
 				1192ADA31ED332E10008C554 /* MevoController.swift */,
-				1192ADA71ED42E070008C554 /* ConnectViewController.swift */,
 				116F0FB31EDC67E500E2948C /* NavigationController.swift */,
 				116F0FB11EDC2EB100E2948C /* MainTabBarController.swift */,
 				1192D2461EE59B0400D35D33 /* SettingViewController.swift */,
@@ -211,7 +208,6 @@
 				1192D2471EE59B0400D35D33 /* SettingViewController.swift in Sources */,
 				116F0FB41EDC67E500E2948C /* NavigationController.swift in Sources */,
 				11396FA71EE6AA5A002EF61D /* LoginNavigationController.swift in Sources */,
-				1192ADA81ED42E070008C554 /* ConnectViewController.swift in Sources */,
 				1192ADA41ED332E10008C554 /* MevoController.swift in Sources */,
 				11368EE91EC2150C00E0F82F /* APIController.swift in Sources */,
 				11368EEB1EC21CA300E0F82F /* APIDelegate.swift in Sources */,

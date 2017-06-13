@@ -11,6 +11,7 @@ import UIKit
 class LoginNavigationController: UINavigationController, APIControllerProtocol{
 
     var apiController : APIController?
+    var autoConnect = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +32,8 @@ class LoginNavigationController: UINavigationController, APIControllerProtocol{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "root view controller" {
-            var vc = segue.destination as! APIControllerProtocol
-            vc.apiController = self.apiController
+            let vc = segue.destination as! LoginViewController
+            vc.autoConnect = autoConnect
         }
     }
 }
