@@ -12,28 +12,28 @@ import Foundation
 class APIController {
     
     
-    var delegateHistoryCall: APIDelegate?
+    var delegateGetIncomingCall: APIDelegate?
     var delegateMevo: APIDelegate?
     var delegateConnect: APIDelegate?
     var token : String?
     let baseUrl = "https://at.mosaica.kertel.com/appli/api/"
     let authUrl = "auth"
+    let IncomingCallUrl = "calls/incoming"
     
     
     func getToken(delegate : APIDelegate, username : String!, company : String!, password : String!)
     {
         self.delegateConnect = delegate
-        print("APIController -> getToken()")
+        
         /*print("username: \(String(describing: username))")
         print("company: \(String(describing: company))")
         print("password: \(String(describing: password))")*/
         
         let headers = [
             "content-type": "application/json",
-            "cache-control": "no-cache",
-            "postman-token": "5031c394-9149-8934-d860-1b3ec97b629c"
+            "cache-control": "no-cache"
         ]
-        print("{\"username\":\"\(username!)\",\"password\":\"\(password!)\",\"company\":\"\(company!)\"}")
+        //print("{\"username\":\"\(username!)\",\"password\":\"\(password!)\",\"company\":\"\(company!)\"}")
         let postData : NSData = NSData(data: "{\"username\":\"\(username!)\",\"password\":\"\(password!)\",\"company\":\"\(company!)\"}".data(using: String.Encoding.utf8)!)
         
         let request = NSMutableURLRequest(url: NSURL(string: baseUrl + authUrl)! as URL,
@@ -47,11 +47,11 @@ class APIController {
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             
             if (error != nil) {
-                print("request fail")
+                print("request getToken fail")
                 print(error?.localizedDescription ?? "empty error")
                 self.delegateConnect?.fail(msgError: error?.localizedDescription ?? "erreur")
             } else {
-                print("request success")
+                //print("request getToken success")
                 
                 let httpResponse = response as? HTTPURLResponse
                 if (httpResponse?.statusCode == 200)
@@ -60,14 +60,13 @@ class APIController {
                         do {
                             if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
                                 self.token = dic["token_auth"] as? String
-                                print("auth success")
-                                print(self.token ?? "nil")
+                                
                                 self.delegateConnect?.success(data: [AnyObject]())
                                 return
                             }
                         }
                         catch (let err) {
-                            print("auth fail")
+                            print("data auth fail")
                             print(err)
                         }
                     }
@@ -79,40 +78,100 @@ class APIController {
         dataTask.resume()
     }
     
+
+    func checkToken(delegate : APIDelegate) -> Bool
+    {
+        if token != nil {
+            return true
+        }
+        else
+        {
+            delegate.fail(msgError: "APIController.token empty")
+            return (false)
+        }
+    }
+    
+    func getIncomingCall(delegate : APIDelegate)
+    {
+        self.delegateGetIncomingCall = delegate
+        if (checkToken(delegate: delegate) == false)
+        {
+            return
+        }
+        
+        let headers = [
+            "content-type": "application/json",
+            "auth-token": token!,
+            "cache-control": "no-cache"
+        ]
+        
+        let request = NSMutableURLRequest(url: NSURL(string: baseUrl + IncomingCallUrl)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            if (error != nil) {
+                print("request getIncomingCall fail")
+                print(error?.localizedDescription ?? "empty error")
+                self.delegateGetIncomingCall?.fail(msgError: error?.localizedDescription ?? "erreur")
+            } else {
+                //print("request getIncomingCall success")
+                
+                let httpResponse = response as? HTTPURLResponse
+                if (httpResponse?.statusCode == 200)
+                {
+                    if let d = data {
+                        do {
+                            if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
+                                var incomingCalls : [CallHistory] = []
+                                if let datas = dic["datas"] as? [[String: Any]] {
+                                    
+                                    for data in datas
+                                    {
+                                        incomingCalls.append(CallHistory(callId: data["id"] as! String,
+                                                                         name: data["src_name"] as? String,
+                                                                         number: data["src_number"] as? String,
+                                                                         state: data["state"] as! String,
+                                                                         duration: data["duration"] as! Double,
+                                                                         date: Date(timeIntervalSince1970 : data["date"] as! Double),
+                                                                         isIncoming: true,
+                                                                         isSeen: data["seen"] as! Bool))
+                                        
+                                    }
+                                    /*if let number = datas.first?["src_number"] as? String
+                                    {
+                                        print(number)
+                                    }*/
+                                }
+                                //print("data GetIncomingCall success")
+                                
+                                self.delegateGetIncomingCall?.success(data: incomingCalls as [AnyObject] )
+                                return
+                            }
+                        }
+                        catch (let err) {
+                            print("data GetIncomingCall fail")
+                            print(err)
+                        }
+                    }
+                }
+                self.delegateGetIncomingCall?.fail(msgError: error?.localizedDescription ?? "erreur")
+            }
+        })
+        dataTask.resume()
+    }
+    
     func disconnect()
     {
-        delegateHistoryCall =  nil
+        delegateGetIncomingCall =  nil
         delegateMevo = nil
         delegateConnect = nil
         token = nil
     }
-    
-    /*func gettToken(_ code: String) {
-        let request = NSMutableURLRequest(url: "url" as URL)
-        let query = "grant_type=" + Config().grantType + "&client_id=" + Config().UID + "&client_secret=" + Config().SECRET + "&code=" + code + "&redirect_uri=" + "https://www.42.fr"
-        request.httpMethod = "POST"
-        request.httpBody = query.data(using: String.Encoding.utf8)
-        let task = URLSession.shared.dataTask(with: request, completionHandler: {
-            (data, response, error) in
-            // print(response)
-            if let err = error {
-                print(err)
-            }
-            else if let d = data {
-                do {
-                    if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
-                        self.token = dic["access_token"] as? String
-                    }
-                }
-                catch (let err) {
-                    print(err)
-                }
-            }
-        })
-        task.resume()
-    }*/
-    
-    
+
 }
 
 

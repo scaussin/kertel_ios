@@ -10,14 +10,15 @@ import Foundation
 
 struct CallHistory {
     let isIncoming: Bool
+    let isSeen: Bool
     let callId: String
-    let name: String
+    let name: String?
     let state: String
-    let number: String
-    let duration: DateInterval
+    let number: String?
+    let duration: TimeInterval
     let date: Date
     
-    init(callId: String, name: String, number: String, state: String, duration: DateInterval, date: Date, isIncoming: Bool) {
+    init(callId: String, name: String?, number: String?, state: String, duration: TimeInterval, date: Date, isIncoming: Bool, isSeen: Bool) {
         self.name = name
         self.callId = callId
         self.state = state
@@ -25,5 +26,23 @@ struct CallHistory {
         self.date = date
         self.number = number
         self.isIncoming = isIncoming
+        self.isSeen = isSeen
     }
+    
+    func getPresentationName() -> String!
+    {
+        if name != nil && !(name?.isEmpty)!
+        {
+            return name
+        }
+        else if number != nil && !(number?.isEmpty)!
+        {
+            return number
+        }
+        else
+        {
+            return "Numéro inconnue"
+        }
+    }
+    
 }

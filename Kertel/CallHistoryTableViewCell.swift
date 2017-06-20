@@ -19,14 +19,14 @@ class CallHistoryTableViewCell: UITableViewCell {
     var callHistory : CallHistory? {
         didSet{
             if let call = callHistory{
-                nameLabel.text = call.name
+                nameLabel.text = call.getPresentationName()
             }
         }
     }
     
     
     @IBAction func infoButton(_ sender: Any) {
-        print("info j\(String(describing: callHistory?.name))")
+        print("info j\(String(describing: callHistory?.getPresentationName))")
     }
     
     

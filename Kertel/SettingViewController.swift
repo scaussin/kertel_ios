@@ -15,14 +15,14 @@ class SettingViewController: UIViewController , APIDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         print("SettingViewController load")
-        let mainTBC = self.parent as! MainTabBarController
-        self.apiController = mainTBC.apiController
 
         // Do any additional setup after loading the view.
     }
     @IBAction func disconnect(_ sender: Any) {
-        apiController?.token = nil
         
+        print("##################################")
+        print("disconnect")
+        apiController!.token = nil
     }
     
     
@@ -41,7 +41,7 @@ class SettingViewController: UIViewController , APIDelegate{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toLoginSegue" {
-            let vc = segue.destination as! LoginNavigationController
+            let vc = segue.destination.childViewControllers.first as! LoginViewController
             vc.autoConnect = false
         }
     }

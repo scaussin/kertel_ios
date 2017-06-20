@@ -18,7 +18,7 @@ class InfoCallTableViewCell: UITableViewCell {
         didSet{
             if let call = call{
                 title.text = "numéro"
-                data.text = call.number
+                data.text = call.getPresentationName()
             }
         }
     }

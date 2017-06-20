@@ -12,9 +12,6 @@
 		11368EE91EC2150C00E0F82F /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EE81EC2150C00E0F82F /* APIController.swift */; };
 		11368EEB1EC21CA300E0F82F /* APIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EEA1EC21CA300E0F82F /* APIDelegate.swift */; };
 		11368EED1EC9FC7100E0F82F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */; };
-		11396FA71EE6AA5A002EF61D /* LoginNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11396FA61EE6AA5A002EF61D /* LoginNavigationController.swift */; };
-		116F0FB21EDC2EB100E2948C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F0FB11EDC2EB100E2948C /* MainTabBarController.swift */; };
-		116F0FB41EDC67E500E2948C /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F0FB31EDC67E500E2948C /* NavigationController.swift */; };
 		1192ADA41ED332E10008C554 /* MevoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA31ED332E10008C554 /* MevoController.swift */; };
 		1192ADAB1ED43AC00008C554 /* bdd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA91ED43AC00008C554 /* bdd.xcdatamodeld */; };
 		1192D2471EE59B0400D35D33 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192D2461EE59B0400D35D33 /* SettingViewController.swift */; };
@@ -33,9 +30,6 @@
 		11368EE81EC2150C00E0F82F /* APIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
 		11368EEA1EC21CA300E0F82F /* APIDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIDelegate.swift; sourceTree = "<group>"; };
 		11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		11396FA61EE6AA5A002EF61D /* LoginNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginNavigationController.swift; sourceTree = "<group>"; };
-		116F0FB11EDC2EB100E2948C /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		116F0FB31EDC67E500E2948C /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		1192ADA31ED332E10008C554 /* MevoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MevoController.swift; sourceTree = "<group>"; };
 		1192ADAA1ED43AC00008C554 /* bdd.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = bdd.xcdatamodel; sourceTree = "<group>"; };
 		1192D2461EE59B0400D35D33 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -102,10 +96,7 @@
 				11368EEA1EC21CA300E0F82F /* APIDelegate.swift */,
 				11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */,
 				1192ADA31ED332E10008C554 /* MevoController.swift */,
-				116F0FB31EDC67E500E2948C /* NavigationController.swift */,
-				116F0FB11EDC2EB100E2948C /* MainTabBarController.swift */,
 				1192D2461EE59B0400D35D33 /* SettingViewController.swift */,
-				11396FA61EE6AA5A002EF61D /* LoginNavigationController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -201,13 +192,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				11368EE51EC1CCD600E0F82F /* InfoCallViewController.swift in Sources */,
-				116F0FB21EDC2EB100E2948C /* MainTabBarController.swift in Sources */,
 				11368EE11EB8943800E0F82F /* InfoCallTableViewCell.swift in Sources */,
 				11F6C15F1EAE0729001376BC /* CallHistoryController.swift in Sources */,
 				11F6C1671EAF4BFA001376BC /* CallHistoryTableViewCell.swift in Sources */,
 				1192D2471EE59B0400D35D33 /* SettingViewController.swift in Sources */,
-				116F0FB41EDC67E500E2948C /* NavigationController.swift in Sources */,
-				11396FA71EE6AA5A002EF61D /* LoginNavigationController.swift in Sources */,
 				1192ADA41ED332E10008C554 /* MevoController.swift in Sources */,
 				11368EE91EC2150C00E0F82F /* APIController.swift in Sources */,
 				11368EEB1EC21CA300E0F82F /* APIDelegate.swift in Sources */,

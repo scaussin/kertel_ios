@@ -37,9 +37,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
         
         if (autoConnect && (username.text?.characters.count)! > 0 && (company.text?.characters.count)! > 0 && (password.text?.characters.count)! > 0)
         {
+            print("auto connect")
             connectButton(0)
             return
         }
+        print("wait")
         
         
         
@@ -152,8 +154,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
             spinnerIndicator.color = UIColor.black
             spinnerIndicator.startAnimating()
             alertController?.view.addSubview(spinnerIndicator)
-            self.present(alertController!, animated: true, completion: nil)
-            
+            DispatchQueue.main.async {
+                self.present(self.alertController!, animated: true, completion: nil)
+            }
             apiController?.getToken(delegate: self, username: username.text!, company: company.text!, password: password.text!)
             
         }
@@ -167,13 +170,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
     
     func success(data : [AnyObject])
     {
+        print("APIController.getToken() success")
+        print("token: \(apiController?.token ?? "nil")")
         DispatchQueue.main.sync {
             performSegue(withIdentifier: "toMainSegue", sender: self)
+            
         }
     }
     
     func fail(msgError : String)
     {
+        print("APIController.getToken() fail")
         print("fail getToken: \(msgError)")
         DispatchQueue.main.sync {
             alertController?.dismiss(animated: false){
@@ -187,8 +194,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toMainSegue" {
-            let vc = segue.destination as! MainTabBarController
-            vc.apiController = self.apiController
+            
+            let tabBarController = segue.destination as! UITabBarController
+            
+            // CallHistory
+            let callHistoryNC = tabBarController.viewControllers![0] as! UINavigationController
+            let callHistoryVC = callHistoryNC.viewControllers[0] as! CallHistoryController
+            callHistoryVC.apiController = self.apiController
+
+            // Setting
+            let settingVC = tabBarController.viewControllers![4] as! SettingViewController
+            settingVC.apiController = self.apiController
+            
+            /*let vc = segue.destination as! MainTabBarController
+            vc.apiController = self.apiController*/
         }
     }
 
