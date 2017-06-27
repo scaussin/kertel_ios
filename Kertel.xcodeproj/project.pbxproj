@@ -55,6 +55,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1133C1681F029D8700A78D71 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				11368EE81EC2150C00E0F82F /* APIController.swift */,
+				11368EEA1EC21CA300E0F82F /* APIDelegate.swift */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
 		11F6C11C1EA775C9001376BC = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +86,7 @@
 			children = (
 				11F6C1281EA775CA001376BC /* AppDelegate.swift */,
 				11F6C12C1EA775CA001376BC /* Main.storyboard */,
+				1133C1681F029D8700A78D71 /* API */,
 				11F6C15A1EAE01D5001376BC /* Controllers */,
 				11F6C15B1EAE01FF001376BC /* Views */,
 				11F6C1681EAF84C1001376BC /* Models */,
@@ -92,8 +102,6 @@
 			children = (
 				11F6C15E1EAE0729001376BC /* CallHistoryController.swift */,
 				11368EE41EC1CCD600E0F82F /* InfoCallViewController.swift */,
-				11368EE81EC2150C00E0F82F /* APIController.swift */,
-				11368EEA1EC21CA300E0F82F /* APIDelegate.swift */,
 				11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */,
 				1192ADA31ED332E10008C554 /* MevoController.swift */,
 				1192D2461EE59B0400D35D33 /* SettingViewController.swift */,

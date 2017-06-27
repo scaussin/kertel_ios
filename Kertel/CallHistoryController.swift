@@ -8,21 +8,14 @@
 
 import UIKit
 
-class CallHistoryController: UITableViewController, APIDelegate{
+class CallHistoryController: UITableViewController , APIControllerProtocol{
 
     var refresher: UIRefreshControl!
     var apiController : APIController?
     var deleteAllButton : UIBarButtonItem!
     var CallHistoryDataTableView: [CallHistory] = []
-    /*var dataTest: [CallHistory] = [
-                                    
-                                    CallHistory(callId: "", name: "André Sanfraper", number: "0634543244", state: "", duration: TimeInterval(), date: Date(), isIncoming: true, isSeen: true),
-                                    CallHistory(callId: "", name: "Jacques Célère",number: "0634543255", state: "", duration: TimeInterval(), date: Date(), isIncoming: true, isSeen: true),
-                                    CallHistory(callId: "", name: "Brice Denisse", number: "0634543266", state: "", duration: TimeInterval(), date: Date(), isIncoming: true, isSeen: true),
-                                    CallHistory(callId: "", name: "Sacha Touille", number: "0634543277", state: "", duration: TimeInterval(), date: Date(), isIncoming: true, isSeen: true),
-                                    CallHistory(callId: "", name: "Yves Rogne", number: "0634543288", state: "", duration: TimeInterval(), date: Date(), isIncoming: true, isSeen: true),
-                                    CallHistory(callId: "", name: "Alain Terrieur", number: "0634543299", state: "", duration: TimeInterval(), date: Date(), isIncoming: true, isSeen: true)]*/
-    
+    var incomingDelegate : IncomingDelegate!
+    var outgoingDelegate : OutgoingDelegate!
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,10 +24,18 @@ class CallHistoryController: UITableViewController, APIDelegate{
         refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
-        deleteAllButton = UIBarButtonItem(title : "Effacer", style: .plain, target: self, action: #selector(deleteAllButton(sender :)))
         
+        deleteAllButton = UIBarButtonItem(title : "Effacer", style: .plain, target: self, action: #selector(deleteAllButton(sender :)))
         self.navigationItem.rightBarButtonItem = self.editButtonItem
-        apiController?.getIncomingCall(delegate: self)
+        
+        incomingDelegate = IncomingDelegate(callHistoryDelegate: self)
+        outgoingDelegate = OutgoingDelegate(callHistoryDelegate: self)
+        
+        refresh()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("CallHistoryController -> viewDidAppear")
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -68,36 +69,78 @@ class CallHistoryController: UITableViewController, APIDelegate{
     
     func refresh()
     {
-        apiController?.getIncomingCall(delegate: self)
+        apiController?.getIncomingCall(delegate: incomingDelegate)
+        apiController?.getOutgoingCall(delegate: outgoingDelegate)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        print("CallHistoryController -> viewDidAppear")
-    }
-
-   
-    func success(data: [AnyObject]) {
-        DispatchQueue.main.async {
-            self.CallHistoryDataTableView.removeAll()
-            self.CallHistoryDataTableView += data as! [CallHistory]
-            self.tableView.reloadData()
-            self.refresher.endRefreshing()
-        }
-        print("APIController.getIncomingCall() success")
-    }
-
-    func fail(msgError : String)
+    func sortCallHistory()
     {
-        print("APIController.getIncomingCall() fail")
-        self.refresher.endRefreshing()
+        CallHistoryDataTableView.sort() {$0.date.compare($1.date) == .orderedDescending}
     }
     
+    // incoming delegate API
+    class IncomingDelegate :APIDelegate
+    {
+        var apiController : APIController?
+        var callHistoryDelegate : CallHistoryController
+        
+        init (callHistoryDelegate : CallHistoryController!)
+        {
+            self.callHistoryDelegate = callHistoryDelegate
+        }
+        
+        func success(data: [AnyObject]) {
+            
+            DispatchQueue.main.async {
+                self.callHistoryDelegate.CallHistoryDataTableView = (self.callHistoryDelegate.CallHistoryDataTableView.filter() { $0.isIncoming == false})
+                self.callHistoryDelegate.CallHistoryDataTableView += data as! [CallHistory]
+                self.callHistoryDelegate.sortCallHistory()
+                self.callHistoryDelegate.tableView.reloadData()
+                self.callHistoryDelegate.refresher.endRefreshing()
+            }
+            print("APIController.getIncomingCall() success")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.getIncomingCall() fail")
+            self.callHistoryDelegate.refresher.endRefreshing()
+        }
+    }
+   
+    // outgoing delegate API
+    class OutgoingDelegate :APIDelegate
+    {
+        var apiController : APIController?
+        var callHistoryDelegate : CallHistoryController
+        
+        init (callHistoryDelegate : CallHistoryController!)
+        {
+            self.callHistoryDelegate = callHistoryDelegate
+        }
+        
+        func success(data: [AnyObject]) {
+            
+            DispatchQueue.main.async {
+                self.callHistoryDelegate.CallHistoryDataTableView = (self.callHistoryDelegate.CallHistoryDataTableView.filter() { $0.isIncoming == true})
+                self.callHistoryDelegate.CallHistoryDataTableView += data as! [CallHistory]
+                self.callHistoryDelegate.sortCallHistory()
+                self.callHistoryDelegate.tableView.reloadData()
+                self.callHistoryDelegate.refresher.endRefreshing()
+            }
+            print("APIController.getOutgoingCall() success")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.getOutgoingCall() fail")
+            self.callHistoryDelegate.refresher.endRefreshing()
+        }
+    }
+   
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -137,5 +180,4 @@ class CallHistoryController: UITableViewController, APIDelegate{
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-
 }

@@ -174,7 +174,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
         print("token: \(apiController?.token ?? "nil")")
         DispatchQueue.main.sync {
             performSegue(withIdentifier: "toMainSegue", sender: self)
-            
         }
     }
     

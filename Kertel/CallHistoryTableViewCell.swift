@@ -23,10 +23,22 @@ class CallHistoryTableViewCell: UITableViewCell {
                 nameLabel.text = call.getPresentationName()
                 dateLabel.text = call.getShortDate()
                 sateCallLabel.text = call.getStateSmart()
+                stateCallImage.image = stateCallImage.image!.withRenderingMode(.alwaysTemplate)
+                if (call.isIncoming)
+                {
+                    stateCallImage.transform = CGAffineTransform(scaleX: 1, y: 1);
+                }
+                else
+                {
+                    stateCallImage.transform = CGAffineTransform(scaleX: -1, y: -1);
+                }
                 if (call.isMissed())
                 {
-                    stateCallImage.image = stateCallImage.image!.withRenderingMode(.alwaysTemplate)
-                    stateCallImage.tintColor = UIColor(hex: "F15A2F") 
+                    stateCallImage.tintColor = UIColor(hex: "F15A2F")
+                }
+                else
+                {
+                    stateCallImage.tintColor = UIColor.black
                 }
             }
         }
