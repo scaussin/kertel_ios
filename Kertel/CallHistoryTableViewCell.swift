@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class CallHistoryTableViewCell: UITableViewCell {
 
     
@@ -16,17 +17,26 @@ class CallHistoryTableViewCell: UITableViewCell {
     @IBOutlet weak var sateCallLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     
-    var callHistory : CallHistory? {
+    var call : CallHistory? {
         didSet{
-            if let call = callHistory{
+            if let call = call{
                 nameLabel.text = call.getPresentationName()
+                dateLabel.text = call.getShortDate()
+                sateCallLabel.text = call.getStateSmart()
+                if (call.isMissed())
+                {
+                    stateCallImage.image = stateCallImage.image!.withRenderingMode(.alwaysTemplate)
+                    stateCallImage.tintColor = UIColor(hex: "F15A2F") 
+                }
             }
         }
     }
     
     
+    
     @IBAction func infoButton(_ sender: Any) {
-        print("info j\(String(describing: callHistory?.getPresentationName))")
+        print("info j\(String(describing: call?.getPresentationName))")
+        
     }
     
     

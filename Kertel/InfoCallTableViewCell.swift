@@ -11,19 +11,26 @@ import UIKit
 class InfoCallTableViewCell: UITableViewCell {
 
 
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var data: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var dataLabel: UILabel!
+    @IBOutlet weak var numberButton: UIButton!
     
-    var call : CallHistory? {
-        didSet{
-            if let call = call{
-                title.text = "numéro"
-                data.text = call.getPresentationName()
+    var info : (title: String, value: String)? {
+    didSet{
+        if let info = info{
+            titleLabel.text = info.title
+            if (self.reuseIdentifier == "detailCellNumber")
+            {
+                numberButton.setTitle(info.value, for: .normal)
+            }
+            else
+            {
+                dataLabel.text = info.value
             }
         }
     }
-    
-    
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

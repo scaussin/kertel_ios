@@ -17,7 +17,7 @@ class InfoCallViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.nameLabel.text = call?.name
+        self.nameLabel.text = call?.getPresentationName()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -36,12 +36,11 @@ class InfoCallViewController: UIViewController {
 
 class InfoCallTableViewController: UITableViewController {
     
-    var call : CallHistory?
+    var call : CallHistory!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -54,13 +53,23 @@ class InfoCallTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return call.infoCall.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as! InfoCallTableViewCell
-        cell.call = self.call
-        return cell
+        var cell : InfoCallTableViewCell?
+        
+        if (indexPath.row == 1) // button call number
+        {
+            cell = tableView.dequeueReusableCell(withIdentifier: "detailCellNumber", for: indexPath) as? InfoCallTableViewCell
+        }
+        else
+        {
+            cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as? InfoCallTableViewCell
+        }
+        cell?.info = call.infoCall[indexPath.row]
+        
+        return cell!
     }
     
     

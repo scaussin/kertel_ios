@@ -34,6 +34,7 @@ class CallHistoryController: UITableViewController, APIDelegate{
         deleteAllButton = UIBarButtonItem(title : "Effacer", style: .plain, target: self, action: #selector(deleteAllButton(sender :)))
         
         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        apiController?.getIncomingCall(delegate: self)
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -56,11 +57,9 @@ class CallHistoryController: UITableViewController, APIDelegate{
             self.CallHistoryDataTableView.removeAll()
             self.tableView.reloadData()
             self.setEditing(false, animated: true)
-            print("delete all")
         })
         let cancelAction = UIAlertAction(title:"Annuler", style: .cancel, handler: {
             action in
-            print("Cancel pressed")
         })
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
@@ -111,7 +110,7 @@ class CallHistoryController: UITableViewController, APIDelegate{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CallHistoryCell", for: indexPath) as! CallHistoryTableViewCell
 
-        cell.callHistory = CallHistoryDataTableView[indexPath.row]
+        cell.call = CallHistoryDataTableView[indexPath.row]
         return cell
     }
    
@@ -122,28 +121,21 @@ class CallHistoryController: UITableViewController, APIDelegate{
             
             if let button = sender as? UIButton {
                 let cell = button.superview?.superview as! CallHistoryTableViewCell
-                vc.call = cell.callHistory
+                vc.call = cell.call
             }
         }
     }
     
-    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
     
- 
-    // Override to support editing the table view.
+    // remove table item
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
             CallHistoryDataTableView.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
-
 
 }
