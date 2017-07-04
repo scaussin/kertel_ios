@@ -14,6 +14,7 @@ class APIController {
     
     var delegateGetIncomingCall: APIDelegate?
     var delegateGetOutgoingCall: APIDelegate?
+    var delegateDelIncomingCall: APIDelegate?
     var delegateMevo: APIDelegate?
     var delegateConnect: APIDelegate?
     var token : String?
@@ -210,7 +211,6 @@ class APIController {
                                                                          date: Date(timeIntervalSince1970 : data["date"] as! Double),
                                                                          isIncoming: false,
                                                                          isSeen: true))
-                                        
                                     }
                                 }
                                 self.delegateGetOutgoingCall?.success(data: outgoingCalls as [AnyObject] )
@@ -229,6 +229,140 @@ class APIController {
         dataTask.resume()
     }
 
+    
+    /*
+     import Foundation
+     
+     let headers = [
+     "content-type": "application/json",
+     "auth-token": "a9472b72-513f-85ea-773f-44501ec631db",
+     "cache-control": "no-cache",
+     "postman-token": "7245f959-96a5-020e-c4fe-ad8e1996baa7"
+     ]
+     
+     let postData = NSData(data: "{
+     "call_ids": ["1594150",1594145]
+     }".data(using: String.Encoding.utf8)!)
+     
+     let request = NSMutableURLRequest(url: NSURL(string: "http://at.mosaica.kertel.com/appli/api/calls/incoming")! as URL,
+     cachePolicy: .useProtocolCachePolicy,
+     timeoutInterval: 10.0)
+     request.httpMethod = "DELETE"
+     request.allHTTPHeaderFields = headers
+     request.httpBody = postData as Data
+     
+     let session = URLSession.shared
+     let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+     if (error != nil) {
+     print(error)
+     } else {
+     let httpResponse = response as? HTTPURLResponse
+     print(httpResponse)
+     }
+     })
+     
+     dataTask.resume()
+     */
+    
+    func doRequest(httpMethod : String, sufixUrl : String, dataBody : NSData?, success : @escaping (NSDictionary) -> (), fail : @escaping (String) -> ())
+    {
+        if token == nil {
+            fail("[FAIL] APIController.token is empty")
+            return
+        }
+        let headers = [
+            "content-type": "application/json",
+            "auth-token": token!,
+            "cache-control": "no-cache"
+        ]
+        
+        let request = NSMutableURLRequest(url: NSURL(string: baseUrl + sufixUrl)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+        request.httpMethod = httpMethod
+        request.allHTTPHeaderFields = headers
+        if let data = dataBody
+        {
+            request.httpBody = data as Data
+        }
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            let httpResponse = response as? HTTPURLResponse
+            if (error != nil || httpResponse?.statusCode != 200) {
+                fail("[FAIL] request " /*+ httpMethod + " " + self.baseUrl + self.incomingCallUrl + " detail: " + error?.localizedDescription*/)
+                return
+            }
+            else
+            {
+                if let d = data
+                {
+                    do {
+                        if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary
+                        {
+                            success(dic)
+                            return
+                        }
+                    }
+                    catch (let err) {
+                        print("data GetOutgoingCall fail")
+                        print(err)
+                    }
+                }
+                fail("[FAIL] extract data " /*+ httpMethod + " " + self.baseUrl + self.incomingCallUrl + " detail: " + error?.localizedDescription*/)
+                return
+            }
+        })
+        dataTask.resume()
+        return
+    }
+    
+    func delIncomingCall(delegate : APIDelegate, idCallsToDelete : [String])
+    {
+        var data = "{\"call_ids\": ["
+        var i = 0
+        while (i < idCallsToDelete.count)
+        {
+            data += "\"\(idCallsToDelete[i])\""
+            if i != idCallsToDelete.count - 1 // not last
+            {
+                data += ","
+            }
+            i += 1
+        }
+        data += "]}"
+        let postData = NSData(data: data.data(using: String.Encoding.utf8)!)
+
+        doRequest(httpMethod: "DELETE", sufixUrl : incomingCallUrl, dataBody: postData,
+                  success : {(data) -> () in
+            delegate.success(data: nil)
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+    
+    func delOutgoingCall(delegate : APIDelegate, idCallsToDelete : [String])
+    {
+        var data = "{\"call_ids\": ["
+        var i = 0
+        while (i < idCallsToDelete.count)
+        {
+            data += "\"\(idCallsToDelete[i])\""
+            if i != idCallsToDelete.count - 1 // not last
+            {
+                data += ","
+            }
+            i += 1
+        }
+        data += "]}"
+        let postData = NSData(data: data.data(using: String.Encoding.utf8)!)
+        
+        doRequest(httpMethod: "DELETE", sufixUrl : outgoingCallUrl, dataBody: postData,
+                  success : {(data) -> () in
+                    delegate.success(data: nil)
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
     
     func disconnect()
     {

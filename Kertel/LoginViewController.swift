@@ -168,7 +168,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
         }
     }
     
-    func success(data : [AnyObject])
+    func success(data : [AnyObject]?)
     {
         print("APIController.getToken() success")
         print("token: \(apiController?.token ?? "nil")")

@@ -9,6 +9,7 @@
 import UIKit
 
 class SettingViewController: UIViewController , APIDelegate{
+  
 
     var apiController : APIController?
     
@@ -26,7 +27,7 @@ class SettingViewController: UIViewController , APIDelegate{
     }
     
     
-    func success(data: [AnyObject]) {
+    func success(data: [AnyObject]?) {
         
     }
     

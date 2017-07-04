@@ -89,7 +89,7 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
             self.callHistoryDelegate = callHistoryDelegate
         }
         
-        func success(data: [AnyObject]) {
+        func success(data: [AnyObject]?) {
             
             DispatchQueue.main.async {
                 self.callHistoryDelegate.CallHistoryDataTableView = (self.callHistoryDelegate.CallHistoryDataTableView.filter() { $0.isIncoming == false})
@@ -119,7 +119,7 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
             self.callHistoryDelegate = callHistoryDelegate
         }
         
-        func success(data: [AnyObject]) {
+        func success(data: [AnyObject]?) {
             
             DispatchQueue.main.async {
                 self.callHistoryDelegate.CallHistoryDataTableView = (self.callHistoryDelegate.CallHistoryDataTableView.filter() { $0.isIncoming == true})
@@ -173,9 +173,33 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
         return true
     }
     
+    class delHistoryCallDelegate :APIDelegate
+    {
+        var apiController : APIController?
+        
+        func success(data: [AnyObject]?) {
+            print("history call deleted")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.delIncomingCall() fail")
+        }
+    }
+    
     // remove table item
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
+            if (CallHistoryDataTableView[indexPath.row].isIncoming)
+            {
+                apiController?.delIncomingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: [CallHistoryDataTableView[indexPath.row].callId])
+            }
+            else
+            {
+                apiController?.delOutgoingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: [CallHistoryDataTableView[indexPath.row].callId])
+            }
+            
             CallHistoryDataTableView.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

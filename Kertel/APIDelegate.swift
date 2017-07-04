@@ -11,7 +11,7 @@ import Foundation
 protocol APIDelegate : APIControllerProtocol
 {
 
-    func success(data : [AnyObject])
+    func success(data : [AnyObject]?)
     func fail(msgError : String)
 
 }
