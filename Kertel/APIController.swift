@@ -11,17 +11,20 @@ import Foundation
 
 class APIController {
     
-    
+    //to delete
     var delegateGetIncomingCall: APIDelegate?
     var delegateGetOutgoingCall: APIDelegate?
     var delegateDelIncomingCall: APIDelegate?
     var delegateMevo: APIDelegate?
     var delegateConnect: APIDelegate?
+    
+    
     var token : String?
     let baseUrl = "https://at.mosaica.kertel.com/appli/api/"
     let authUrl = "auth"
     let incomingCallUrl = "calls/incoming"
     let outgoingCallUrl = "calls/outgoing"
+    let mevoCallUrl = "mevo/messages"
     
     
     func getToken(delegate : APIDelegate, username : String!, company : String!, password : String!)
@@ -80,7 +83,6 @@ class APIController {
         
         dataTask.resume()
     }
-    
 
     func checkToken(delegate : APIDelegate) -> Bool
     {
@@ -93,142 +95,6 @@ class APIController {
             return (false)
         }
     }
-    
-    func getIncomingCall(delegate : APIDelegate)
-    {
-        self.delegateGetIncomingCall = delegate
-        if (checkToken(delegate: delegate) == false)
-        {
-            return
-        }
-        
-        let headers = [
-            "content-type": "application/json",
-            "auth-token": token!,
-            "cache-control": "no-cache"
-        ]
-        
-        let request = NSMutableURLRequest(url: NSURL(string: baseUrl + incomingCallUrl)! as URL,
-                                          cachePolicy: .useProtocolCachePolicy,
-                                          timeoutInterval: 10.0)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-        
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-            if (error != nil) {
-                print("request getIncomingCall fail")
-                print(error?.localizedDescription ?? "empty error")
-                self.delegateGetIncomingCall?.fail(msgError: error?.localizedDescription ?? "erreur")
-            } else {
-                //print("request getIncomingCall success")
-                
-                let httpResponse = response as? HTTPURLResponse
-                if (httpResponse?.statusCode == 200)
-                {
-                    if let d = data {
-                        do {
-                            if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
-                                var incomingCalls : [CallHistory] = []
-                                if let datas = dic["datas"] as? [[String: Any]] {
-                                    
-                                    for data in datas
-                                    {
-                                        incomingCalls.append(CallHistory(callId: data["id"] as! String,
-                                                                         name: data["src_name"] as? String,
-                                                                         number: data["src_number"] as? String,
-                                                                         state: data["state"] as! String,
-                                                                         duration: data["duration"] as! Double,
-                                                                         date: Date(timeIntervalSince1970 : data["date"] as! Double),
-                                                                         isIncoming: true,
-                                                                         isSeen: data["seen"] as! Bool))
-                                        
-                                    }
-                                }
-                                //print("data GetIncomingCall success")
-                                
-                                self.delegateGetIncomingCall?.success(data: incomingCalls as [AnyObject] )
-                                return
-                            }
-                        }
-                        catch (let err) {
-                            print("data GetIncomingCall fail")
-                            print(err)
-                        }
-                    }
-                }
-                self.delegateGetIncomingCall?.fail(msgError: error?.localizedDescription ?? "erreur")
-            }
-        })
-        dataTask.resume()
-    }
-    
-    func getOutgoingCall(delegate : APIDelegate)
-    {
-        self.delegateGetOutgoingCall = delegate
-        if (checkToken(delegate: delegate) == false)
-        {
-            return
-        }
-        
-        let headers = [
-            "content-type": "application/json",
-            "auth-token": token!,
-            "cache-control": "no-cache"
-        ]
-        
-        let request = NSMutableURLRequest(url: NSURL(string: baseUrl + outgoingCallUrl)! as URL,
-                                          cachePolicy: .useProtocolCachePolicy,
-                                          timeoutInterval: 10.0)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-        
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-            if (error != nil) {
-                print("request getOutgoingCall fail")
-                print(error?.localizedDescription ?? "empty error")
-                self.delegateGetOutgoingCall?.fail(msgError: error?.localizedDescription ?? "erreur")
-            } else {
-                //print("request getIncomingCall success")
-                
-                let httpResponse = response as? HTTPURLResponse
-                if (httpResponse?.statusCode == 200)
-                {
-                    if let d = data {
-                        do {
-                            if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
-                                var outgoingCalls : [CallHistory] = []
-                                if let datas = dic["datas"] as? [[String: Any]] {
-                                    
-                                    for data in datas
-                                    {
-                                        outgoingCalls.append(CallHistory(callId: data["id"] as! String,
-                                                                         name: data["src_name"] as? String,
-                                                                         number: data["dst_number"] as? String,
-                                                                         state: data["state"] as! String,
-                                                                         duration: data["duration"] as! Double,
-                                                                         date: Date(timeIntervalSince1970 : data["date"] as! Double),
-                                                                         isIncoming: false,
-                                                                         isSeen: true))
-                                    }
-                                }
-                                self.delegateGetOutgoingCall?.success(data: outgoingCalls as [AnyObject] )
-                                return
-                            }
-                        }
-                        catch (let err) {
-                            print("data GetOutgoingCall fail")
-                            print(err)
-                        }
-                    }
-                }
-                self.delegateGetOutgoingCall?.fail(msgError: error?.localizedDescription ?? "erreur")
-            }
-        })
-        dataTask.resume()
-    }
-
     
     /*
      import Foundation
@@ -316,6 +182,64 @@ class APIController {
         return
     }
     
+    func getIncomingCall(delegate : APIDelegate)
+    {
+        doRequest(httpMethod: "GET", sufixUrl : incomingCallUrl, dataBody: nil,
+                  success : {(data) -> () in
+                    
+                    var incomingCalls : [CallHistory] = []
+                    if let datas = data["datas"] as? [[String: Any]] {
+                        
+                        for data in datas
+                        {
+                            incomingCalls.append(CallHistory(callId: data["id"] as! String,
+                                                             name: data["src_name"] as? String,
+                                                             number: data["src_number"] as? String,
+                                                             state: data["state"] as! String,
+                                                             duration: data["duration"] as! Double,
+                                                             date: Date(timeIntervalSince1970 : data["date"] as! Double),
+                                                             isIncoming: true,
+                                                             isSeen: data["seen"] as! Bool))
+                        }
+                    }
+                    delegate.success(data: incomingCalls as [AnyObject] )
+                    
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+
+    
+    func getOutgoingCall(delegate : APIDelegate)
+    {
+        doRequest(httpMethod: "GET", sufixUrl : outgoingCallUrl, dataBody: nil,
+                  success : {(data) -> () in
+                    
+                    var outgoingCalls : [CallHistory] = []
+                    if let datas = data["datas"] as? [[String: Any]] {
+                        
+                        for data in datas
+                        {
+                            outgoingCalls.append(CallHistory(callId: data["id"] as! String,
+                                                             name: data["src_name"] as? String,
+                                                             number: data["dst_number"] as? String,
+                                                             state: data["state"] as! String,
+                                                             duration: data["duration"] as! Double,
+                                                             date: Date(timeIntervalSince1970 : data["date"] as! Double),
+                                                             isIncoming: false,
+                                                             isSeen: true))
+                        }
+                    }
+                   delegate.success(data: outgoingCalls as [AnyObject] )
+
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+    
+    
+    
+    
     func delIncomingCall(delegate : APIDelegate, idCallsToDelete : [String])
     {
         var data = "{\"call_ids\": ["
@@ -364,11 +288,38 @@ class APIController {
         })
     }
     
+    func getMevo(delegate : APIDelegate)
+    {
+        doRequest(httpMethod: "GET", sufixUrl : outgoingCallUrl, dataBody: nil,
+                  success : {(data) -> () in
+                    
+                    var outgoingCalls : [CallHistory] = []
+                    if let datas = data["datas"] as? [[String: Any]] {
+                        
+                        for data in datas
+                        {
+                            outgoingCalls.append(CallHistory(callId: data["id"] as! String,
+                                                             name: data["src_name"] as? String,
+                                                             number: data["dst_number"] as? String,
+                                                             state: data["state"] as! String,
+                                                             duration: data["duration"] as! Double,
+                                                             date: Date(timeIntervalSince1970 : data["date"] as! Double),
+                                                             isIncoming: false,
+                                                             isSeen: true))
+                        }
+                    }
+                    delegate.success(data: outgoingCalls as [AnyObject] )
+                    
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+    
     func disconnect()
     {
-        delegateGetIncomingCall =  nil
+        /*delegateGetIncomingCall =  nil
         delegateMevo = nil
-        delegateConnect = nil
+        delegateConnect = nil*/
         token = nil
     }
 

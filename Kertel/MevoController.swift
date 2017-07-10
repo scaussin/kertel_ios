@@ -22,6 +22,7 @@ class MevoController: UITableViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        navigationItem.title = "Messagerie (5/30)"
         print("mevo appear")
     }
     
@@ -35,23 +36,33 @@ class MevoController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 4
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        var cell : UITableViewCell
+        //tableView.rowHeight = UITableViewAutomaticDimension
+        /*if indexPath.row == 0
+        {
+            cell = tableView.dequeueReusableCell(withIdentifier: "headerMevoCell", for: indexPath)
+            tableView.estimatedRowHeight = 140
+        }
+        else
+        {
+            cell = tableView.dequeueReusableCell(withIdentifier: "mevoCell", for: indexPath)
+            //tableView.estimatedRowHeight = 58
+        }*/
+        cell = tableView.dequeueReusableCell(withIdentifier: "mevoCell", for: indexPath)
 
         return cell
     }
-    */
+ 
 
     /*
     // Override to support conditional editing of the table view.

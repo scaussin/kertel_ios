@@ -55,6 +55,30 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
                                                  preferredStyle: .actionSheet)
         let deleteAction = UIAlertAction(title:"Effacer tous les appels", style: .destructive, handler: {
             action in
+            
+            var incomingCallToDelete : [String] = []
+            var outgoingCallToDelete : [String] = []
+            
+            for  call in self.CallHistoryDataTableView
+            {
+                if call.isIncoming
+                {
+                    incomingCallToDelete.append(call.callId)
+                }
+                else
+                {
+                    outgoingCallToDelete.append(call.callId)
+                }
+            }
+            
+            if (incomingCallToDelete.count > 0)
+            {
+                self.apiController?.delIncomingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: incomingCallToDelete)
+            }
+            if (outgoingCallToDelete.count > 0)
+            {
+                self.apiController?.delOutgoingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: outgoingCallToDelete)
+            }
             self.CallHistoryDataTableView.removeAll()
             self.tableView.reloadData()
             self.setEditing(false, animated: true)
