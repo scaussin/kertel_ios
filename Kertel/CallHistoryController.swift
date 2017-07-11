@@ -11,9 +11,9 @@ import UIKit
 class CallHistoryController: UITableViewController , APIControllerProtocol{
 
     var refresher: UIRefreshControl!
-    var apiController : APIController?
+    var apiController : APIController? //set by loginViewController
     var deleteAllButton : UIBarButtonItem!
-    var CallHistoryDataTableView: [CallHistory] = []
+    var callHistoryDataTableView: [CallHistory] = []
     var incomingDelegate : IncomingDelegate!
     var outgoingDelegate : OutgoingDelegate!
    
@@ -59,7 +59,7 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
             var incomingCallToDelete : [String] = []
             var outgoingCallToDelete : [String] = []
             
-            for  call in self.CallHistoryDataTableView
+            for  call in self.callHistoryDataTableView
             {
                 if call.isIncoming
                 {
@@ -79,7 +79,7 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
             {
                 self.apiController?.delOutgoingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: outgoingCallToDelete)
             }
-            self.CallHistoryDataTableView.removeAll()
+            self.callHistoryDataTableView.removeAll()
             self.tableView.reloadData()
             self.setEditing(false, animated: true)
         })
@@ -99,13 +99,12 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
     
     func sortCallHistory()
     {
-        CallHistoryDataTableView.sort() {$0.date.compare($1.date) == .orderedDescending}
+        callHistoryDataTableView.sort() {$0.date.compare($1.date) == .orderedDescending}
     }
     
     // incoming delegate API
     class IncomingDelegate :APIDelegate
     {
-        var apiController : APIController?
         var callHistoryDelegate : CallHistoryController
         
         init (callHistoryDelegate : CallHistoryController!)
@@ -116,8 +115,8 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
         func success(data: [AnyObject]?) {
             
             DispatchQueue.main.async {
-                self.callHistoryDelegate.CallHistoryDataTableView = (self.callHistoryDelegate.CallHistoryDataTableView.filter() { $0.isIncoming == false})
-                self.callHistoryDelegate.CallHistoryDataTableView += data as! [CallHistory]
+                self.callHistoryDelegate.callHistoryDataTableView = (self.callHistoryDelegate.callHistoryDataTableView.filter() { $0.isIncoming == false})
+                self.callHistoryDelegate.callHistoryDataTableView += data as! [CallHistory]
                 self.callHistoryDelegate.sortCallHistory()
                 self.callHistoryDelegate.tableView.reloadData()
                 self.callHistoryDelegate.refresher.endRefreshing()
@@ -135,7 +134,6 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
     // outgoing delegate API
     class OutgoingDelegate :APIDelegate
     {
-        var apiController : APIController?
         var callHistoryDelegate : CallHistoryController
         
         init (callHistoryDelegate : CallHistoryController!)
@@ -146,8 +144,8 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
         func success(data: [AnyObject]?) {
             
             DispatchQueue.main.async {
-                self.callHistoryDelegate.CallHistoryDataTableView = (self.callHistoryDelegate.CallHistoryDataTableView.filter() { $0.isIncoming == true})
-                self.callHistoryDelegate.CallHistoryDataTableView += data as! [CallHistory]
+                self.callHistoryDelegate.callHistoryDataTableView = (self.callHistoryDelegate.callHistoryDataTableView.filter() { $0.isIncoming == true})
+                self.callHistoryDelegate.callHistoryDataTableView += data as! [CallHistory]
                 self.callHistoryDelegate.sortCallHistory()
                 self.callHistoryDelegate.tableView.reloadData()
                 self.callHistoryDelegate.refresher.endRefreshing()
@@ -171,13 +169,13 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return CallHistoryDataTableView.count
+        return callHistoryDataTableView.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CallHistoryCell", for: indexPath) as! CallHistoryTableViewCell
 
-        cell.call = CallHistoryDataTableView[indexPath.row]
+        cell.call = callHistoryDataTableView[indexPath.row]
         return cell
     }
    
@@ -197,9 +195,8 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
         return true
     }
     
-    class delHistoryCallDelegate :APIDelegate
+    class delHistoryCallDelegate : APIDelegate
     {
-        var apiController : APIController?
         
         func success(data: [AnyObject]?) {
             print("history call deleted")
@@ -215,16 +212,16 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            if (CallHistoryDataTableView[indexPath.row].isIncoming)
+            if (callHistoryDataTableView[indexPath.row].isIncoming)
             {
-                apiController?.delIncomingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: [CallHistoryDataTableView[indexPath.row].callId])
+                apiController?.delIncomingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: [callHistoryDataTableView[indexPath.row].callId])
             }
             else
             {
-                apiController?.delOutgoingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: [CallHistoryDataTableView[indexPath.row].callId])
+                apiController?.delOutgoingCall(delegate: delHistoryCallDelegate(), idCallsToDelete: [callHistoryDataTableView[indexPath.row].callId])
             }
             
-            CallHistoryDataTableView.remove(at: indexPath.row)
+            callHistoryDataTableView.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }

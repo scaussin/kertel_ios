@@ -8,12 +8,10 @@
 
 import Foundation
 
-protocol APIDelegate : APIControllerProtocol
+protocol APIDelegate
 {
-
     func success(data : [AnyObject]?)
     func fail(msgError : String)
-
 }
 
 /*

@@ -24,7 +24,7 @@ class APIController {
     let authUrl = "auth"
     let incomingCallUrl = "calls/incoming"
     let outgoingCallUrl = "calls/outgoing"
-    let mevoCallUrl = "mevo/messages"
+    let mevoUrl = "mevo/messages"
     
     
     func getToken(delegate : APIDelegate, username : String!, company : String!, password : String!)
@@ -290,30 +290,52 @@ class APIController {
     
     func getMevo(delegate : APIDelegate)
     {
-        doRequest(httpMethod: "GET", sufixUrl : outgoingCallUrl, dataBody: nil,
+        doRequest(httpMethod: "GET", sufixUrl : mevoUrl, dataBody: nil,
                   success : {(data) -> () in
                     
-                    var outgoingCalls : [CallHistory] = []
+                    var mevo : [Mevo] = []
                     if let datas = data["datas"] as? [[String: Any]] {
                         
                         for data in datas
                         {
-                            outgoingCalls.append(CallHistory(callId: data["id"] as! String,
-                                                             name: data["src_name"] as? String,
-                                                             number: data["dst_number"] as? String,
-                                                             state: data["state"] as! String,
-                                                             duration: data["duration"] as! Double,
-                                                             date: Date(timeIntervalSince1970 : data["date"] as! Double),
-                                                             isIncoming: false,
-                                                             isSeen: true))
+                            mevo.append(Mevo(id: data["id"] as! String,
+                                                    number: data["caller_number"] as? String,
+                                                    duration: data["duration"] as! Double,
+                                                    date: Date(timeIntervalSince1970 : data["date"] as! Double),
+                                                    isSeen: data["seen"] as! Bool))
                         }
                     }
-                    delegate.success(data: outgoingCalls as [AnyObject] )
+                    delegate.success(data: mevo as [AnyObject] )
                     
         }, fail : {(err) -> () in
             delegate.fail(msgError: err)
         })
     }
+    
+    func delMevo(delegate : APIDelegate, idMevoToDelete : [String])
+    {
+        var data = "{\"message_ids\": ["
+        var i = 0
+        while (i < idMevoToDelete.count)
+        {
+            data += "\"\(idMevoToDelete[i])\""
+            if i != idMevoToDelete.count - 1 // not last
+            {
+                data += ","
+            }
+            i += 1
+        }
+        data += "]}"
+        let postData = NSData(data: data.data(using: String.Encoding.utf8)!)
+        
+        doRequest(httpMethod: "DELETE", sufixUrl : mevoUrl, dataBody: postData,
+                  success : {(data) -> () in
+                    delegate.success(data: nil)
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+
     
     func disconnect()
     {

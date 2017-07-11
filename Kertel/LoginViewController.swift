@@ -8,7 +8,7 @@
 
 import UIKit 
 
-class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate, APIControllerProtocol {
 
     @IBOutlet weak var scrollView: UIScrollView!
     var apiController : APIController?
@@ -198,8 +198,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate {
             
             // CallHistory
             let callHistoryNC = tabBarController.viewControllers![0] as! UINavigationController
-            let callHistoryVC = callHistoryNC.viewControllers[0] as! CallHistoryController
+            var callHistoryVC = callHistoryNC.viewControllers[0] as! APIControllerProtocol
             callHistoryVC.apiController = self.apiController
+            
+            // Mevo
+            let mevoNC = tabBarController.viewControllers![1] as! UINavigationController
+            var MevoVC = mevoNC.viewControllers[0] as! APIControllerProtocol
+            MevoVC.apiController = self.apiController
 
             // Setting
             let settingVC = tabBarController.viewControllers![4] as! SettingViewController

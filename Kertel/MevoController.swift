@@ -8,45 +8,148 @@
 
 import UIKit
 
-class MevoController: UITableViewController {
+class MevoController: UITableViewController, APIControllerProtocol {
 
+    var refresher: UIRefreshControl!
+    var mevoDataTableView: [Mevo] = []
+    var deleteAllButton : UIBarButtonItem!
+    var apiController : APIController? //set by loginViewController
+    var getMevoDelegate : GetMevoDelegate!
+    var delMevoDelegate : DelMevoDelegate!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-            print("mevo load")
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        navigationItem.title = "Messagerie (5/30)"
-        print("mevo appear")
+        print("MevoController -> viewDidLoad")
+        
+        //refresh mevo
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refresher)
+        
+        // bouton tout effacer mevo
+        deleteAllButton = UIBarButtonItem(title : "Effacer", style: .plain, target: self, action: #selector(deleteAllButton(sender :)))
+        
+        // bouton edit
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        //set delegate
+        getMevoDelegate = GetMevoDelegate(mevoDelegate: self)
+        delMevoDelegate = DelMevoDelegate(mevoDelegate: self)
+        
+        refresh()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        //navigationItem.title = "Messagerie (5/30)"
+        print("MevoController -> viewDidAppear")
+    }
+    
+    
+    func refresh()
+    {
+        apiController?.getMevo(delegate: getMevoDelegate)
+       // apiController?.getOutgoingCall(delegate: outgoingDelegate)
+    }
+    
+    //return of GET getMevo
+    class GetMevoDelegate : APIDelegate
+    {
+        var mevoDelegate : MevoController
+        
+        init (mevoDelegate : MevoController!)
+        {
+            self.mevoDelegate = mevoDelegate
+        }
+
+        func success(data: [AnyObject]?) {
+            DispatchQueue.main.async {
+            self.mevoDelegate.mevoDataTableView.removeAll()
+            self.mevoDelegate.mevoDataTableView = data as! [Mevo]
+            self.mevoDelegate.tableView.reloadData()
+            self.mevoDelegate.refresher.endRefreshing()
+            }
+            print("APIController.getMevo() success")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.getMevo() fail")
+            self.mevoDelegate.refresher.endRefreshing()
+        }
+    }
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        if (editing) {
+            super.setEditing(true, animated: true)
+            self.navigationItem.leftBarButtonItem = self.deleteAllButton
+        } else {
+            super.setEditing(false, animated: true)
+            self.navigationItem.leftBarButtonItem = nil
+        }
+    }
+    
+    func deleteAllButton(sender : UIBarButtonItem)
+    {
+        let alertController = UIAlertController( title: nil,
+                                                 message: nil,
+                                                 preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title:"Effacer tous les messages", style: .destructive, handler: {
+            action in
+            
+            var mevoToDelete : [String] = []
+            for mevo in self.mevoDataTableView
+            {
+                mevoToDelete.append(mevo.id)
+            }
+            self.apiController?.delMevo(delegate: self.delMevoDelegate, idMevoToDelete: mevoToDelete)
+            
+            self.mevoDataTableView.removeAll()
+            self.tableView.reloadData()
+            self.setEditing(false, animated: true)
+        })
+        let cancelAction = UIAlertAction(title:"Annuler", style: .cancel, handler: {
+            action in
+        })
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+   
+    //return of DEL delMevo
+    class DelMevoDelegate : APIDelegate
+    {
+        var mevoDelegate : MevoController
+        
+        init (mevoDelegate : MevoController!)
+        {
+            self.mevoDelegate = mevoDelegate
+        }
+        
+        func success(data: [AnyObject]?) {
+            print("APIController.delMevo() success")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.delMevo() fail")
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 4
+        return mevoDataTableView.count
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell : UITableViewCell
+        
         //tableView.rowHeight = UITableViewAutomaticDimension
         /*if indexPath.row == 0
         {
@@ -58,31 +161,28 @@ class MevoController: UITableViewController {
             cell = tableView.dequeueReusableCell(withIdentifier: "mevoCell", for: indexPath)
             //tableView.estimatedRowHeight = 58
         }*/
-        cell = tableView.dequeueReusableCell(withIdentifier: "mevoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "mevoCell", for: indexPath) as! MevoTableViewCell
+        cell.mevo = mevoDataTableView[indexPath.row]
 
         return cell
     }
  
 
-    /*
-    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+ 
 
-    /*
-    // Override to support editing the table view.
+    // remove table item
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            
+            apiController?.delMevo(delegate: delMevoDelegate, idMevoToDelete: [mevoDataTableView[indexPath.row].id])
+            
+            mevoDataTableView.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-    */
 
     /*
     // Override to support rearranging the table view.
