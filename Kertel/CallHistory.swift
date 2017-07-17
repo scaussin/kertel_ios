@@ -144,7 +144,11 @@ struct CallHistory {
         case "busy":
             return ("Occupé");
         case "noanswer":
-            return ("Appel manqué");
+            if isIncoming
+            {
+                return ("Appel manqué");
+            }
+            return ("Sans réponse");
         case "noroute":
             return ("Non routé");
         case "pickup":
