@@ -21,7 +21,7 @@ class MevoTableViewCell: UITableViewCell {
             if let mevo = mevo{
                 numberLabel.text = mevo.number
                 dateLabel.text = mevo.getShortDate()
-                durationLabel.text = mevo.getDuration()
+                durationLabel.text = mevo.getShortDuration()
             }
         }
     }

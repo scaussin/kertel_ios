@@ -37,7 +37,7 @@ class InfoCallTableViewCell: UITableViewCell {
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(false, animated: true)
+        super.setSelected(selected, animated: animated)
     }
 
 }

@@ -12,6 +12,10 @@
 		11368EE91EC2150C00E0F82F /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EE81EC2150C00E0F82F /* APIController.swift */; };
 		11368EEB1EC21CA300E0F82F /* APIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EEA1EC21CA300E0F82F /* APIDelegate.swift */; };
 		11368EED1EC9FC7100E0F82F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */; };
+		113BBB8B1F1E0AAA0000264E /* TitleDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBB8A1F1E0AAA0000264E /* TitleDataTableViewCell.swift */; };
+		113BBB8D1F1E0DF10000264E /* CallFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBB8C1F1E0DF10000264E /* CallFormatter.swift */; };
+		113BBB8F1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBB8E1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift */; };
+		113BBB911F1E5EC10000264E /* TitleClickableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBB901F1E5EC10000264E /* TitleClickableTableViewCell.swift */; };
 		1160E5E41F13D9CA0096A4ED /* Mevo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160E5E31F13D9CA0096A4ED /* Mevo.swift */; };
 		1160E5E61F14DF780096A4ED /* MevoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160E5E51F14DF780096A4ED /* MevoTableViewCell.swift */; };
 		1160E5E81F15198C0096A4ED /* InfoMevoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160E5E71F15198C0096A4ED /* InfoMevoController.swift */; };
@@ -34,6 +38,10 @@
 		11368EE81EC2150C00E0F82F /* APIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
 		11368EEA1EC21CA300E0F82F /* APIDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIDelegate.swift; sourceTree = "<group>"; };
 		11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		113BBB8A1F1E0AAA0000264E /* TitleDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleDataTableViewCell.swift; sourceTree = "<group>"; };
+		113BBB8C1F1E0DF10000264E /* CallFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallFormatter.swift; sourceTree = "<group>"; };
+		113BBB8E1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleDataClickableTableViewCell.swift; sourceTree = "<group>"; };
+		113BBB901F1E5EC10000264E /* TitleClickableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleClickableTableViewCell.swift; sourceTree = "<group>"; };
 		1160E5E31F13D9CA0096A4ED /* Mevo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mevo.swift; sourceTree = "<group>"; };
 		1160E5E51F14DF780096A4ED /* MevoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MevoTableViewCell.swift; sourceTree = "<group>"; };
 		1160E5E71F15198C0096A4ED /* InfoMevoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoMevoController.swift; sourceTree = "<group>"; };
@@ -70,6 +78,24 @@
 				11368EEA1EC21CA300E0F82F /* APIDelegate.swift */,
 			);
 			name = API;
+			sourceTree = "<group>";
+		};
+		113BBB881F1E050A0000264E /* CallHistory */ = {
+			isa = PBXGroup;
+			children = (
+				11F6C1661EAF4BFA001376BC /* CallHistoryTableViewCell.swift */,
+				11368EE01EB8943800E0F82F /* InfoCallTableViewCell.swift */,
+			);
+			name = CallHistory;
+			sourceTree = "<group>";
+		};
+		113BBB891F1E051B0000264E /* Mevo */ = {
+			isa = PBXGroup;
+			children = (
+				1160E5E51F14DF780096A4ED /* MevoTableViewCell.swift */,
+				1160E5EB1F1D00CD0096A4ED /* InfoMevoTableViewCell.swift */,
+			);
+			name = Mevo;
 			sourceTree = "<group>";
 		};
 		1160E5E91F151C510096A4ED /* CallHistory */ = {
@@ -112,6 +138,7 @@
 			children = (
 				11F6C1281EA775CA001376BC /* AppDelegate.swift */,
 				11F6C12C1EA775CA001376BC /* Main.storyboard */,
+				113BBB8C1F1E0DF10000264E /* CallFormatter.swift */,
 				1133C1681F029D8700A78D71 /* API */,
 				11F6C15A1EAE01D5001376BC /* Controllers */,
 				11F6C15B1EAE01FF001376BC /* Views */,
@@ -126,9 +153,9 @@
 		11F6C15A1EAE01D5001376BC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */,
 				1160E5E91F151C510096A4ED /* CallHistory */,
 				1160E5EA1F151C680096A4ED /* Mevo */,
-				11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */,
 				1192D2461EE59B0400D35D33 /* SettingViewController.swift */,
 			);
 			name = Controllers;
@@ -137,10 +164,11 @@
 		11F6C15B1EAE01FF001376BC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				11F6C1661EAF4BFA001376BC /* CallHistoryTableViewCell.swift */,
-				11368EE01EB8943800E0F82F /* InfoCallTableViewCell.swift */,
-				1160E5E51F14DF780096A4ED /* MevoTableViewCell.swift */,
-				1160E5EB1F1D00CD0096A4ED /* InfoMevoTableViewCell.swift */,
+				113BBB8A1F1E0AAA0000264E /* TitleDataTableViewCell.swift */,
+				113BBB8E1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift */,
+				113BBB901F1E5EC10000264E /* TitleClickableTableViewCell.swift */,
+				113BBB881F1E050A0000264E /* CallHistory */,
+				113BBB891F1E051B0000264E /* Mevo */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -228,11 +256,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				11368EE51EC1CCD600E0F82F /* InfoCallViewController.swift in Sources */,
+				113BBB8D1F1E0DF10000264E /* CallFormatter.swift in Sources */,
 				1160E5E81F15198C0096A4ED /* InfoMevoController.swift in Sources */,
 				11368EE11EB8943800E0F82F /* InfoCallTableViewCell.swift in Sources */,
 				11F6C15F1EAE0729001376BC /* CallHistoryController.swift in Sources */,
 				1160E5E41F13D9CA0096A4ED /* Mevo.swift in Sources */,
 				11F6C1671EAF4BFA001376BC /* CallHistoryTableViewCell.swift in Sources */,
+				113BBB8F1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift in Sources */,
 				1192D2471EE59B0400D35D33 /* SettingViewController.swift in Sources */,
 				1192ADA41ED332E10008C554 /* MevoController.swift in Sources */,
 				11368EE91EC2150C00E0F82F /* APIController.swift in Sources */,
@@ -240,7 +270,9 @@
 				11F6C1291EA775CA001376BC /* AppDelegate.swift in Sources */,
 				11368EED1EC9FC7100E0F82F /* LoginViewController.swift in Sources */,
 				1160E5EC1F1D00CD0096A4ED /* InfoMevoTableViewCell.swift in Sources */,
+				113BBB8B1F1E0AAA0000264E /* TitleDataTableViewCell.swift in Sources */,
 				1192ADAB1ED43AC00008C554 /* bdd.xcdatamodeld in Sources */,
+				113BBB911F1E5EC10000264E /* TitleClickableTableViewCell.swift in Sources */,
 				1160E5E61F14DF780096A4ED /* MevoTableViewCell.swift in Sources */,
 				11F6C16A1EAF857A001376BC /* CallHistory.swift in Sources */,
 			);

@@ -74,7 +74,7 @@ class InfoCallTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = tableView.indexPathForSelectedRow
-        
+        tableView.deselectRow(at: indexPath!, animated: true)
         if (indexPath?.row == 1){
             
             if let phoneCallURL = URL(string: "tel://\(call.number ?? "")") {
