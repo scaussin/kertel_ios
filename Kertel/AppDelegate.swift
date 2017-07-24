@@ -30,6 +30,9 @@ extension UIColor {
     }
 }
 
+let redKertel : UIColor = UIColor(hex : "F15A2F")
+let greenKertel : UIColor = UIColor(hex : "78BE20")
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

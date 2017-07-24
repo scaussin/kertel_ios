@@ -7,16 +7,19 @@
 //
 
 import UIKit
+import AVFoundation
 
-class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewDataSource, APIControllerProtocol {
 
-    var mevo : Mevo?
+    var mevo : Mevo? //set by MevoController
+    
+    var MevoAudio: AVAudioPlayer!
+    var apiController : APIController? //set by MevoController
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("InfoMevoController -> viewDidLoad")
-        
-        //self.nameLabel.text = call?.getPresentationName()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -24,10 +27,69 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
         print("InfoMevoController -> viewDidAppear")
     }
 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func playButton(_ sender: Any) {
+        
+        print("play")
+        let mevoData = MevoDataDelegate(infoMevoDelegate: self)
+        apiController?.getMevoData(delegate: mevoData, idMevo: (mevo?.id)!)
+        
+        
+        /*let path = tmpDir.stringByAppendingPathComponent(fileName)
+        let contentsOfFile = "Sample Text"
+        var error: NSError?
+        
+        // Write File
+        if contentsOfFile.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding, error: &error) == false {
+            if let errorMessage = error {
+                println("Failed to create file")
+                println("\(errorMessage)")
+            }
+        } else {
+            println("File sample.txt created at tmp directory")
+        }*/
+        
+       /* let path = Bundle.main.path(forResource: "example.png", ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            let sound = try AVAudioPlayer(contentsOf: url)
+            MevoAudio = sound
+            sound.play()
+        } catch {
+            print("play fail")
+        }*/
+    }
+    
+    class MevoDataDelegate : APIDelegateRawData
+    {
+        var infoMevoDelegate : InfoMevoController
+        
+        init (infoMevoDelegate : InfoMevoController!)
+        {
+            self.infoMevoDelegate = infoMevoDelegate
+        }
+        
+        func success(data: NSData?) {
+            DispatchQueue.main.async {
+                print("ok DownloadMevoDelegate")
+                //self.mevoDelegate.mevoDataTableView = data as! [Mevo]
+            }
+            print("APIController.getMevoData() success")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.getMevoData() fail")
+            //self.mevoDelegate.refresher.endRefreshing()
+        }
+    }
+
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -82,6 +144,7 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
             let titleDataTVC = cell as! TitleClickableTableViewCell
             //titleDataTVC.selectionStyle = .none
             titleDataTVC.titleLabel.text = "Supprimer ce message"
+            titleDataTVC.titleLabel.textColor = redKertel
         default:
             let empty = UITableViewCell()
             empty.selectionStyle = .none

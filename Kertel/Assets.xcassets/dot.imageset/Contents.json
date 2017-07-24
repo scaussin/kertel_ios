@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icons8-Circled Play Filled_50.png",
+      "filename" : "icons8-Filled Circle_50.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons8-Circled Play Filled_100.png",
+      "filename" : "icons8-Filled Circle_100.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons8-Lecture_100-1.png",
+      "filename" : "icons8-Filled Circle_100-1.png",
       "scale" : "3x"
     }
   ],

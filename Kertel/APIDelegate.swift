@@ -14,6 +14,12 @@ protocol APIDelegate
     func fail(msgError : String)
 }
 
+protocol APIDelegateRawData
+{
+    func success(data : NSData?)
+    func fail(msgError : String)
+}
+
 /*
 protocol APIDelegateConnect
 {

@@ -34,7 +34,7 @@ class CallHistoryTableViewCell: UITableViewCell {
                 }
                 if (call.isMissed())
                 {
-                    stateCallImage.tintColor = UIColor(hex: "F15A2F")
+                    stateCallImage.tintColor = redKertel//UIColor(hex: "F15A2F")
                 }
                 else
                 {

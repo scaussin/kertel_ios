@@ -205,6 +205,7 @@ class MevoController: UITableViewController, APIControllerProtocol {
         {
             if let index = self.tableView.indexPathForSelectedRow{
                 infoMevoController.mevo = mevoDataTableView[index.row]
+                infoMevoController.apiController = self.apiController
             }
         }
     }

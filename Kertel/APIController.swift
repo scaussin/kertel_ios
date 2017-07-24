@@ -25,6 +25,7 @@ class APIController {
     let incomingCallUrl = "calls/incoming"
     let outgoingCallUrl = "calls/outgoing"
     let mevoUrl = "mevo/messages"
+    let MevoDataUrl = "mevo/message"
     
     
     func getToken(delegate : APIDelegate, username : String!, company : String!, password : String!)
@@ -77,7 +78,7 @@ class APIController {
                         }
                     }
                 }
-                self.delegateConnect?.fail(msgError: error?.localizedDescription ?? "erreur")
+                self.delegateConnect?.fail(msgError: error?.localizedDescription ?? "Veuillez vérifier vos informations de connexion")
             }
         })
         
@@ -181,6 +182,48 @@ class APIController {
         dataTask.resume()
         return
     }
+    
+    
+    
+    func doRequestGetRaw(httpMethod : String, sufixUrl : String, dataBody : NSData?, success : @escaping (AnyObject) -> (), fail : @escaping (String) -> ())
+    {
+        if token == nil {
+            fail("[FAIL] APIController.token is empty")
+            return
+        }
+        let headers = [
+            "content-type": "application/json",
+            "auth-token": token!,
+            "cache-control": "no-cache"
+        ]
+        
+        let request = NSMutableURLRequest(url: NSURL(string: baseUrl + sufixUrl)! as URL,
+                                          cachePolicy: .useProtocolCachePolicy,
+                                          timeoutInterval: 10.0)
+        request.httpMethod = httpMethod
+        request.allHTTPHeaderFields = headers
+        if let data = dataBody
+        {
+            request.httpBody = data as Data
+        }
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            let httpResponse = response as? HTTPURLResponse
+            if (error != nil || httpResponse?.statusCode != 200) {
+                fail("[FAIL] request " /*+ httpMethod + " " + self.baseUrl + self.incomingCallUrl + " detail: " + error?.localizedDescription*/)
+                return
+            }
+            else
+            {
+                success(data as AnyObject)
+                return
+            }
+        })
+        dataTask.resume()
+        return
+    }
+    
+    
     
     func getIncomingCall(delegate : APIDelegate)
     {
@@ -331,6 +374,21 @@ class APIController {
         doRequest(httpMethod: "DELETE", sufixUrl : mevoUrl, dataBody: postData,
                   success : {(data) -> () in
                     delegate.success(data: nil)
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+    
+    func getMevoData(delegate : APIDelegateRawData, idMevo : String)
+    {
+        let data = "{\"message_id\": \"\(idMevo)\"}"
+        let postData = NSData(data: data.data(using: String.Encoding.utf8)!)
+        
+        doRequestGetRaw(httpMethod: "POST", sufixUrl : MevoDataUrl, dataBody: postData,
+                  success : {(data) -> () in
+                   
+                    //delegate.success(data: data)
+                    
         }, fail : {(err) -> () in
             delegate.fail(msgError: err)
         })

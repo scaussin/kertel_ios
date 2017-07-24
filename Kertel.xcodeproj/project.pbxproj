@@ -16,6 +16,7 @@
 		113BBB8D1F1E0DF10000264E /* CallFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBB8C1F1E0DF10000264E /* CallFormatter.swift */; };
 		113BBB8F1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBB8E1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift */; };
 		113BBB911F1E5EC10000264E /* TitleClickableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBB901F1E5EC10000264E /* TitleClickableTableViewCell.swift */; };
+		1141A0041F25FDF7002372C3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1141A0031F25FDF7002372C3 /* AVFoundation.framework */; };
 		1160E5E41F13D9CA0096A4ED /* Mevo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160E5E31F13D9CA0096A4ED /* Mevo.swift */; };
 		1160E5E61F14DF780096A4ED /* MevoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160E5E51F14DF780096A4ED /* MevoTableViewCell.swift */; };
 		1160E5E81F15198C0096A4ED /* InfoMevoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160E5E71F15198C0096A4ED /* InfoMevoController.swift */; };
@@ -42,6 +43,7 @@
 		113BBB8C1F1E0DF10000264E /* CallFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallFormatter.swift; sourceTree = "<group>"; };
 		113BBB8E1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleDataClickableTableViewCell.swift; sourceTree = "<group>"; };
 		113BBB901F1E5EC10000264E /* TitleClickableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleClickableTableViewCell.swift; sourceTree = "<group>"; };
+		1141A0031F25FDF7002372C3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1160E5E31F13D9CA0096A4ED /* Mevo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mevo.swift; sourceTree = "<group>"; };
 		1160E5E51F14DF780096A4ED /* MevoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MevoTableViewCell.swift; sourceTree = "<group>"; };
 		1160E5E71F15198C0096A4ED /* InfoMevoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoMevoController.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1141A0041F25FDF7002372C3 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +101,14 @@
 			name = Mevo;
 			sourceTree = "<group>";
 		};
+		1141A0021F25FDF7002372C3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1141A0031F25FDF7002372C3 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1160E5E91F151C510096A4ED /* CallHistory */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +133,7 @@
 				1192ADA91ED43AC00008C554 /* bdd.xcdatamodeld */,
 				11F6C1271EA775CA001376BC /* Kertel */,
 				11F6C1261EA775CA001376BC /* Products */,
+				1141A0021F25FDF7002372C3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

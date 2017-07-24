@@ -183,7 +183,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate, 
         print("fail getToken: \(msgError)")
         DispatchQueue.main.sync {
             alertController?.dismiss(animated: false){
-                let alert = UIAlertController(title: "Erreur d'authentification", message: "Veuillez vérifier vos informations de connexion", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Erreur", message: msgError, preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
