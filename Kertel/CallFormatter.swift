@@ -18,7 +18,7 @@ extension CallFormatter
     func getDate() -> String!
     {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE dd MMM yyyy à HH:mm:ss"
+        dateFormatter.dateFormat = "EEEE dd MMMM yyyy  HH:mm:ss"
         dateFormatter.locale = Locale.init(identifier: "fr_FR")
         
         return (dateFormatter.string(from: date))

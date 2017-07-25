@@ -13,6 +13,7 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
 
     var mevo : Mevo? //set by MevoController
     
+    @IBOutlet weak var progressBar: UIProgressView!
     var MevoAudio: AVAudioPlayer!
     var apiController : APIController? //set by MevoController
    
@@ -40,19 +41,7 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
         apiController?.getMevoData(delegate: mevoData, idMevo: (mevo?.id)!)
         
         
-        /*let path = tmpDir.stringByAppendingPathComponent(fileName)
-        let contentsOfFile = "Sample Text"
-        var error: NSError?
-        
-        // Write File
-        if contentsOfFile.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding, error: &error) == false {
-            if let errorMessage = error {
-                println("Failed to create file")
-                println("\(errorMessage)")
-            }
-        } else {
-            println("File sample.txt created at tmp directory")
-        }*/
+       
         
        /* let path = Bundle.main.path(forResource: "example.png", ofType:nil)!
         let url = URL(fileURLWithPath: path)
@@ -75,12 +64,33 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
             self.infoMevoDelegate = infoMevoDelegate
         }
         
-        func success(data: NSData?) {
-            DispatchQueue.main.async {
-                print("ok DownloadMevoDelegate")
-                //self.mevoDelegate.mevoDataTableView = data as! [Mevo]
-            }
+        func success(data: Data?) {
             print("APIController.getMevoData() success")
+            
+            let path = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent((infoMevoDelegate.mevo?.id)!.appending(".wav"))
+            
+            // Write File
+            do {
+                try data?.write(to: path)
+            }
+            catch (let error){
+                print("Failed to create file: \(error)")
+                return
+            }
+            print("write ok")
+           
+            DispatchQueue.main.async {
+                do {
+                    let sound = try AVAudioPlayer(contentsOf: path)
+                    self.infoMevoDelegate.MevoAudio = sound
+                    sound.play()
+                    Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
+                    //sound.setVolume(1, fadeDuration: 0)
+                    print("playing")
+                } catch {
+                    print("play fail")
+                }
+            }
         }
         
         func fail(msgError : String)
@@ -89,7 +99,14 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
             //self.mevoDelegate.refresher.endRefreshing()
         }
     }
-
+    
+    func updateProgressBar()
+    {
+        if MevoAudio.isPlaying
+        {
+            progressBar.setProgress(Float(MevoAudio.currentTime/MevoAudio.duration), animated: true)
+        }
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -122,10 +139,8 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
             titleDataTVC.titleLabel.text = "Date"
             titleDataTVC.dataLabel.text = mevo?.getDate()
         case 1:
-            
             cell = tableView.dequeueReusableCell(withIdentifier: "titleDataClickableCell", for: indexPath) as! TitleDataClickableTableViewCell
             let titleDataTVC = cell as! TitleDataClickableTableViewCell
-            
             titleDataTVC.titleLabel.text = "Numéro"
             titleDataTVC.dataLabel.text = mevo?.getNumber()
         case 2:
@@ -139,6 +154,7 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
             let titleDataTVC = cell as! TitleClickableTableViewCell
             //titleDataTVC.selectionStyle = .none
             titleDataTVC.titleLabel.text = "Partager ce message"
+            titleDataTVC.titleLabel.textColor = greenKertel
         case 5:
             cell = tableView.dequeueReusableCell(withIdentifier: "titleClickableCell", for: indexPath) as! TitleClickableTableViewCell
             let titleDataTVC = cell as! TitleClickableTableViewCell

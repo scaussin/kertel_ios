@@ -16,7 +16,7 @@ protocol APIDelegate
 
 protocol APIDelegateRawData
 {
-    func success(data : NSData?)
+    func success(data : Data?)
     func fail(msgError : String)
 }
 

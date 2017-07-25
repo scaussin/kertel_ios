@@ -183,9 +183,7 @@ class APIController {
         return
     }
     
-    
-    
-    func doRequestGetRaw(httpMethod : String, sufixUrl : String, dataBody : NSData?, success : @escaping (AnyObject) -> (), fail : @escaping (String) -> ())
+    func doRequestGetRaw(httpMethod : String, sufixUrl : String, dataBody : NSData?, success : @escaping (Data?) -> (), fail : @escaping (String) -> ())
     {
         if token == nil {
             fail("[FAIL] APIController.token is empty")
@@ -215,15 +213,13 @@ class APIController {
             }
             else
             {
-                success(data as AnyObject)
+                success(data)
                 return
             }
         })
         dataTask.resume()
         return
     }
-    
-    
     
     func getIncomingCall(delegate : APIDelegate)
     {
@@ -279,8 +275,6 @@ class APIController {
             delegate.fail(msgError: err)
         })
     }
-    
-    
     
     
     func delIncomingCall(delegate : APIDelegate, idCallsToDelete : [String])
@@ -385,9 +379,9 @@ class APIController {
         let postData = NSData(data: data.data(using: String.Encoding.utf8)!)
         
         doRequestGetRaw(httpMethod: "POST", sufixUrl : MevoDataUrl, dataBody: postData,
-                  success : {(data) -> () in
+                        success : {(data : Data?) -> () in
                    
-                    //delegate.success(data: data)
+                    delegate.success(data: data)
                     
         }, fail : {(err) -> () in
             delegate.fail(msgError: err)
