@@ -9,12 +9,13 @@
 import UIKit
 import AVFoundation
 
-class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewDataSource, APIControllerProtocol {
+class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewDataSource, APIControllerProtocol, AVAudioPlayerDelegate {
 
     var mevo : Mevo? //set by MevoController
     
     @IBOutlet weak var progressBar: UIProgressView!
     var MevoAudio: AVAudioPlayer!
+    var timer : Timer?
     var apiController : APIController? //set by MevoController
    
     
@@ -37,22 +38,10 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func playButton(_ sender: Any) {
         
         print("play")
-        let mevoData = MevoDataDelegate(infoMevoDelegate: self)
-        apiController?.getMevoData(delegate: mevoData, idMevo: (mevo?.id)!)
+        progressBar.setProgress(0, animated: false)
         
-        
-       
-        
-       /* let path = Bundle.main.path(forResource: "example.png", ofType:nil)!
-        let url = URL(fileURLWithPath: path)
-        
-        do {
-            let sound = try AVAudioPlayer(contentsOf: url)
-            MevoAudio = sound
-            sound.play()
-        } catch {
-            print("play fail")
-        }*/
+        //if doesn't exist
+            apiController?.getMevoData(delegate: MevoDataDelegate(infoMevoDelegate: self), idMevo: (mevo?.id)!)
     }
     
     class MevoDataDelegate : APIDelegateRawData
@@ -78,13 +67,15 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
                 return
             }
             print("write ok")
-           
+            
             DispatchQueue.main.async {
                 do {
                     let sound = try AVAudioPlayer(contentsOf: path)
                     self.infoMevoDelegate.MevoAudio = sound
+                    self.infoMevoDelegate.MevoAudio.delegate = self.infoMevoDelegate
                     sound.play()
-                    Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
+                    
+                    self.infoMevoDelegate.timer = Timer.scheduledTimer(timeInterval: 0.005, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
                     //sound.setVolume(1, fadeDuration: 0)
                     print("playing")
                 } catch {
@@ -98,15 +89,24 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
             print("APIController.getMevoData() fail")
             //self.mevoDelegate.refresher.endRefreshing()
         }
+        
+        @objc func updateProgressBar()
+        {
+            print("updateProgressBar")
+            if self.infoMevoDelegate.MevoAudio.isPlaying
+            {
+                self.infoMevoDelegate.progressBar.setProgress(Float(self.infoMevoDelegate.MevoAudio.currentTime/self.infoMevoDelegate.MevoAudio.duration), animated: false)
+            }
+        }
+        
+    }
+
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        timer?.invalidate()
+        progressBar.setProgress(1, animated: false)
     }
     
-    func updateProgressBar()
-    {
-        if MevoAudio.isPlaying
-        {
-            progressBar.setProgress(Float(MevoAudio.currentTime/MevoAudio.duration), animated: true)
-        }
-    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
