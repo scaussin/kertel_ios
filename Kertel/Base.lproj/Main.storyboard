@@ -552,12 +552,19 @@
                                 <rect key="frame" x="0.0" y="114" width="375" height="2"/>
                                 <color key="tintColor" red="0.40000000000000002" green="0.80000000000000004" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             </progressView>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker" translatesAutoresizingMaskIntoConstraints="NO" id="iVa-eS-pZW">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker" highlightedImage="stop" translatesAutoresizingMaskIntoConstraints="NO" id="iVa-eS-pZW">
                                 <rect key="frame" x="329" y="129" width="30" height="30"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" button="YES" image="YES"/>
+                                </accessibility>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Jai-Q7-oSf"/>
                                     <constraint firstAttribute="width" constant="30" id="cYi-AH-NS9"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Y2n-jY-ptx" appends="YES" id="D0t-eO-s5S"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -581,13 +588,20 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="playImage" destination="mcm-uN-gpX" id="dsS-nZ-x65"/>
                         <outlet property="progressBar" destination="g8s-Gi-O6f" id="lMl-qe-uon"/>
+                        <outlet property="speakerButton" destination="iVa-eS-pZW" id="gR6-Nw-Aon"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GlO-0B-Xni" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="ttM-nE-bq7">
                     <connections>
                         <action selector="playButton:" destination="4qp-JS-Nsu" id="FWD-rL-eBf"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Y2n-jY-ptx">
+                    <connections>
+                        <action selector="speakerButton:" destination="4qp-JS-Nsu" id="o4t-Y6-m1m"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -1096,6 +1110,7 @@
         <image name="password" width="50" height="50"/>
         <image name="play" width="50" height="50"/>
         <image name="speaker" width="50" height="50"/>
+        <image name="stop" width="50" height="50"/>
         <image name="username" width="100" height="100"/>
     </resources>
     <color key="tintColor" red="0.47058823529411764" green="0.74509803921568629" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>

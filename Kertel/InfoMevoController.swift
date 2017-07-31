@@ -14,11 +14,14 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
     var mevo : Mevo? //set by MevoController
     
     @IBOutlet weak var progressBar: UIProgressView!
-    var MevoAudio: AVAudioPlayer!
+    var mevoAudio: AVAudioPlayer!
     var timer : Timer?
     var apiController : APIController? //set by MevoController
+    
+    @IBOutlet weak var playImage: UIImageView!
    
     
+    @IBOutlet weak var speakerButton: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         print("InfoMevoController -> viewDidLoad")
@@ -29,19 +32,54 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
         print("InfoMevoController -> viewDidAppear")
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        stopMevo()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func playButton(_ sender: Any) {
+    @IBAction func playButton(_ sender: Any)
+    {
+        //stop
+        if let sound =  mevoAudio, sound.isPlaying
+        {
+            stopMevo()
+            progressBar.setProgress(0, animated: false)
+        }
+        //play
+        else
+        {
+            let path = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent((mevo?.id)!.appending(".wav"))
+            let fileManager = FileManager.default
+            if (fileManager.fileExists(atPath: path.relativePath)) {
+                print("exist")
+                playMevo(path: path)
+            } else {
+                print("doesn't exist")
+                apiController?.getMevoData(delegate: MevoDataDelegate(infoMevoDelegate: self), idMevo: (mevo?.id)!)
+            }
+        }
+    }
+
+
+    @IBAction func speakerButton(_ sender: Any) {
+        print("speaker button")
+       // AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient)
+        //speakerButton.hihli
+        var audioSession = AVAudioSession.sharedInstance()
+        //AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient)
+        //AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         
-        print("play")
-        progressBar.setProgress(0, animated: false)
-        
-        //if doesn't exist
-            apiController?.getMevoData(delegate: MevoDataDelegate(infoMevoDelegate: self), idMevo: (mevo?.id)!)
+        do {
+            //try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
+           try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryRecord)
+        } catch let error as NSError {
+            print("audioSession error: \(error.localizedDescription)")
+        }
+        //mevoAudio?categ.setCategory(AVAudioSessionCategoryPlayAndRecord, withOptions:AVAudioSessionCategoryOptions.DefaultToSpeaker, error: nil)
     }
     
     class MevoDataDelegate : APIDelegateRawData
@@ -66,21 +104,9 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
                 print("Failed to create file: \(error)")
                 return
             }
-            print("write ok")
             
             DispatchQueue.main.async {
-                do {
-                    let sound = try AVAudioPlayer(contentsOf: path)
-                    self.infoMevoDelegate.MevoAudio = sound
-                    self.infoMevoDelegate.MevoAudio.delegate = self.infoMevoDelegate
-                    sound.play()
-                    
-                    self.infoMevoDelegate.timer = Timer.scheduledTimer(timeInterval: 0.005, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
-                    //sound.setVolume(1, fadeDuration: 0)
-                    print("playing")
-                } catch {
-                    print("play fail")
-                }
+               self.infoMevoDelegate.playMevo(path: path)
             }
         }
         
@@ -89,21 +115,48 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
             print("APIController.getMevoData() fail")
             //self.mevoDelegate.refresher.endRefreshing()
         }
-        
-        @objc func updateProgressBar()
-        {
-            print("updateProgressBar")
-            if self.infoMevoDelegate.MevoAudio.isPlaying
-            {
-                self.infoMevoDelegate.progressBar.setProgress(Float(self.infoMevoDelegate.MevoAudio.currentTime/self.infoMevoDelegate.MevoAudio.duration), animated: false)
-            }
-        }
-        
     }
-
+    
+    
+    func playMevo(path : URL)
+    {
+        progressBar.setProgress(0, animated: false)
+        playImage.image = UIImage(named: "stop")
+        do {
+            mevoAudio = try AVAudioPlayer(contentsOf: path)
+            //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            //AVAudioSessionCategoryRecord
+            //AVAudioSessionCategoryPlayback
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.init(rawValue: 0)!)
+            //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient,with:AVAudioSessionCategoryOptions.defaultToSpeaker)
+            mevoAudio.delegate = self
+            mevoAudio.play()
+            timer = Timer.scheduledTimer(timeInterval: 0.005, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
+            print("playing")
+        } catch let error as NSError  {
+            stopMevo()
+            print("audioSession error: \(error.localizedDescription)")
+        }
+    }
+    
+    @objc func updateProgressBar()
+    {
+        if mevoAudio.isPlaying
+        {
+            progressBar.setProgress(Float(mevoAudio.currentTime / mevoAudio.duration), animated: false)
+        }
+    }
+    
+    func stopMevo()
+    {
+        print("stop")
+        timer?.invalidate()
+        mevoAudio?.stop()
+        playImage.image = UIImage(named: "play")
+    }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        timer?.invalidate()
+        stopMevo()
         progressBar.setProgress(1, animated: false)
     }
     
