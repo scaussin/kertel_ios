@@ -176,14 +176,18 @@ class MevoController: UITableViewController, APIControllerProtocol {
     // remove table item
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
-            apiController?.delMevo(delegate: delMevoDelegate, idMevoToDelete: [mevoDataTableView[indexPath.row].id])
-            
-            mevoDataTableView.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            deleteOneMevo(id : mevoDataTableView[indexPath.row].id, indexPath: indexPath)
         }
     }
 
+    func deleteOneMevo(id : String, indexPath: IndexPath)
+    {
+        apiController?.delMevo(delegate: delMevoDelegate, idMevoToDelete: [id])
+        
+        mevoDataTableView.remove(at:indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+    }
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
@@ -206,6 +210,7 @@ class MevoController: UITableViewController, APIControllerProtocol {
             if let index = self.tableView.indexPathForSelectedRow{
                 infoMevoController.mevo = mevoDataTableView[index.row]
                 infoMevoController.apiController = self.apiController
+                infoMevoController.indexPath = index
             }
         }
     }

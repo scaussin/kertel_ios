@@ -17,22 +17,28 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
     var mevoAudio: AVAudioPlayer!
     var timer : Timer?
     var apiController : APIController? //set by MevoController
-    
+    var speakerMode = false
+    var indexPath: IndexPath?
     @IBOutlet weak var playImage: UIImageView!
-   
-    
     @IBOutlet weak var speakerButton: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("InfoMevoController -> viewDidLoad")
+        do{
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error as NSError {
+            print("AVAudioSession error: \(error.localizedDescription)")
+        }
     }
-
+   
     override func viewDidAppear(_ animated: Bool) {
-        
         print("InfoMevoController -> viewDidAppear")
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    
+    override func viewWillDisappear(_ animated: Bool) {
         stopMevo()
     }
     
@@ -43,99 +49,130 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBAction func playButton(_ sender: Any)
     {
-        //stop
-        if let sound =  mevoAudio, sound.isPlaying
+        if let sound =  mevoAudio, sound.isPlaying  //stop
         {
             stopMevo()
             progressBar.setProgress(0, animated: false)
         }
-        //play
-        else
+        else //play
         {
-            let path = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent((mevo?.id)!.appending(".wav"))
-            let fileManager = FileManager.default
-            if (fileManager.fileExists(atPath: path.relativePath)) {
-                print("exist")
-                playMevo(path: path)
-            } else {
-                print("doesn't exist")
-                apiController?.getMevoData(delegate: MevoDataDelegate(infoMevoDelegate: self), idMevo: (mevo?.id)!)
-            }
+            checkMevoFileAndDoAction(successAction: playMevoAction)
+        }
+    }
+    
+    func checkMevoFileAndDoAction(successAction : @escaping (URL) -> ())
+    {
+        let urlMevo = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent((mevo?.id)!.appending(".wav"))
+        let fileManager = FileManager.default
+        if (fileManager.fileExists(atPath: urlMevo.relativePath)) {
+            print("exist")
+            successAction(urlMevo)
+        } else {
+            print("doesn't exist")
+            apiController?.getMevoData(delegate: MevoDataDelegate(urlMevo: urlMevo, successAction: successAction), idMevo: (mevo?.id)!)
         }
     }
 
-
     @IBAction func speakerButton(_ sender: Any) {
         print("speaker button")
-       // AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient)
-        //speakerButton.hihli
-        var audioSession = AVAudioSession.sharedInstance()
-        //AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient)
-        //AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-        
         do {
-            //try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
-           try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryRecord)
-        } catch let error as NSError {
+            if (self.speakerMode) { //to quit speaker
+                if (mevoAudio.isPlaying)
+                {
+                    setProximitySensor(true)
+                }
+                speakerButton.backgroundColor = UIColor.clear
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+            }
+            else{ //to speaker
+                setProximitySensor(false)
+                speakerButton.backgroundColor = UIColor.lightGray
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            }
+            self.speakerMode = !self.speakerMode
+        }
+        catch let error as NSError  {
             print("audioSession error: \(error.localizedDescription)")
         }
-        //mevoAudio?categ.setCategory(AVAudioSessionCategoryPlayAndRecord, withOptions:AVAudioSessionCategoryOptions.DefaultToSpeaker, error: nil)
     }
     
     class MevoDataDelegate : APIDelegateRawData
     {
-        var infoMevoDelegate : InfoMevoController
+        //var infoMevoDelegate : InfoMevoController
+        var urlMevo : URL
+        var successAction : (URL) -> ()
         
-        init (infoMevoDelegate : InfoMevoController!)
+        init (urlMevo : URL, successAction : @escaping (URL) -> ())
         {
-            self.infoMevoDelegate = infoMevoDelegate
+            self.urlMevo = urlMevo
+            self.successAction = successAction
         }
         
         func success(data: Data?) {
             print("APIController.getMevoData() success")
-            
-            let path = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent((infoMevoDelegate.mevo?.id)!.appending(".wav"))
-            
-            // Write File
             do {
-                try data?.write(to: path)
+                try data?.write(to: urlMevo)
             }
             catch (let error){
                 print("Failed to create file: \(error)")
                 return
             }
-            
             DispatchQueue.main.async {
-               self.infoMevoDelegate.playMevo(path: path)
+                self.successAction(self.urlMevo)
             }
         }
         
         func fail(msgError : String)
         {
             print("APIController.getMevoData() fail")
-            //self.mevoDelegate.refresher.endRefreshing()
         }
     }
-    
-    
-    func playMevo(path : URL)
+
+    func playMevoAction(urlMevo : URL)
     {
         progressBar.setProgress(0, animated: false)
         playImage.image = UIImage(named: "stop")
         do {
-            mevoAudio = try AVAudioPlayer(contentsOf: path)
-            //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            //AVAudioSessionCategoryRecord
-            //AVAudioSessionCategoryPlayback
-            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.init(rawValue: 0)!)
-            //try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient,with:AVAudioSessionCategoryOptions.defaultToSpeaker)
+            mevoAudio = try AVAudioPlayer(contentsOf: urlMevo)
             mevoAudio.delegate = self
+            if (!speakerMode)
+            {
+                setProximitySensor(true)
+            }
             mevoAudio.play()
             timer = Timer.scheduledTimer(timeInterval: 0.005, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
-            print("playing")
         } catch let error as NSError  {
             stopMevo()
-            print("audioSession error: \(error.localizedDescription)")
+            print("audioSession playMevo error: \(error.localizedDescription)")
+        }
+    }
+    
+    func shareMevoAction(urlMevo : URL)
+    {
+        let objectsToShare = [urlMevo]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
+    }
+    
+    func setProximitySensor(_ enabled: Bool) {
+        let device = UIDevice.current
+        if (enabled != device.isProximityMonitoringEnabled)
+        {
+            device.isProximityMonitoringEnabled = enabled
+            if device.isProximityMonitoringEnabled {
+                NotificationCenter.default.addObserver(self, selector: #selector(proximityChanged), name: .UIDeviceProximityStateDidChange, object: device)
+            } else {
+                NotificationCenter.default.removeObserver(self, name: .UIDeviceProximityStateDidChange, object: nil)
+            }
+        }
+    }
+    
+    func proximityChanged(_ notification: Notification) {
+        if let device = notification.object as? UIDevice {
+            if (device.proximityState == false && mevoAudio?.isPlaying == false) //far and not playing
+            {
+                setProximitySensor(false)
+            }
         }
     }
     
@@ -153,13 +190,13 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
         timer?.invalidate()
         mevoAudio?.stop()
         playImage.image = UIImage(named: "play")
+        setProximitySensor(false)
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         stopMevo()
         progressBar.setProgress(1, animated: false)
     }
-    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -219,19 +256,6 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
             empty.selectionStyle = .none
             return empty
         }
-        /*var cell : InfoCallTableViewCell?
-        
-        if (indexPath.row == 1) // button call number
-        {
-            cell = tableView.dequeueReusableCell(withIdentifier: "detailCellNumber", for: indexPath) as? InfoCallTableViewCell
-        }
-        else
-        {
-            cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as? InfoCallTableViewCell
-        }
-        cell?.info = call.infoCall[indexPath.row]*/
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "detailMevoCell", for: indexPath) as! InfoMevoTableViewCell
-        
         return cell!
     }
     
@@ -239,8 +263,8 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
         print("didSelectRowAt \(indexPath.row)")
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if (indexPath.row == 1){
-            
+        if (indexPath.row == 1) //call
+        {
             if let phoneCallURL = URL(string: "tel://\(mevo?.number ?? "")") {
                 
                 let application:UIApplication = UIApplication.shared
@@ -249,75 +273,33 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             }
         }
-        /*let indexPath = tableView.indexPathForSelectedRow
-        
-        f (indexPath?.row == 1){
-            
-            if let phoneCallURL = URL(string: "tel://\(call.number ?? "")") {
-                
-                let application:UIApplication = UIApplication.shared
-                if (application.canOpenURL(phoneCallURL)) {
-                    application.open(phoneCallURL, options: [:], completionHandler: nil)
-                }
-            }
-        }*/
+        else if (indexPath.row == 3) //share
+        {
+            checkMevoFileAndDoAction(successAction: shareMevoAction)
+        }
+        else if (indexPath.row == 5) //delete
+        {
+            apiController?.delMevo(delegate: DelMevoDelegate(), idMevoToDelete: [(mevo?.id)!])
+            let mevoController = self.parent?.childViewControllers[1] as! MevoController
+            mevoController.deleteOneMevo(id: (mevo?.id)!, indexPath: indexPath)
+        }
     }
-
+    
+    class DelMevoDelegate : APIDelegate
+    {
+        init ()
+        {
+            
+        }
+        
+        func success(data: [AnyObject]?) {
+            print("APIController.delMevo() success")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.delMevo() fail")
+        }
+    }
 
 }
-
-/*class InfoMevoTableViewController: UITableViewController {
-    
-    var call : CallHistory!
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return call.infoCall.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell : InfoCallTableViewCell?
-        
-        if (indexPath.row == 1) // button call number
-        {
-            cell = tableView.dequeueReusableCell(withIdentifier: "detailCellNumber", for: indexPath) as? InfoCallTableViewCell
-        }
-        else
-        {
-            cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as? InfoCallTableViewCell
-        }
-        cell?.info = call.infoCall[indexPath.row]
-        
-        return cell!
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let indexPath = tableView.indexPathForSelectedRow
-        
-        if (indexPath?.row == 1){
-            
-            if let phoneCallURL = URL(string: "tel://\(call.number ?? "")") {
-                
-                let application:UIApplication = UIApplication.shared
-                if (application.canOpenURL(phoneCallURL)) {
-                    application.open(phoneCallURL, options: [:], completionHandler: nil)
-                }
-            }
-        }
-    }
-    
-    
-}*/

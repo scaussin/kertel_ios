@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UUQ-Mm-29E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UUQ-Mm-29E">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jwC-J1-nOE" id="ows-4x-NZr">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Barack Obama" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXc-hK-hqq">
@@ -52,7 +52,7 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="incomming_call" highlightedImage="incomming_call" translatesAutoresizingMaskIntoConstraints="NO" id="xPy-gR-tyC">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="incomming_call" translatesAutoresizingMaskIntoConstraints="NO" id="xPy-gR-tyC">
                                             <rect key="frame" x="8" y="19" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" id="4Ex-Ig-M4X"/>
@@ -184,7 +184,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qew-8U-USu" id="HbI-ej-jaC">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ligne : 01 34 63 61 98" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l98-2h-Inf">
@@ -194,7 +194,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Messages reçus : 5/30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5M-4c-BbP">
-                                            <rect key="frame" x="202" y="13" width="138" height="16"/>
+                                            <rect key="frame" x="202" y="12" width="138" height="16"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -218,7 +218,7 @@
                                 <rect key="frame" x="0.0" y="69" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eph-0p-WxH" id="Ry9-SI-0Z2">
-                                    <rect key="frame" x="0.0" y="0.0" width="342" height="58"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="57"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01 34 63 61 98" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2d-Uv-MFw">
@@ -240,7 +240,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dot" translatesAutoresizingMaskIntoConstraints="NO" id="PmG-gI-27C">
-                                            <rect key="frame" x="8" y="20.5" width="15" height="15"/>
+                                            <rect key="frame" x="8" y="21" width="15" height="15"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="15" id="P9K-PL-Ixp"/>
                                                 <constraint firstAttribute="height" constant="15" id="mjj-SY-XX7"/>
@@ -432,7 +432,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="mcm-uN-gpX">
-                                <rect key="frame" x="167.5" y="124" width="40" height="40"/>
+                                <rect key="frame" x="168" y="124" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="e8l-mE-TZM"/>
                                     <constraint firstAttribute="width" constant="40" id="zj4-Cz-hFs"/>
@@ -552,7 +552,7 @@
                                 <rect key="frame" x="0.0" y="114" width="375" height="2"/>
                                 <color key="tintColor" red="0.40000000000000002" green="0.80000000000000004" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             </progressView>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker" highlightedImage="stop" translatesAutoresizingMaskIntoConstraints="NO" id="iVa-eS-pZW">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker" translatesAutoresizingMaskIntoConstraints="NO" id="iVa-eS-pZW">
                                 <rect key="frame" x="329" y="129" width="30" height="30"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" button="YES" image="YES"/>
@@ -626,13 +626,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Veuillez vous identifiez" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" translatesAutoresizingMaskIntoConstraints="NO" id="BgO-nX-045">
-                                                <rect key="frame" x="52" y="127" width="272" height="33.5"/>
+                                                <rect key="frame" x="52" y="127" width="272" height="34"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GBU-FH-nLO">
-                                                <rect key="frame" x="20" y="210.5" width="334" height="180"/>
+                                                <rect key="frame" x="20" y="211" width="334" height="180"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Esn-06-5VR">
                                                         <rect key="frame" x="0.0" y="0.0" width="334" height="60"/>
@@ -726,23 +726,23 @@
                                                 </subviews>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enregistrer l'identifiant et la société" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eke-cN-HEM">
-                                                <rect key="frame" x="76.5" y="432" width="200.5" height="14.5"/>
+                                                <rect key="frame" x="76" y="432" width="201" height="15"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.47058823529999999" green="0.74509803919999995" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbc-Rh-8Yd" userLabel="Switch Username Company">
-                                                <rect key="frame" x="285" y="423.5" width="51" height="31"/>
+                                                <rect key="frame" x="285" y="424" width="51" height="31"/>
                                                 <color key="onTintColor" red="0.53567975759999997" green="0.77473640440000002" blue="0.16238942740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enregistrer le mot de passe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVo-Xf-nhW">
-                                                <rect key="frame" x="122" y="473" width="155" height="14.5"/>
+                                                <rect key="frame" x="122" y="473" width="155" height="15"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.47058823529999999" green="0.74509803919999995" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JgY-pm-zoF">
-                                                <rect key="frame" x="285" y="464.5" width="51" height="31"/>
+                                                <rect key="frame" x="285" y="465" width="51" height="31"/>
                                                 <color key="onTintColor" red="0.53567975759506226" green="0.77473640441894531" blue="0.16238942742347717" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </switch>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="password" translatesAutoresizingMaskIntoConstraints="NO" id="3jE-HO-Xhw">
@@ -916,13 +916,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Veuillez vous identifiez" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1k5-id-rUx">
-                                                <rect key="frame" x="51" y="250" width="272" height="33.5"/>
+                                                <rect key="frame" x="51" y="250" width="272" height="34"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="QRx-IU-qm0">
-                                                <rect key="frame" x="20" y="337.5" width="334" height="180"/>
+                                                <rect key="frame" x="20" y="338" width="334" height="180"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fed-Cy-49d">
                                                         <rect key="frame" x="0.0" y="0.0" width="334" height="60"/>
@@ -1016,23 +1016,23 @@
                                                 </subviews>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enregistrer l'identifiant et la société" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BAZ-63-NKE">
-                                                <rect key="frame" x="76.5" y="559" width="200.5" height="14.5"/>
+                                                <rect key="frame" x="76" y="559" width="201" height="15"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.47058823529999999" green="0.74509803919999995" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74g-7B-SEO" userLabel="Switch Username Company">
-                                                <rect key="frame" x="285" y="550.5" width="51" height="31"/>
+                                                <rect key="frame" x="285" y="551" width="51" height="31"/>
                                                 <color key="onTintColor" red="0.53567975759999997" green="0.77473640440000002" blue="0.16238942740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enregistrer le mot de passe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dgc-pL-ff7">
-                                                <rect key="frame" x="122" y="600" width="155" height="14.5"/>
+                                                <rect key="frame" x="122" y="600" width="155" height="15"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.47058823529999999" green="0.74509803919999995" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ccH-DY-uMd">
-                                                <rect key="frame" x="285" y="591.5" width="51" height="31"/>
+                                                <rect key="frame" x="285" y="592" width="51" height="31"/>
                                                 <color key="onTintColor" red="0.53567975759999997" green="0.77473640440000002" blue="0.16238942740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </switch>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="password" translatesAutoresizingMaskIntoConstraints="NO" id="7L7-pI-zPs">
@@ -1110,7 +1110,6 @@
         <image name="password" width="50" height="50"/>
         <image name="play" width="50" height="50"/>
         <image name="speaker" width="50" height="50"/>
-        <image name="stop" width="50" height="50"/>
         <image name="username" width="100" height="100"/>
     </resources>
     <color key="tintColor" red="0.47058823529411764" green="0.74509803921568629" blue="0.12549019607843137" alpha="1" colorSpace="calibratedRGB"/>

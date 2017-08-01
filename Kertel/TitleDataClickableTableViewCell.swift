@@ -20,7 +20,7 @@ class TitleDataClickableTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        print("setSelected TitleDataClickableTableViewCell")
+        //print("setSelected TitleDataClickableTableViewCell")
         // Configure the view for the selected state
     }
 
