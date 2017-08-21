@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11240AD01F4AEA59005B080A /* DirectoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11240ACF1F4AEA59005B080A /* DirectoryController.swift */; };
 		11368EE11EB8943800E0F82F /* InfoCallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EE01EB8943800E0F82F /* InfoCallTableViewCell.swift */; };
 		11368EE51EC1CCD600E0F82F /* InfoCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EE41EC1CCD600E0F82F /* InfoCallViewController.swift */; };
 		11368EE91EC2150C00E0F82F /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EE81EC2150C00E0F82F /* APIController.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11240ACF1F4AEA59005B080A /* DirectoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryController.swift; sourceTree = "<group>"; };
 		11368EE01EB8943800E0F82F /* InfoCallTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCallTableViewCell.swift; sourceTree = "<group>"; };
 		11368EE41EC1CCD600E0F82F /* InfoCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCallViewController.swift; sourceTree = "<group>"; };
 		11368EE81EC2150C00E0F82F /* APIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
@@ -74,6 +76,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		11240AD11F4AEA6B005B080A /* Directory */ = {
+			isa = PBXGroup;
+			children = (
+				11240ACF1F4AEA59005B080A /* DirectoryController.swift */,
+			);
+			name = Directory;
+			sourceTree = "<group>";
+		};
 		1133C1681F029D8700A78D71 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +178,7 @@
 				11368EEC1EC9FC7100E0F82F /* LoginViewController.swift */,
 				1160E5E91F151C510096A4ED /* CallHistory */,
 				1160E5EA1F151C680096A4ED /* Mevo */,
+				11240AD11F4AEA6B005B080A /* Directory */,
 				1192D2461EE59B0400D35D33 /* SettingViewController.swift */,
 			);
 			name = Controllers;
@@ -279,6 +290,7 @@
 				1192ADA41ED332E10008C554 /* MevoController.swift in Sources */,
 				11368EE91EC2150C00E0F82F /* APIController.swift in Sources */,
 				11368EEB1EC21CA300E0F82F /* APIDelegate.swift in Sources */,
+				11240AD01F4AEA59005B080A /* DirectoryController.swift in Sources */,
 				11F6C1291EA775CA001376BC /* AppDelegate.swift in Sources */,
 				11368EED1EC9FC7100E0F82F /* LoginViewController.swift in Sources */,
 				1160E5EC1F1D00CD0096A4ED /* InfoMevoTableViewCell.swift in Sources */,

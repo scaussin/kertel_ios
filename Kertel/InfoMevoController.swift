@@ -65,10 +65,10 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
         let urlMevo = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent((mevo?.id)!.appending(".wav"))
         let fileManager = FileManager.default
         if (fileManager.fileExists(atPath: urlMevo.relativePath)) {
-            print("exist")
+            print("file exist")
             successAction(urlMevo)
         } else {
-            print("doesn't exist")
+            print("file doesn't exist")
             apiController?.getMevoData(delegate: MevoDataDelegate(urlMevo: urlMevo, successAction: successAction), idMevo: (mevo?.id)!)
         }
     }
@@ -279,13 +279,31 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
         }
         else if (indexPath.row == 5) //delete
         {
-            apiController?.delMevo(delegate: DelMevoDelegate(), idMevoToDelete: [(mevo?.id)!])
-            let mevoController = self.parent?.childViewControllers[1] as! MevoController
-            mevoController.deleteOneMevo(id: (mevo?.id)!, indexPath: indexPath)
+            let alertController = UIAlertController( title: nil,
+                                                     message: nil,
+                                                     preferredStyle: .actionSheet)
+            let deleteAction = UIAlertAction(title:"Effacer ce message", style: .destructive, handler: {
+                action in
+                let mevoController = self.parent?.childViewControllers[0] as! MevoController
+                mevoController.deleteOneMevo(id: (self.mevo?.id)!, indexPath: self.indexPath!)
+                self.navigationController?.popViewController(animated: true)
+            })
+            
+            let cancelAction = UIAlertAction(title:"Annuler", style: .cancel, handler: {
+                action in
+            })
+            
+            alertController.addAction(deleteAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true, completion: nil)
+            
+            
+            //apiController?.delMevo(delegate: DelMevoDelegate(), idMevoToDelete: [(mevo?.id)!])
+            
         }
     }
     
-    class DelMevoDelegate : APIDelegate
+    /*class DelMevoDelegate : APIDelegate
     {
         init ()
         {
@@ -300,6 +318,6 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
         {
             print("APIController.delMevo() fail")
         }
-    }
+    }*/
 
 }

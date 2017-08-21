@@ -206,8 +206,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate, 
             var MevoVC = mevoNC.viewControllers[0] as! APIControllerProtocol
             MevoVC.apiController = self.apiController
 
+            // Directory
+            let directoryNC = tabBarController.viewControllers![2] as! UINavigationController
+            var directoryVC = directoryNC.viewControllers[0] as! APIControllerProtocol
+            directoryVC.apiController = self.apiController
+            
             // Setting
-            let settingVC = tabBarController.viewControllers![4] as! SettingViewController
+            let settingVC = tabBarController.viewControllers![3] as! SettingViewController
             settingVC.apiController = self.apiController
             
             /*let vc = segue.destination as! MainTabBarController
