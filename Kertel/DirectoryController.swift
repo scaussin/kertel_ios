@@ -40,14 +40,24 @@ class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDa
     
     var pages = [UIViewController]()
     
+    var sharedDirectoryTVC = DirectoryTableViewController()
+    var persoDirectoryTVC = DirectoryTableViewController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.delegate = self
         self.dataSource = self
         
-        let page1: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "tab1")
-        let page2: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "tab2")
+        //let table : UITableViewController! = (storyboard?.instantiateViewController(withIdentifier: "table"))! as! UITableViewController
+        sharedDirectoryTVC.data = ["1","2","3"]
+        persoDirectoryTVC.data = ["4","5","6"]
+        
+        let page1: UIViewController! = sharedDirectoryTVC
+        let page2: UIViewController! = persoDirectoryTVC
+        //let page1: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "table")
+        //let page2: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "table")
+        
         
         pages.append(page1)
         pages.append(page2)
@@ -57,18 +67,28 @@ class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDa
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let currentIndex = pages.index(of: viewController)!
-        let previousIndex = abs((currentIndex - 1) % pages.count)
-        return pages[previousIndex]
+        //let previousIndex = abs((currentIndex - 1) % pages.count)
+        if currentIndex == 1
+        {
+            return nil
+        }
+        return pages[1]
+        //return pages[nextIndex]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let currentIndex = pages.index(of: viewController)!
-        let nextIndex = abs((currentIndex + 1) % pages.count)
-        return pages[nextIndex]
+        //let nextIndex = abs((currentIndex + 1) % pages.count)
+        if currentIndex == 0
+        {
+            return nil
+        }
+        return pages[0]
+        //return pages[nextIndex]
     }
     
     func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return pages.count
+        return 2
     }
     
     func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
