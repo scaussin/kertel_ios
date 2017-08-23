@@ -17,6 +17,8 @@ class DirectoryTableViewController: UITableViewController {
         super.viewDidLoad()
         print(data)
 
+        tableView.dataSource = self
+        tableView.delegate = self
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -36,19 +38,24 @@ class DirectoryTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0 //data.count
+        return data.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "contactDirectoryCell", for: indexPath) as! ContactDirectoryTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "directoryCell", for: indexPath) as! ContactDirectoryTableViewCell
 
-        //cell.textLabel?.text = data[indexPath.row]
-        cell.nameLabel.text = data[indexPath.row]
+        cell.textLabel?.text = data[indexPath.row]
+        //cell.nameLabel.text = data[indexPath.row]
         
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let infoContactDirectoryVC = storyboard?.instantiateViewController(withIdentifier: "infoContactDirectoryVC") as! InfoContactDirectoryController
+        infoContactDirectoryVC.name = data[indexPath.row]
+        navigationController?.pushViewController(infoContactDirectoryVC, animated: true)
+    }
 
     /*
     // Override to support conditional editing of the table view.

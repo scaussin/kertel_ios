@@ -38,57 +38,54 @@ class DirectoryController: UIViewController, APIControllerProtocol {
 
 class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    var pages = [UIViewController]()
+    //var pages = [UIViewController]()
+    var sharedVC :UIViewController!
+    var persoVC :UIViewController!
     
-    var sharedDirectoryTVC = DirectoryTableViewController()
-    var persoDirectoryTVC = DirectoryTableViewController()
-    
+    var sharedDirectoryTVC : DirectoryTableViewController!
+    var persoDirectoryTVC : DirectoryTableViewController!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.delegate = self
         self.dataSource = self
         
-        //let table : UITableViewController! = (storyboard?.instantiateViewController(withIdentifier: "table"))! as! UITableViewController
-        sharedDirectoryTVC.data = ["1","2","3"]
-        persoDirectoryTVC.data = ["4","5","6"]
+        sharedDirectoryTVC = storyboard?.instantiateViewController(withIdentifier: "TVCDirectory") as! DirectoryTableViewController
+        sharedDirectoryTVC.data = ["partagé","2","3","1","2","3","1","2","3","1","2","3"]
         
-        let page1: UIViewController! = sharedDirectoryTVC
-        let page2: UIViewController! = persoDirectoryTVC
-        //let page1: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "table")
+        persoDirectoryTVC = storyboard?.instantiateViewController(withIdentifier: "TVCDirectory") as! DirectoryTableViewController
+        persoDirectoryTVC.data = ["perso","2","3","1","2","3","1","2","3","1","2","3"]
+        
+        sharedVC = sharedDirectoryTVC
+        persoVC = persoDirectoryTVC
+        //let page1: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "VCTest")
         //let page2: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "table")
         
         
-        pages.append(page1)
-        pages.append(page2)
+        //pages.append(page2)
         
-        setViewControllers([page1], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+        setViewControllers([sharedVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let currentIndex = pages.index(of: viewController)!
-        //let previousIndex = abs((currentIndex - 1) % pages.count)
-        if currentIndex == 1
+        if viewController == persoVC
         {
             return nil
         }
-        return pages[1]
-        //return pages[nextIndex]
+        return persoVC
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        let currentIndex = pages.index(of: viewController)!
-        //let nextIndex = abs((currentIndex + 1) % pages.count)
-        if currentIndex == 0
+        if viewController == sharedVC
         {
             return nil
         }
-        return pages[0]
-        //return pages[nextIndex]
+        return sharedVC
     }
     
     func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return 2
+        return 1
     }
     
     func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {

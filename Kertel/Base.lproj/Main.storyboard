@@ -287,6 +287,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="epr-zH-z9X">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="0.53567975759999997" green="0.77473640440000002" blue="0.16238942740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -340,7 +341,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uc8-z0-Xo5">
                                 <rect key="frame" x="0.0" y="152" width="375" height="466"/>
                                 <connections>
-                                    <segue destination="3A2-L9-hbW" kind="embed" id="gJN-AP-sb6"/>
+                                    <segue destination="3A2-L9-hbW" kind="embed" identifier="DirectoryPageEmbed" id="gJN-AP-sb6"/>
                                 </connections>
                             </containerView>
                             <searchBar contentMode="redraw" placeholder="Rechercher" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tea-yk-lWd">
@@ -375,9 +376,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="QqB-k8-e0c"/>
                     <navigationItem key="navigationItem" title="Annuaire" id="OoG-V9-ojm"/>
-                    <connections>
-                        <segue destination="DtY-bY-YxH" kind="show" identifier="toInfoContactDirectorySegue" id="Hg0-kt-Gva"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C9O-W0-pTZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -412,7 +410,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vgQ-W7-CYs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3050" y="496"/>
+            <point key="canvasLocation" x="3135" y="128"/>
         </scene>
         <!--Info call-->
         <scene sceneID="WKA-Fq-LPF">
@@ -645,50 +643,6 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="529" y="2031"/>
-        </scene>
-        <!--Directory Table View Controller-->
-        <scene sceneID="H42-We-MFg">
-            <objects>
-                <tableViewController storyboardIdentifier="table" id="hYo-Jk-P4Y" customClass="DirectoryTableViewController" customModule="Kertel" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="nq2-Dt-Lkc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="466"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="contactDirectoryCell" id="cDg-0t-pYs" customClass="ContactDirectoryTableViewCell" customModule="Kertel" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cDg-0t-pYs" id="OCo-zV-TBN">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dms-n7-5PY">
-                                            <rect key="frame" x="16" y="11" width="33.5" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="dms-n7-5PY" firstAttribute="leading" secondItem="OCo-zV-TBN" secondAttribute="leadingMargin" constant="8" id="dgb-Bp-yLx"/>
-                                        <constraint firstItem="dms-n7-5PY" firstAttribute="centerY" secondItem="OCo-zV-TBN" secondAttribute="centerY" id="zcT-34-UD5"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="nameLabel" destination="dms-n7-5PY" id="GyA-uk-nR9"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="hYo-Jk-P4Y" id="hOV-8w-Ksg"/>
-                            <outlet property="delegate" destination="hYo-Jk-P4Y" id="XaA-eX-fre"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="q4Y-63-rHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1505" y="2472"/>
         </scene>
         <!--Connexion-->
         <scene sceneID="FJj-LD-fmf">
@@ -983,19 +937,52 @@
         <!--Directory Page View Controller-->
         <scene sceneID="Jb3-8l-Vb7">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="3A2-L9-hbW" customClass="DirectoryPageViewController" customModule="Kertel" customModuleProvider="target" sceneMemberID="viewController">
-                    <connections>
-                        <segue destination="hYo-Jk-P4Y" kind="show" identifier="toInfoContactDirectory" id="4jH-I2-im3"/>
-                    </connections>
-                </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tfz-j7-aOZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="3A2-L9-hbW" customClass="DirectoryPageViewController" customModule="Kertel" customModuleProvider="target" sceneMemberID="viewController"/>
             </objects>
-            <point key="canvasLocation" x="1505" y="1899"/>
+            <point key="canvasLocation" x="1505" y="1940"/>
         </scene>
-        <!--View Controller-->
+        <!--Directory Table View Controller-->
+        <scene sceneID="mi8-sQ-AfW">
+            <objects>
+                <tableViewController storyboardIdentifier="TVCDirectory" id="5U8-V3-sb2" customClass="DirectoryTableViewController" customModule="Kertel" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="MiE-Ow-mba">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="directoryCell" textLabel="eMU-kd-dru" style="IBUITableViewCellStyleDefault" id="CEf-uQ-qar" customClass="ContactDirectoryTableViewCell" customModule="Kertel" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CEf-uQ-qar" id="vAw-e1-S5D">
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eMU-kd-dru">
+                                            <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="5U8-V3-sb2" id="2PX-R3-qpY"/>
+                            <outlet property="delegate" destination="5U8-V3-sb2" id="sSM-DI-W9D"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DeB-cL-Ekq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1505" y="2613"/>
+        </scene>
+        <!--Info Contact Directory Controller-->
         <scene sceneID="pNX-6m-oro">
             <objects>
-                <viewController id="DtY-bY-YxH" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="infoContactDirectoryVC" id="DtY-bY-YxH" customClass="InfoContactDirectoryController" customModule="Kertel" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Td4-Td-qKx"/>
                         <viewControllerLayoutGuide type="bottom" id="CA3-Yi-t2e"/>
@@ -1005,17 +992,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Barack Obama" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aNx-NS-Hb1">
-                                <rect key="frame" x="97.5" y="72" width="180" height="34"/>
+                                <rect key="frame" x="97.5" y="28" width="180" height="34"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="55" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Avv-1A-J1d">
-                                <rect key="frame" x="0.0" y="114" width="375" height="504"/>
+                                <rect key="frame" x="0.0" y="70" width="375" height="597"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" showsReorderControl="YES" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="titleDataCell" rowHeight="55" id="qqC-7x-zQd" customClass="TitleDataTableViewCell" customModule="Kertel" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qqC-7x-zQd" id="71i-nz-Eyo">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -1047,7 +1034,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="titleDataClickableCell" rowHeight="55" id="szA-ln-pcG" customClass="TitleDataClickableTableViewCell" customModule="Kertel" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="111" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="110.5" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="szA-ln-pcG" id="zhp-6e-bnW">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -1079,7 +1066,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="titleClickableCell" rowHeight="55" id="mXw-mn-Kcp" customClass="TitleClickableTableViewCell" customModule="Kertel" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="166" width="375" height="55"/>
+                                        <rect key="frame" x="0.0" y="165.5" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mXw-mn-Kcp" id="Eyc-bt-ijQ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -1109,7 +1096,6 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" red="0.40000000000000002" green="0.80000000000000004" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Avv-1A-J1d" firstAttribute="top" secondItem="aNx-NS-Hb1" secondAttribute="bottom" constant="8" symbolic="YES" id="2gx-XG-I0N"/>
@@ -1121,20 +1107,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="2NL-xC-l9l"/>
+                    <connections>
+                        <outlet property="nameLabel" destination="aNx-NS-Hb1" id="N3E-pq-Qe0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wHg-45-lrd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="KUW-bg-LdO">
-                    <connections>
-                        <action selector="playButton:" destination="DtY-bY-YxH" id="N7o-16-xAV"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="Z3S-rG-wiP">
-                    <connections>
-                        <action selector="speakerButton:" destination="DtY-bY-YxH" id="blP-7d-rYa"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2332" y="1280"/>
+            <point key="canvasLocation" x="2342" y="2619"/>
         </scene>
     </scenes>
     <resources>
