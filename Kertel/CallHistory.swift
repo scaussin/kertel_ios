@@ -85,8 +85,6 @@ struct CallHistory : CallFormatter {
         }
     }
     
-   
-    
     func getStateSmart() -> String!
     {
         switch (state)

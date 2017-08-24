@@ -14,36 +14,29 @@ class DirectoryController: UIViewController, APIControllerProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let directoryPageVC = segue.destination as? DirectoryPageViewController, segue.identifier == "directoryPageEmbed" {
+            
+            directoryPageVC.parentDirectoryController = self
+        }
     }
-    */
-
 }
 
 class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+
+    var companyDirectoryTVC : DirectoryTableViewController!
+    var userDirectoryTVC : DirectoryTableViewController!
     
-    //var pages = [UIViewController]()
-    var sharedVC :UIViewController!
-    var persoVC :UIViewController!
+    var parentDirectoryController : DirectoryController! //set by DirectoryController (segue: directoryPageEmbed)
     
-    var sharedDirectoryTVC : DirectoryTableViewController!
-    var persoDirectoryTVC : DirectoryTableViewController!
+    var companyVC :UIViewController!
+    var userVC :UIViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,41 +44,38 @@ class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDa
         self.delegate = self
         self.dataSource = self
         
-        sharedDirectoryTVC = storyboard?.instantiateViewController(withIdentifier: "TVCDirectory") as! DirectoryTableViewController
-        sharedDirectoryTVC.data = ["partagé","2","3","1","2","3","1","2","3","1","2","3"]
+        companyDirectoryTVC = storyboard?.instantiateViewController(withIdentifier: "TVCDirectory") as! DirectoryTableViewController
+        companyDirectoryTVC.apiController = parentDirectoryController.apiController
+        companyDirectoryTVC.isUserContact = false
         
-        persoDirectoryTVC = storyboard?.instantiateViewController(withIdentifier: "TVCDirectory") as! DirectoryTableViewController
-        persoDirectoryTVC.data = ["perso","2","3","1","2","3","1","2","3","1","2","3"]
+        userDirectoryTVC = storyboard?.instantiateViewController(withIdentifier: "TVCDirectory") as! DirectoryTableViewController
+        userDirectoryTVC.apiController = parentDirectoryController.apiController
+        userDirectoryTVC.isUserContact = true
         
-        sharedVC = sharedDirectoryTVC
-        persoVC = persoDirectoryTVC
-        //let page1: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "VCTest")
-        //let page2: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "table")
-        
-        
-        //pages.append(page2)
-        
-        setViewControllers([sharedVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+        companyVC = companyDirectoryTVC
+        userVC = userDirectoryTVC
+
+        setViewControllers([companyVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if viewController == persoVC
+        if viewController == userVC
         {
             return nil
         }
-        return persoVC
+        return userVC
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        if viewController == sharedVC
+        if viewController == companyVC
         {
             return nil
         }
-        return sharedVC
+        return companyVC
     }
     
     func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return 1
+        return 2
     }
     
     func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {

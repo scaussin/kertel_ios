@@ -9,54 +9,108 @@
 import UIKit
 
 class DirectoryTableViewController: UITableViewController {
-
-    var data : [String] = []
     
-    @IBOutlet var table: UITableView!
+    var apiController : APIController? //set by DirectoryPageViewController (DirectoryController.swift)
+    var isUserContact : Bool! //set by DirectoryPageViewController (DirectoryController.swift)
+    var contactDataTableView : [Contact] = []
+    var getContactDelegate : GetContactDelegate!
+   // var refresher: UIRefreshControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(data)
 
         tableView.dataSource = self
         tableView.delegate = self
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        getContactDelegate = GetContactDelegate(directoryTVC: self)
+        refresh()
+    }
+    
+    func refresh()
+    {
+        if (isUserContact)
+        {
+            apiController?.getContactUser(delegate: getContactDelegate)
+        }
+        else
+        {
+            apiController?.getContactCompany(delegate: getContactDelegate)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return contactDataTableView.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "directoryCell", for: indexPath) as! ContactDirectoryTableViewCell
 
-        cell.textLabel?.text = data[indexPath.row]
-        //cell.nameLabel.text = data[indexPath.row]
-        
+        cell.textLabel?.text = contactDataTableView[indexPath.row].lastname
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let infoContactDirectoryVC = storyboard?.instantiateViewController(withIdentifier: "infoContactDirectoryVC") as! InfoContactDirectoryController
-        infoContactDirectoryVC.name = data[indexPath.row]
+        infoContactDirectoryVC.apiController = apiController
+        infoContactDirectoryVC.contact = contactDataTableView[indexPath.row]
         navigationController?.pushViewController(infoContactDirectoryVC, animated: true)
     }
 
+    class GetContactDelegate : APIDelegate
+    {
+        var directoryTVC : DirectoryTableViewController
+        
+        init (directoryTVC : DirectoryTableViewController!)
+        {
+            self.directoryTVC = directoryTVC
+        }
+        
+        func success(data: [AnyObject]?) {
+            DispatchQueue.main.async {
+                self.directoryTVC.contactDataTableView.removeAll()
+                self.directoryTVC.contactDataTableView = data as! [Contact]
+                self.directoryTVC.tableView.reloadData()
+                //self.directoryTVC.refresher.endRefreshing()
+            }
+            if (self.directoryTVC.isUserContact)
+            {
+                print("APIController.getContactUser() success")
+            }
+            else
+            {
+                print("APIController.getContactCompany() success")
+            }
+        }
+        
+        func fail(msgError : String)
+        {
+            if (self.directoryTVC.isUserContact)
+            {
+                print("APIController.getContactUser() fail")
+            }
+            else
+            {
+                print("APIController.getContactCompany() fail")
+            }
+            //self.directoryTVC.refresher.endRefreshing()
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -26,6 +26,8 @@ class APIController {
     let outgoingCallUrl = "calls/outgoing"
     let mevoUrl = "mevo/messages"
     let MevoDataUrl = "mevo/message"
+    let contactUserUrl = "contact/user"
+    let contactCompanyUrl = "contact/company"
     
     
     func getToken(delegate : APIDelegate, username : String!, company : String!, password : String!)
@@ -276,7 +278,6 @@ class APIController {
         })
     }
     
-    
     func delIncomingCall(delegate : APIDelegate, idCallsToDelete : [String])
     {
         var data = "{\"call_ids\": ["
@@ -387,8 +388,66 @@ class APIController {
             delegate.fail(msgError: err)
         })
     }
-
     
+    func getContactUser(delegate : APIDelegate)
+    {
+        doRequest(httpMethod: "GET", sufixUrl : contactUserUrl, dataBody: nil,
+                  success : {(data) -> () in
+                    
+                    var contacts : [Contact] = []
+                    if let datas = data["datas"] as? [[String: Any]] {
+                        
+                        for data in datas
+                        {
+                            contacts.append(Contact(isUserContact : true,
+                                id : data["id"] as? String,
+                                firstname : data["firstname"] as? String,
+                                lastname : data["lastname"] as? String,
+                                company : data["company"] as? String,
+                                mobile : data["mobile"] as? String,
+                                telephone : data["telephone"] as? String,
+                                fax : data["fax"] as? String,
+                                mail : data["email"] as? String,
+                                shared : data["shared"] as? Bool))
+                        }
+                    }
+                    delegate.success(data: contacts as [AnyObject] )
+                    
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+    
+    func getContactCompany(delegate : APIDelegate)
+    {
+        doRequest(httpMethod: "GET", sufixUrl : contactCompanyUrl, dataBody: nil,
+                  success : {(data) -> () in
+                    
+                    var contacts : [Contact] = []
+                    if let datas = data["datas"] as? [[String: Any]] {
+                        
+                        for data in datas
+                        {
+                            contacts.append(Contact(isUserContact : false,
+                                                    id : data["user_id"] as? String,
+                                                    firstname : data["firstname"] as? String,
+                                                    lastname : data["lastname"] as? String,
+                                                    company : data["company"] as? String,
+                                                    mobile : data["mobile"] as? String,
+                                                    telephone : data["telephone"] as? String,
+                                                    fax : data["fax"] as? String,
+                                                    mail : data["mail"] as? String,
+                                                    shared : data["shared"] as? Bool))
+                        }
+                    }
+                    delegate.success(data: contacts as [AnyObject] )
+                    
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+    
+
     func disconnect()
     {
         /*delegateGetIncomingCall =  nil
