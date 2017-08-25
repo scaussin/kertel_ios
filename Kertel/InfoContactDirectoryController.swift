@@ -11,7 +11,9 @@ import UIKit
 class InfoContactDirectoryController: UIViewController, UITableViewDelegate, UITableViewDataSource, APIControllerProtocol {
 
     var apiController : APIController? //set by DirectoryTableViewController
-    var contact : Contact!
+    var contact : Contact! //set by DirectoryTableViewController
+    var indexPath : IndexPath! //set by DirectoryTableViewController
+    var parentDirectoryTVC : DirectoryTableViewController! //set by DirectoryTableViewController
     
     @IBOutlet weak var nameLabel: UILabel! // title
     
@@ -36,7 +38,7 @@ class InfoContactDirectoryController: UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell : UITableViewCell? = nil
-
+        
         if contact.infoToDisplay[indexPath.row].action == .NoAction{
             cell = tableView.dequeueReusableCell(withIdentifier: "titleDataCell", for: indexPath) as! TitleDataTableViewCell
             let titleDataTVC = cell as! TitleDataTableViewCell
@@ -81,6 +83,54 @@ class InfoContactDirectoryController: UIViewController, UITableViewDelegate, UIT
         return cell!
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("didSelectRowAt \(indexPath.row)")
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        switch contact.infoToDisplay[indexPath.row].action! {
+        case .CallMobile:
+            if let phoneCallURL = URL(string: "tel://\(contact.mobile ?? "")") {
+                
+                let application:UIApplication = UIApplication.shared
+                if (application.canOpenURL(phoneCallURL)) {
+                    application.open(phoneCallURL, options: [:], completionHandler: nil)
+                }
+            }
+        case .CallTelephone:
+            if let phoneCallURL = URL(string: "tel://\(contact.telephone ?? "")") {
+                
+                let application:UIApplication = UIApplication.shared
+                if (application.canOpenURL(phoneCallURL)) {
+                    application.open(phoneCallURL, options: [:], completionHandler: nil)
+                }
+            }
+        case .Edit:
+            let editContactDirectoryVC = storyboard?.instantiateViewController(withIdentifier: "newContactTVC")/* as! NewContactTableViewController*/
+            //editContactDirectoryVC.apiController = apiController
+            //editContactDirectoryVC.contact = contactDataTableView[indexPath.row]
+            navigationController?.pushViewController(editContactDirectoryVC!, animated: true)
+        case .Delete:
+            let alertController = UIAlertController( title: nil,
+                                                     message: nil,
+                                                     preferredStyle: .actionSheet)
+            let deleteAction = UIAlertAction(title:"Supprimer ce contact", style: .destructive, handler: {
+                action in
+                self.parentDirectoryTVC.deleteOneContact(id: (self.contact?.id)!, indexPath: self.indexPath!)
+                self.navigationController?.popViewController(animated: true)
+            })
+            
+            let cancelAction = UIAlertAction(title:"Annuler", style: .cancel, handler: {
+                action in
+            })
+            
+            alertController.addAction(deleteAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true, completion: nil)
+        default :
+            break
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -92,55 +142,3 @@ class InfoContactDirectoryController: UIViewController, UITableViewDelegate, UIT
     */
 
 }
-/*
- case noAction //titleDataTableViewCell
- case callMobile //titleDataClickableTableViewCell
- case callTelephone //titleDataClickableTableViewCell
- case writeMail //titleDataClickableTableViewCell
- case emptyCase
- case edit //titleClickableTableViewCell
- case delete //titleClickableTableViewCell
- 
- 
- func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
- var cell : UITableViewCell? = nil
- 
- switch indexPath.row {
- case 0:
- cell = tableView.dequeueReusableCell(withIdentifier: "titleDataCell", for: indexPath) as! TitleDataTableViewCell
- let titleDataTVC = cell as! TitleDataTableViewCell
- //titleDataTVC.selectionStyle = .none
- titleDataTVC.titleLabel.text = "Date"
- titleDataTVC.dataLabel.text = mevo?.getDate()
- case 1:
- cell = tableView.dequeueReusableCell(withIdentifier: "titleDataClickableCell", for: indexPath) as! TitleDataClickableTableViewCell
- let titleDataTVC = cell as! TitleDataClickableTableViewCell
- titleDataTVC.titleLabel.text = "Numéro"
- titleDataTVC.dataLabel.text = mevo?.getNumber()
- case 2:
- cell = tableView.dequeueReusableCell(withIdentifier: "titleDataCell", for: indexPath) as! TitleDataTableViewCell
- let titleDataTVC = cell as! TitleDataTableViewCell
- //titleDataTVC.selectionStyle = .none
- titleDataTVC.titleLabel.text = "Durée"
- titleDataTVC.dataLabel.text = mevo?.getDuration()
- case 3:
- cell = tableView.dequeueReusableCell(withIdentifier: "titleClickableCell", for: indexPath) as! TitleClickableTableViewCell
- let titleDataTVC = cell as! TitleClickableTableViewCell
- //titleDataTVC.selectionStyle = .none
- titleDataTVC.titleLabel.text = "Partager ce message"
- titleDataTVC.titleLabel.textColor = greenKertel
- case 5:
- cell = tableView.dequeueReusableCell(withIdentifier: "titleClickableCell", for: indexPath) as! TitleClickableTableViewCell
- let titleDataTVC = cell as! TitleClickableTableViewCell
- //titleDataTVC.selectionStyle = .none
- titleDataTVC.titleLabel.text = "Supprimer ce message"
- titleDataTVC.titleLabel.textColor = redKertel
- default:
- let empty = UITableViewCell()
- empty.selectionStyle = .none
- return empty
- }
- return cell!
- }
-
- */

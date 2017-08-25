@@ -400,7 +400,7 @@ class APIController {
                         for data in datas
                         {
                             contacts.append(Contact(isUserContact : true,
-                                id : data["id"] as? String,
+                                id : data["contact_id"] as? String,
                                 firstname : data["firstname"] as? String,
                                 lastname : data["lastname"] as? String,
                                 company : data["company"] as? String,
@@ -442,6 +442,19 @@ class APIController {
                     }
                     delegate.success(data: contacts as [AnyObject] )
                     
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+    
+    func delContact(delegate : APIDelegate!, idContactToDelete : String!)
+    {
+        let data = "{\"contact_ids\": [\"\(idContactToDelete!)\"]}"
+        let postData = NSData(data: data.data(using: String.Encoding.utf8)!)
+        
+        doRequest(httpMethod: "DELETE", sufixUrl : contactUserUrl, dataBody: postData,
+                  success : {(data) -> () in
+                    delegate.success(data: nil)
         }, fail : {(err) -> () in
             delegate.fail(msgError: err)
         })

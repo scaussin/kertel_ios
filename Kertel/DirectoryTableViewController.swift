@@ -14,6 +14,7 @@ class DirectoryTableViewController: UITableViewController {
     var isUserContact : Bool! //set by DirectoryPageViewController (DirectoryController.swift)
     var contactDataTableView : [Contact] = []
     var getContactDelegate : GetContactDelegate!
+    var delContactDelegate : DelContactDelegate!
    // var refresher: UIRefreshControl!
     
     override func viewDidLoad() {
@@ -23,6 +24,7 @@ class DirectoryTableViewController: UITableViewController {
         tableView.delegate = self
         
         getContactDelegate = GetContactDelegate(directoryTVC: self)
+        delContactDelegate = DelContactDelegate()
         refresh()
     }
     
@@ -53,7 +55,7 @@ class DirectoryTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "directoryCell", for: indexPath) as! ContactDirectoryTableViewCell
 
-        cell.textLabel?.text = contactDataTableView[indexPath.row].lastname
+        cell.textLabel?.text = contactDataTableView[indexPath.row].getName()
         return cell
     }
     
@@ -61,7 +63,28 @@ class DirectoryTableViewController: UITableViewController {
         let infoContactDirectoryVC = storyboard?.instantiateViewController(withIdentifier: "infoContactDirectoryVC") as! InfoContactDirectoryController
         infoContactDirectoryVC.apiController = apiController
         infoContactDirectoryVC.contact = contactDataTableView[indexPath.row]
+        infoContactDirectoryVC.indexPath = indexPath
+        infoContactDirectoryVC.parentDirectoryTVC = self
         navigationController?.pushViewController(infoContactDirectoryVC, animated: true)
+    }
+    
+    func deleteOneContact(id : String, indexPath: IndexPath)
+    {
+        apiController?.delContact(delegate: delContactDelegate, idContactToDelete: id)
+        contactDataTableView.remove(at:indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+    }
+    
+    class DelContactDelegate : APIDelegate
+    {
+        func success(data: [AnyObject]?) {
+            print("APIController.delContact() success")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.delContact() fail")
+        }
     }
 
     class GetContactDelegate : APIDelegate
