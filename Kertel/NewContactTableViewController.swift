@@ -10,14 +10,37 @@ import UIKit
 
 class NewContactTableViewController: UITableViewController {
 
+    var placeholderCell : [(placeholder: String, type: UIKeyboardType?)] = [(placeholder : "Nom", type: .default),
+                                                                            (placeholder : "Prénom", type: .default),
+                                                                            (placeholder : "Mobile", type: .phonePad),
+                                                                            (placeholder : "Téléphone", type: .phonePad),
+                                                                            (placeholder : "Société", type: .default),
+                                                                            (placeholder : "Mail", type: .emailAddress),
+                                                                            (placeholder : "Partager le contact avec l\'entrepise", type: nil)]
+    var saveButton : UIBarButtonItem!
+    var contact : Contact?
+    
+    @IBOutlet weak var subtitleLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        if contact == nil
+        {
+            subtitleLabel.text = "Modification du contact"
+        }
+        else
+        {
+            subtitleLabel.text = "Nouveau contact"
+        }
+        saveButton = UIBarButtonItem(title : "Enregistrer", style: .plain, target: self, action: #selector(saveButton(sender :)))
+        
+        navigationItem.rightBarButtonItem = saveButton
+    }
+    
+    func saveButton(sender : UIBarButtonItem)
+    {
+        print("save !")
+        navigationController?.popViewController(animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,20 +56,24 @@ class NewContactTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        
-        return 5
+        return placeholderCell.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        if indexPath.row == 6
+        {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "titleSwitchCell", for: indexPath) as! TitleSwitchTableViewCell
+            cell.titleLabel.text = placeholderCell[indexPath.row].placeholder
+            cell.switchButton.setOn(false, animated: false)
+            return cell
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell", for: indexPath) as! TextFieldTableViewCell
+        cell.textField.placeholder = placeholderCell[indexPath.row].placeholder
+        cell.textField.keyboardType = placeholderCell[indexPath.row].type!
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.

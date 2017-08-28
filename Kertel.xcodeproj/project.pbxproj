@@ -24,6 +24,8 @@
 		1160E5E81F15198C0096A4ED /* InfoMevoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160E5E71F15198C0096A4ED /* InfoMevoController.swift */; };
 		1160E5EC1F1D00CD0096A4ED /* InfoMevoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160E5EB1F1D00CD0096A4ED /* InfoMevoTableViewCell.swift */; };
 		117DAB481F506A1A00ACB92D /* NewContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117DAB471F506A1A00ACB92D /* NewContactTableViewController.swift */; };
+		117DAB4A1F540BBF00ACB92D /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117DAB491F540BBF00ACB92D /* TextFieldTableViewCell.swift */; };
+		117DAB4C1F540DD100ACB92D /* TitleSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117DAB4B1F540DD100ACB92D /* TitleSwitchTableViewCell.swift */; };
 		1192ADA41ED332E10008C554 /* MevoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA31ED332E10008C554 /* MevoController.swift */; };
 		1192ADAB1ED43AC00008C554 /* bdd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA91ED43AC00008C554 /* bdd.xcdatamodeld */; };
 		1192D2471EE59B0400D35D33 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192D2461EE59B0400D35D33 /* SettingViewController.swift */; };
@@ -57,6 +59,8 @@
 		1160E5E71F15198C0096A4ED /* InfoMevoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoMevoController.swift; sourceTree = "<group>"; };
 		1160E5EB1F1D00CD0096A4ED /* InfoMevoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoMevoTableViewCell.swift; sourceTree = "<group>"; };
 		117DAB471F506A1A00ACB92D /* NewContactTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewContactTableViewController.swift; sourceTree = "<group>"; };
+		117DAB491F540BBF00ACB92D /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
+		117DAB4B1F540DD100ACB92D /* TitleSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		1192ADA31ED332E10008C554 /* MevoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MevoController.swift; sourceTree = "<group>"; };
 		1192ADAA1ED43AC00008C554 /* bdd.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = bdd.xcdatamodel; sourceTree = "<group>"; };
 		1192D2461EE59B0400D35D33 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +207,8 @@
 				113BBB8A1F1E0AAA0000264E /* TitleDataTableViewCell.swift */,
 				113BBB8E1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift */,
 				113BBB901F1E5EC10000264E /* TitleClickableTableViewCell.swift */,
+				117DAB491F540BBF00ACB92D /* TextFieldTableViewCell.swift */,
+				117DAB4B1F540DD100ACB92D /* TitleSwitchTableViewCell.swift */,
 				113BBB881F1E050A0000264E /* CallHistory */,
 				113BBB891F1E051B0000264E /* Mevo */,
 				11D79AF11F4C7F1400A2D6B0 /* ContactDirectoryTableViewCell.swift */,
@@ -293,12 +299,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				117DAB4C1F540DD100ACB92D /* TitleSwitchTableViewCell.swift in Sources */,
 				11368EE51EC1CCD600E0F82F /* InfoCallViewController.swift in Sources */,
 				11240B131F4C2BB4005B080A /* DirectoryTableViewController.swift in Sources */,
 				113BBB8D1F1E0DF10000264E /* CallFormatter.swift in Sources */,
 				117DAB481F506A1A00ACB92D /* NewContactTableViewController.swift in Sources */,
 				11D79AF21F4C7F1400A2D6B0 /* ContactDirectoryTableViewCell.swift in Sources */,
 				1160E5E81F15198C0096A4ED /* InfoMevoController.swift in Sources */,
+				117DAB4A1F540BBF00ACB92D /* TextFieldTableViewCell.swift in Sources */,
 				11368EE11EB8943800E0F82F /* InfoCallTableViewCell.swift in Sources */,
 				11F6C15F1EAE0729001376BC /* CallHistoryController.swift in Sources */,
 				1160E5E41F13D9CA0096A4ED /* Mevo.swift in Sources */,
