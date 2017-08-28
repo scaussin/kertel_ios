@@ -8,8 +8,9 @@
 
 import UIKit
 
-class NewContactTableViewController: UITableViewController {
+class NewContactTableViewController: UITableViewController, UITextFieldDelegate, APIControllerProtocol {
 
+    var apiController : APIController? //set by InfoContactDirectoryController
     var placeholderCell : [(placeholder: String, type: UIKeyboardType?)] = [(placeholder : "Nom", type: .default),
                                                                             (placeholder : "Prénom", type: .default),
                                                                             (placeholder : "Mobile", type: .phonePad),
@@ -19,12 +20,12 @@ class NewContactTableViewController: UITableViewController {
                                                                             (placeholder : "Partager le contact avec l\'entrepise", type: nil)]
     var saveButton : UIBarButtonItem!
     var contact : Contact?
-    
+    var allTextField = [UITextField?](repeating: nil, count: 6)
     @IBOutlet weak var subtitleLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if contact == nil
+        if contact != nil
         {
             subtitleLabel.text = "Modification du contact"
         }
@@ -61,19 +62,68 @@ class NewContactTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 6
+        if indexPath.row == 6 //switch cell
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "titleSwitchCell", for: indexPath) as! TitleSwitchTableViewCell
             cell.titleLabel.text = placeholderCell[indexPath.row].placeholder
-            cell.switchButton.setOn(false, animated: false)
+            if contact != nil  && contact?.shared != nil {
+                cell.switchButton.setOn((contact?.shared!)!, animated: false)
+            }
+            else{
+                cell.switchButton.setOn(false, animated: false)
+            }
             return cell
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell", for: indexPath) as! TextFieldTableViewCell
-        cell.textField.placeholder = placeholderCell[indexPath.row].placeholder
-        cell.textField.keyboardType = placeholderCell[indexPath.row].type!
-        return cell
+        else
+        {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell", for: indexPath) as! TextFieldTableViewCell
+            allTextField[indexPath.row] = cell.textField
+            cell.textField.tag = indexPath.row //for link return key and switch to the next textField
+            cell.textField.placeholder = placeholderCell[indexPath.row].placeholder
+            cell.textField.keyboardType = placeholderCell[indexPath.row].type!
+            if contact != nil {
+                switch indexPath.row {
+                case 0:
+                    cell.textField.text = contact?.lastname
+                case 1:
+                    cell.textField.text = contact?.firstname
+                case 2:
+                    cell.textField.text = contact?.mobile
+                case 3:
+                    cell.textField.text = contact?.telephone
+                case 4:
+                    cell.textField.text = contact?.company
+                case 5:
+                    cell.textField.text = contact?.mail
+                default:
+                    break
+                }
+                
+            }
+            cell.textField.delegate = self
+            if indexPath.row == 5 //return key for email field
+            {
+                cell.textField.returnKeyType = .continue
+            }
+            else
+            {
+                cell.textField.returnKeyType = .next
+            }
+            return cell
+        }
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.tag < 5
+        {
+            allTextField[textField.tag + 1]?.becomeFirstResponder()
+        }
+        else
+        {
+            textField.resignFirstResponder()
+        }
+        return false
+    }
 
     /*
     // Override to support conditional editing of the table view.

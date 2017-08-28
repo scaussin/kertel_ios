@@ -11,7 +11,9 @@ import UIKit
 class DirectoryController: UIViewController, APIControllerProtocol {
     
     var apiController : APIController? //set by loginViewController
-
+    var directoryPageVC: DirectoryPageViewController?
+    @IBOutlet weak var tabSegementControl: UISegmentedControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -22,8 +24,17 @@ class DirectoryController: UIViewController, APIControllerProtocol {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let directoryPageVC = segue.destination as? DirectoryPageViewController, segue.identifier == "directoryPageEmbed" {
-            
+            self.directoryPageVC = directoryPageVC
             directoryPageVC.parentDirectoryController = self
+        }
+    }
+    
+    @IBAction func onChangeTab(_ sender: UISegmentedControl) {
+        if (sender.selectedSegmentIndex == 0) {
+            directoryPageVC?.firstPage()
+        }
+        else {
+            directoryPageVC?.secondPage()
         }
     }
 }
@@ -56,6 +67,26 @@ class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDa
         userVC = userDirectoryTVC
 
         setViewControllers([companyVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
+    {
+        if pageViewController.viewControllers![0] == userVC {
+            parentDirectoryController.tabSegementControl.selectedSegmentIndex = 1
+        }
+        else {
+            parentDirectoryController.tabSegementControl.selectedSegmentIndex = 0
+        }
+    }
+    
+    func firstPage()
+    {
+        setViewControllers([companyDirectoryTVC], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
+    }
+    
+    func secondPage()
+    {
+        setViewControllers([userDirectoryTVC], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {

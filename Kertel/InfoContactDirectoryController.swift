@@ -105,10 +105,10 @@ class InfoContactDirectoryController: UIViewController, UITableViewDelegate, UIT
                 }
             }
         case .Edit:
-            let editContactDirectoryVC = storyboard?.instantiateViewController(withIdentifier: "newContactTVC")/* as! NewContactTableViewController*/
-            //editContactDirectoryVC.apiController = apiController
-            //editContactDirectoryVC.contact = contactDataTableView[indexPath.row]
-            navigationController?.pushViewController(editContactDirectoryVC!, animated: true)
+            let newContactDirectoryVC = storyboard?.instantiateViewController(withIdentifier: "newContactTVC") as! NewContactTableViewController
+            newContactDirectoryVC.apiController = apiController
+            newContactDirectoryVC.contact = contact
+            navigationController?.pushViewController(newContactDirectoryVC as UIViewController, animated: true)
         case .Delete:
             let alertController = UIAlertController( title: nil,
                                                      message: nil,
