@@ -259,6 +259,7 @@
 					11F6C1241EA775CA001376BC = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = YSXC7M67VD;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};

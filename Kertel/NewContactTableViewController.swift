@@ -20,8 +20,27 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
                                                                             (placeholder : "Partager le contact avec l\'entrepise", type: nil)]
     var saveButton : UIBarButtonItem!
     var contact : Contact?
-    var allTextField = [UITextField?](repeating: nil, count: 6)
+    var allTextField = [UITextField?](repeating: nil , count: 6)
     @IBOutlet weak var subtitleLabel: UILabel!
+    var pathPutContactDelegate : PathPutContactDelegate!
+    var newContact : Contact?
+    var switchShared : UISwitch!
+    var scaussinCount  = 0
+    
+    @IBOutlet weak var scaussinImage: UIImageView!
+    
+    @IBAction func switchscaussinAction(_ sender: Any) {
+        scaussinCount += 1
+        if scaussinCount % 4 == 0
+        {
+            scaussinImage.isHidden = false
+            print("don't panic")
+        }
+        else
+        {
+            scaussinImage.isHidden = true
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,17 +52,72 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
         {
             subtitleLabel.text = "Nouveau contact"
         }
+        scaussinImage.image = UIImage(named: "42")
         saveButton = UIBarButtonItem(title : "Enregistrer", style: .plain, target: self, action: #selector(saveButton(sender :)))
+        pathPutContactDelegate = PathPutContactDelegate(newContactTVC: self)
         
         navigationItem.rightBarButtonItem = saveButton
     }
     
     func saveButton(sender : UIBarButtonItem)
     {
-        print("save !")
-        navigationController?.popViewController(animated: true)
+        //nom obligatoire
+        if allTextField[0]?.text == nil
+        {
+            let alert = UIAlertController(title: "", message: "Le champ 'Nom' est obligatoire", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+        else
+        {
+            //modification du contact
+            if contact != nil
+            {
+                newContact = Contact(isUserContact : (contact?.isUserContact)!,
+                                     id : contact?.id,
+                                     firstname : allTextField[1]?.text,
+                                     lastname : allTextField[0]?.text,
+                                     company : allTextField[4]?.text,
+                                     mobile : allTextField[2]?.text,
+                                     telephone : allTextField[3]?.text,
+                                     fax : contact?.fax,
+                                     mail : allTextField[5]?.text,
+                                     shared : switchShared.isOn)
+                apiController?.patchContact(delegate: pathPutContactDelegate, contact: newContact)
+            }
+        }
+        //navigationController?.popViewController(animated: true)
     }
-
+    
+    // edit or create new contact
+    class PathPutContactDelegate : APIDelegate
+    {
+        var newContactTVC : NewContactTableViewController
+        
+        init (newContactTVC : NewContactTableViewController!){
+            self.newContactTVC = newContactTVC
+        }
+        
+        func success(data: [AnyObject]?) {
+            print("APIController.patchContact() success")
+            
+            DispatchQueue.main.async{
+                self.newContactTVC.navigationController?.popViewController(animated: true)
+            }
+        }
+        
+        func fail(msgError : String){
+            print("APIController.patchContact() fail")
+            DispatchQueue.main.sync {
+                let alert = UIAlertController(title: "Erreur", message: "Erreur lors de l'enregistrement.", preferredStyle: UIAlertControllerStyle.alert)
+                
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                self.newContactTVC.present(alert, animated: true, completion: nil)
+            }
+            
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -66,6 +140,7 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "titleSwitchCell", for: indexPath) as! TitleSwitchTableViewCell
             cell.titleLabel.text = placeholderCell[indexPath.row].placeholder
+            switchShared = cell.switchButton
             if contact != nil  && contact?.shared != nil {
                 cell.switchButton.setOn((contact?.shared!)!, animated: false)
             }

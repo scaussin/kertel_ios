@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class CallHistoryController: UITableViewController , APIControllerProtocol{
 
@@ -17,10 +18,13 @@ class CallHistoryController: UITableViewController , APIControllerProtocol{
     var incomingDelegate : IncomingDelegate!
     var outgoingDelegate : OutgoingDelegate!
    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("CallHistoryController -> viewDidLoad")
-
+        
         refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)

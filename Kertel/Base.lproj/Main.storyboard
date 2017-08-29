@@ -381,8 +381,15 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="QqB-k8-e0c"/>
-                    <navigationItem key="navigationItem" title="Annuaire" id="OoG-V9-ojm"/>
+                    <navigationItem key="navigationItem" title="Annuaire" id="OoG-V9-ojm">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ug1-Ik-xnN">
+                            <connections>
+                                <action selector="addContactAction:" destination="M9E-9N-vKT" id="QYR-jf-BT6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="addContactButton" destination="Ug1-Ik-xnN" id="nXq-R6-UZr"/>
                         <outlet property="tabSegementControl" destination="ZJS-oI-pbC" id="D0V-Yu-puV"/>
                     </connections>
                 </viewController>
@@ -960,11 +967,11 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CEf-uQ-qar" id="vAw-e1-S5D">
-                                    <rect key="frame" x="0.0" y="0.0" width="376" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="381" height="43.666666666666664"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eMU-kd-dru">
-                                            <rect key="frame" x="20" y="0.0" width="356" height="43"/>
+                                            <rect key="frame" x="15" y="0.0" width="364" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -1145,9 +1152,13 @@
                                 <constraint firstItem="JRI-Ia-AQc" firstAttribute="leading" secondItem="ocJ-oF-jEk" secondAttribute="leading" constant="20" symbolic="YES" id="fN0-4b-18Y"/>
                             </constraints>
                         </view>
+                        <imageView key="tableFooterView" hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="0gc-eO-JdX">
+                            <rect key="frame" x="0.0" y="214" width="414" height="85"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="textFieldCell" id="a3h-iY-D1z" customClass="TextFieldTableViewCell" customModule="Kertel" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="99" width="414" height="48"/>
+                                <rect key="frame" x="0.0" y="100" width="414" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a3h-iY-D1z" id="8hW-C6-ti8">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="47"/>
@@ -1174,7 +1185,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="titleSwitchCell" id="Vzu-nC-WyK" customClass="TitleSwitchTableViewCell" customModule="Kertel" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="147" width="414" height="48"/>
+                                <rect key="frame" x="0.0" y="148" width="414" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vzu-nC-WyK" id="zZg-ki-sSd">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="47"/>
@@ -1188,6 +1199,9 @@
                                         </label>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="48c-Xb-ujH">
                                             <rect key="frame" x="357" y="8" width="51" height="31"/>
+                                            <connections>
+                                                <action selector="switchscaussinAction:" destination="Xiq-YR-uT4" eventType="valueChanged" id="wmm-YI-1gl"/>
+                                            </connections>
                                         </switch>
                                     </subviews>
                                     <constraints>
@@ -1211,6 +1225,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="scaussinImage" destination="0gc-eO-JdX" id="RM5-9h-ZLt"/>
                         <outlet property="subtitleLabel" destination="JRI-Ia-AQc" id="Rh1-lM-tus"/>
                     </connections>
                 </tableViewController>

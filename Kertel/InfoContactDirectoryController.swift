@@ -84,7 +84,6 @@ class InfoContactDirectoryController: UIViewController, UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("didSelectRowAt \(indexPath.row)")
         tableView.deselectRow(at: indexPath, animated: true)
         
         switch contact.infoToDisplay[indexPath.row].action! {

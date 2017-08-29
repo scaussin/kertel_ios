@@ -99,40 +99,6 @@ class APIController {
         }
     }
     
-    /*
-     import Foundation
-     
-     let headers = [
-     "content-type": "application/json",
-     "auth-token": "a9472b72-513f-85ea-773f-44501ec631db",
-     "cache-control": "no-cache",
-     "postman-token": "7245f959-96a5-020e-c4fe-ad8e1996baa7"
-     ]
-     
-     let postData = NSData(data: "{
-     "call_ids": ["1594150",1594145]
-     }".data(using: String.Encoding.utf8)!)
-     
-     let request = NSMutableURLRequest(url: NSURL(string: "http://at.mosaica.kertel.com/appli/api/calls/incoming")! as URL,
-     cachePolicy: .useProtocolCachePolicy,
-     timeoutInterval: 10.0)
-     request.httpMethod = "DELETE"
-     request.allHTTPHeaderFields = headers
-     request.httpBody = postData as Data
-     
-     let session = URLSession.shared
-     let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-     if (error != nil) {
-     print(error)
-     } else {
-     let httpResponse = response as? HTTPURLResponse
-     print(httpResponse)
-     }
-     })
-     
-     dataTask.resume()
-     */
-    
     func doRequest(httpMethod : String, sufixUrl : String, dataBody : NSData?, success : @escaping (NSDictionary) -> (), fail : @escaping (String) -> ())
     {
         if token == nil {
@@ -158,7 +124,7 @@ class APIController {
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             let httpResponse = response as? HTTPURLResponse
             if (error != nil || httpResponse?.statusCode != 200) {
-                fail("[FAIL] request " /*+ httpMethod + " " + self.baseUrl + self.incomingCallUrl + " detail: " + error?.localizedDescription*/)
+                fail("[FAIL] request ")
                 return
             }
             else
@@ -428,13 +394,22 @@ class APIController {
                         
                         for data in datas
                         {
+                            var telephone : String?
+                            if (data["mobile"] as? String) != nil
+                            {
+                                telephone = data["mobile"] as? String
+                            }
+                            else
+                            {
+                                telephone = data["e164"] as? String
+                            }
                             contacts.append(Contact(isUserContact : false,
                                                     id : data["user_id"] as? String,
                                                     firstname : data["firstname"] as? String,
                                                     lastname : data["lastname"] as? String,
                                                     company : data["company"] as? String,
                                                     mobile : data["mobile"] as? String,
-                                                    telephone : data["telephone"] as? String,
+                                                    telephone : telephone,
                                                     fax : data["fax"] as? String,
                                                     mail : data["mail"] as? String,
                                                     shared : data["shared"] as? Bool))
@@ -447,10 +422,11 @@ class APIController {
         })
     }
     
+    //supprimer ContactUser
     func delContact(delegate : APIDelegate!, idContactToDelete : String!)
     {
-        let data = "{\"contact_ids\": [\"\(idContactToDelete!)\"]}"
-        let postData = NSData(data: data.data(using: String.Encoding.utf8)!)
+        let dataBody = "{\"contact_ids\": [\"\(idContactToDelete!)\"]}"
+        let postData = NSData(data: dataBody.data(using: String.Encoding.utf8)!)
         
         doRequest(httpMethod: "DELETE", sufixUrl : contactUserUrl, dataBody: postData,
                   success : {(data) -> () in
@@ -460,6 +436,72 @@ class APIController {
         })
     }
     
+    //modifier ContactUser
+    func patchContact(delegate : APIDelegate!, contact : Contact!)
+    {
+        let dataContact : [String: Any?] = ["contact_id": contact.id,
+                                            "firstname" : contact.firstname,
+                                            "lastname" : contact.lastname,
+                                            "company" : contact.company,
+                                            "telephone": contact.telephone,
+                                            "mobile" : contact.mobile,
+                                            "shared": contact.shared,
+                                            "mail" : contact.mail,
+                                            "fax" : contact.fax]
+        
+        let dataBody : [String :  [[String: Any?]]] = ["contacts_info" : [dataContact]]
+        
+        var jsonData : Data?
+        do {
+            jsonData = try JSONSerialization.data(withJSONObject: dataBody, options: .prettyPrinted)
+        }
+        catch {
+            print("error json")
+        }
+        
+        
+       // let dataBody = "{\"contacts_info\": [\"\(String(describing: jsonData?.base64EncodedString()))\"]}"
+       // print(dataBody.base64EncodedString())
+        //let postData = NSData(data: dataBody.data(using: String.Encoding.utf8)!)
+
+     /*
+         do {
+         return try NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions.PrettyPrinted)
+         } catch let myJSONError {
+         print(myJSONError)
+         }
+        */
+        //let postData = NSData(data: jsonData!)
+        
+        doRequest(httpMethod: "PATCH", sufixUrl : contactUserUrl, dataBody: jsonData! as NSData,
+                  success : {(data) -> () in
+                    delegate.success(data: nil)
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+    
+    /*
+    do {
+    // encoding dictionary data to JSON
+    let jsonData = try JSONSerialization.data(withJSONObject: dataDictionary,
+    options: .prettyPrinted)
+    
+    /* // decoding JSON to Swift object
+     let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
+     // after decoding, "decoded" is of type `Any?`, so it can't be used
+     // we must check for nil and cast it to the right type
+     if let dataFromJSON = decoded as? [String: Any] {
+     // use dataFromJSON
+     
+     }*/
+    print(jsonData)
+    } catch {
+    print("error json")
+    }
+    
+    */
+
 
     func disconnect()
     {

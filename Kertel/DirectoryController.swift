@@ -13,9 +13,12 @@ class DirectoryController: UIViewController, APIControllerProtocol {
     var apiController : APIController? //set by loginViewController
     var directoryPageVC: DirectoryPageViewController?
     @IBOutlet weak var tabSegementControl: UISegmentedControl!
+    @IBOutlet weak var addContactButton: UIBarButtonItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title : "add", style: .plain, target: self, action: #selector(deleteAllButton(sender :)))
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,6 +30,11 @@ class DirectoryController: UIViewController, APIControllerProtocol {
             self.directoryPageVC = directoryPageVC
             directoryPageVC.parentDirectoryController = self
         }
+    }
+    
+    @IBAction func addContactAction(_ sender: Any) {
+        
+        print("add contact")
     }
     
     @IBAction func onChangeTab(_ sender: UISegmentedControl) {

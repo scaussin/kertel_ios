@@ -3,12 +3,48 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "GLOBAL">
+         <PersistentStrings>
+            <PersistentString
+               value = "httpResponse.debugDescription">
+            </PersistentString>
+            <PersistentString
+               value = "dataBody.description">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "CallHistoryController.prepare(for : UIStoryboardSegue, sender : Any?) -&gt; ():CallHistoryController.swift">
          <PersistentStrings>
             <PersistentString
                value = "(AnyObject)sender">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "APIController.(patchContact(delegate : APIDelegate!, contact : Contact!) -&gt; ()).(closure #2):APIController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "APIController.(doRequest(httpMethod : String, sufixUrl : String, dataBody : NSData?, success : (NSDictionary) -&gt; (), fail : (String) -&gt; ()) -&gt; ()).(closure #1):APIController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "(HTTPURLResponse?)httpResponse">
+            </PersistentString>
+            <PersistentString
+               value = "data.debugDescription">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "APIController.patchContact(delegate : APIDelegate!, contact : Contact!) -&gt; ():APIController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "jsonData?.base64EncodedString()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NewContactTableViewController.saveButton(sender : UIBarButtonItem) -&gt; ():NewContactTableViewController.swift">
       </ContextState>
       <ContextState
          contextName = "APIController.(getToken(delegate : APIDelegate, username : String?, company : String?, password : String?) -&gt; ()).(closure #1):APIController.swift">

@@ -260,7 +260,6 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("didSelectRowAt \(indexPath.row)")
         tableView.deselectRow(at: indexPath, animated: true)
         
         if (indexPath.row == 1) //call

@@ -8,12 +8,17 @@
 
 import UIKit
 
+/*struct Dog: Codable {
+    var name: String
+    var owner: String
+}*/
+
 class InfoCallViewController: UIViewController {
     
     @IBOutlet weak var nameLabel: UILabel!
     
     var call : CallHistory?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
