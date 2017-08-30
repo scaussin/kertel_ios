@@ -373,7 +373,7 @@ class APIController {
                                 mobile : data["mobile"] as? String,
                                 telephone : data["telephone"] as? String,
                                 fax : data["fax"] as? String,
-                                mail : data["email"] as? String,
+                                mail : data["mail"] as? String,
                                 shared : data["shared"] as? Bool))
                         }
                     }
@@ -388,34 +388,7 @@ class APIController {
     {
         doRequest(httpMethod: "GET", sufixUrl : contactCompanyUrl, dataBody: nil,
                   success : {(data) -> () in
-                    
-                    var contacts : [Contact] = []
-                    if let datas = data["datas"] as? [[String: Any]] {
-                        
-                        for data in datas
-                        {
-                            var telephone : String?
-                            if (data["mobile"] as? String) != nil
-                            {
-                                telephone = data["mobile"] as? String
-                            }
-                            else
-                            {
-                                telephone = data["e164"] as? String
-                            }
-                            contacts.append(Contact(isUserContact : false,
-                                                    id : data["user_id"] as? String,
-                                                    firstname : data["firstname"] as? String,
-                                                    lastname : data["lastname"] as? String,
-                                                    company : data["company"] as? String,
-                                                    mobile : data["mobile"] as? String,
-                                                    telephone : telephone,
-                                                    fax : data["fax"] as? String,
-                                                    mail : data["mail"] as? String,
-                                                    shared : data["shared"] as? Bool))
-                        }
-                    }
-                    delegate.success(data: contacts as [AnyObject] )
+                    delegate.success(data: self.contactCompanyJsonToArrayContact(dataJson: data, isContactUSer: false) as [AnyObject] )
                     
         }, fail : {(err) -> () in
             delegate.fail(msgError: err)
@@ -451,57 +424,95 @@ class APIController {
         
         let dataBody : [String :  [[String: Any?]]] = ["contacts_info" : [dataContact]]
         
-        var jsonData : Data?
         do {
-            jsonData = try JSONSerialization.data(withJSONObject: dataBody, options: .prettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dataBody, options: .prettyPrinted)
+            doRequest(httpMethod: "PATCH", sufixUrl : contactUserUrl, dataBody: jsonData as NSData,
+                      success : {(data) -> () in
+                        delegate.success(data: nil)
+            }, fail : {(err) -> () in
+                delegate.fail(msgError: err)
+            })
         }
         catch {
-            print("error json")
+            print("error json in APIController.patchContact()")
         }
-        
-        
-       // let dataBody = "{\"contacts_info\": [\"\(String(describing: jsonData?.base64EncodedString()))\"]}"
-       // print(dataBody.base64EncodedString())
-        //let postData = NSData(data: dataBody.data(using: String.Encoding.utf8)!)
-
-     /*
-         do {
-         return try NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions.PrettyPrinted)
-         } catch let myJSONError {
-         print(myJSONError)
-         }
-        */
-        //let postData = NSData(data: jsonData!)
-        
-        doRequest(httpMethod: "PATCH", sufixUrl : contactUserUrl, dataBody: jsonData! as NSData,
-                  success : {(data) -> () in
-                    delegate.success(data: nil)
-        }, fail : {(err) -> () in
-            delegate.fail(msgError: err)
-        })
     }
     
-    /*
-    do {
-    // encoding dictionary data to JSON
-    let jsonData = try JSONSerialization.data(withJSONObject: dataDictionary,
-    options: .prettyPrinted)
-    
-    /* // decoding JSON to Swift object
-     let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
-     // after decoding, "decoded" is of type `Any?`, so it can't be used
-     // we must check for nil and cast it to the right type
-     if let dataFromJSON = decoded as? [String: Any] {
-     // use dataFromJSON
-     
-     }*/
-    print(jsonData)
-    } catch {
-    print("error json")
+    //creer un ContactUser
+    func putContact(delegate : APIDelegate!, contact : Contact!)
+    {
+        let dataContact : [String: Any?] = ["firstname" : contact.firstname,
+                                            "lastname" : contact.lastname,
+                                            "company" : contact.company,
+                                            "telephone": contact.telephone,
+                                            "mobile" : contact.mobile,
+                                            "shared": contact.shared,
+                                            "mail" : contact.mail]
+        
+        let dataBody : [String :  [[String: Any?]]] = ["contacts_info" : [dataContact]]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dataBody, options: .prettyPrinted)
+            doRequest(httpMethod: "PUT", sufixUrl : contactUserUrl, dataBody: jsonData as NSData,
+                      success : {(data) -> () in
+                        delegate.success(data: nil)
+            }, fail : {(err) -> () in
+                delegate.fail(msgError: err)
+            })
+        }
+        catch {
+            print("error json in APIController.putContact()")
+        }
+    }
+
+    //search contactCompany
+    func PostContactCompany(delegate : APIDelegate, search : String)
+    {
+        let dataBody : [String : String] = ["search" : search]
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dataBody, options: .prettyPrinted)
+            doRequest(httpMethod: "POST", sufixUrl : contactCompanyUrl, dataBody: jsonData as NSData,
+                      success : {(data) -> () in
+                        delegate.success(data: self.contactCompanyJsonToArrayContact(dataJson: data, isContactUSer: false) as [AnyObject] )
+                        
+            }, fail : {(err) -> () in
+                delegate.fail(msgError: err)
+            })
+        }
+        catch {
+            print("error json in APIController.PostContactCompany() (search)")
+        }
     }
     
-    */
-
+    func contactCompanyJsonToArrayContact(dataJson : NSDictionary, isContactUSer : Bool) -> [Contact]{
+        var contacts : [Contact] = []
+        if let datas = dataJson["datas"] as? [[String: Any]] {
+            
+            for data in datas
+            {
+                var telephone : String?
+                if (data["mobile"] as? String) != nil
+                {
+                    telephone = data["mobile"] as? String
+                }
+                else
+                {
+                    telephone = data["e164"] as? String
+                }
+                contacts.append(Contact(isUserContact : false,
+                                        id : data["user_id"] as? String,
+                                        firstname : data["firstname"] as? String,
+                                        lastname : data["lastname"] as? String,
+                                        company : data["company"] as? String,
+                                        mobile : data["mobile"] as? String,
+                                        telephone : telephone,
+                                        fax : data["fax"] as? String,
+                                        mail : data["mail"] as? String,
+                                        shared : data["shared"] as? Bool))
+            }
+        }
+        return contacts
+    }
 
     func disconnect()
     {

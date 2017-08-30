@@ -11,13 +11,6 @@ import UIKit
 class NewContactTableViewController: UITableViewController, UITextFieldDelegate, APIControllerProtocol {
 
     var apiController : APIController? //set by InfoContactDirectoryController
-    var placeholderCell : [(placeholder: String, type: UIKeyboardType?)] = [(placeholder : "Nom", type: .default),
-                                                                            (placeholder : "Prénom", type: .default),
-                                                                            (placeholder : "Mobile", type: .phonePad),
-                                                                            (placeholder : "Téléphone", type: .phonePad),
-                                                                            (placeholder : "Société", type: .default),
-                                                                            (placeholder : "Mail", type: .emailAddress),
-                                                                            (placeholder : "Partager le contact avec l\'entrepise", type: nil)]
     var saveButton : UIBarButtonItem!
     var contact : Contact?
     var allTextField = [UITextField?](repeating: nil , count: 6)
@@ -26,22 +19,16 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
     var newContact : Contact?
     var switchShared : UISwitch!
     var scaussinCount  = 0
-    
     @IBOutlet weak var scaussinImage: UIImageView!
-    
-    @IBAction func switchscaussinAction(_ sender: Any) {
-        scaussinCount += 1
-        if scaussinCount % 4 == 0
-        {
-            scaussinImage.isHidden = false
-            print("don't panic")
-        }
-        else
-        {
-            scaussinImage.isHidden = true
-        }
-    }
-    
+    var directoryTVC : DirectoryTableViewController? // set by DirectoryController for refresh after new contact
+    var placeholderCell : [(placeholder: String, type: UIKeyboardType?)] = [(placeholder : "Nom", type: .default),
+                                                                            (placeholder : "Prénom", type: .default),
+                                                                            (placeholder : "Mobile", type: .phonePad),
+                                                                            (placeholder : "Téléphone", type: .phonePad),
+                                                                            (placeholder : "Société", type: .default),
+                                                                            (placeholder : "Mail", type: .emailAddress),
+                                                                            (placeholder : "Partager le contact avec l\'entrepise", type: nil)]
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         if contact != nil
@@ -62,7 +49,7 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
     func saveButton(sender : UIBarButtonItem)
     {
         //nom obligatoire
-        if allTextField[0]?.text == nil
+        if allTextField[0]?.text == nil || allTextField[0]?.text == ""
         {
             let alert = UIAlertController(title: "", message: "Le champ 'Nom' est obligatoire", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -85,8 +72,20 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
                                      shared : switchShared.isOn)
                 apiController?.patchContact(delegate: pathPutContactDelegate, contact: newContact)
             }
+            else { //save nouveau contact
+                newContact = Contact(isUserContact : true,
+                                     id : nil,
+                                     firstname : allTextField[1]?.text,
+                                     lastname : allTextField[0]?.text,
+                                     company : allTextField[4]?.text,
+                                     mobile : allTextField[2]?.text,
+                                     telephone : allTextField[3]?.text,
+                                     fax : nil,
+                                     mail : allTextField[5]?.text,
+                                     shared : switchShared.isOn)
+                apiController?.putContact(delegate: pathPutContactDelegate, contact: newContact)
+            }
         }
-        //navigationController?.popViewController(animated: true)
     }
     
     // edit or create new contact
@@ -99,22 +98,23 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
         }
         
         func success(data: [AnyObject]?) {
-            print("APIController.patchContact() success")
-            
+            print("APIController.PathPutContactDelegate() success")
+            if newContactTVC.directoryTVC != nil { //refresh user contact
+                newContactTVC.directoryTVC?.refresh()
+            }
             DispatchQueue.main.async{
                 self.newContactTVC.navigationController?.popViewController(animated: true)
             }
         }
         
         func fail(msgError : String){
-            print("APIController.patchContact() fail")
+            print("APIController.PathPutContactDelegate() fail")
             DispatchQueue.main.sync {
                 let alert = UIAlertController(title: "Erreur", message: "Erreur lors de l'enregistrement.", preferredStyle: UIAlertControllerStyle.alert)
                 
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                 self.newContactTVC.present(alert, animated: true, completion: nil)
             }
-            
         }
     }
     
@@ -133,7 +133,6 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return placeholderCell.count
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 6 //switch cell
@@ -198,6 +197,19 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
             textField.resignFirstResponder()
         }
         return false
+    }
+    
+    @IBAction func switchscaussinAction(_ sender: Any) {
+        scaussinCount += 1
+        if scaussinCount % 4 == 0
+        {
+            scaussinImage.isHidden = false
+            print("Don't panic")
+        }
+        else
+        {
+            scaussinImage.isHidden = true
+        }
     }
 
     /*

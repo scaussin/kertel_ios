@@ -12,19 +12,28 @@ class DirectoryTableViewController: UITableViewController {
     
     var apiController : APIController? //set by DirectoryPageViewController (DirectoryController.swift)
     var isUserContact : Bool! //set by DirectoryPageViewController (DirectoryController.swift)
+    var directoryController : DirectoryController! //set by DirectoryPageViewController (DirectoryController.swift)
     var contactDataTableView : [Contact] = []
     var getContactDelegate : GetContactDelegate!
     var delContactDelegate : DelContactDelegate!
+    var searchContactCompanyDelegate : SearchContactCompanyDelegate!
+    var refresher: UIRefreshControl!
    // var refresher: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //refresh
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refresher)
+        
         tableView.dataSource = self
         tableView.delegate = self
         
         getContactDelegate = GetContactDelegate(directoryTVC: self)
         delContactDelegate = DelContactDelegate()
+        searchContactCompanyDelegate = SearchContactCompanyDelegate(directoryTVC: self)
         refresh()
     }
     
@@ -37,6 +46,25 @@ class DirectoryTableViewController: UITableViewController {
         else
         {
             apiController?.getContactCompany(delegate: getContactDelegate)
+        }
+    }
+    
+    func search(search : String!) {
+        if (isUserContact) {
+            //search
+        }
+        else
+        {
+            apiController?.PostContactCompany(delegate: searchContactCompanyDelegate, search: search)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if isUserContact {
+            directoryController.navigationItem.rightBarButtonItem?.isEnabled = true
+        }
+        else {
+            directoryController.navigationItem.rightBarButtonItem?.isEnabled = false
         }
     }
 
@@ -87,6 +115,33 @@ class DirectoryTableViewController: UITableViewController {
         }
     }
 
+    class SearchContactCompanyDelegate : APIDelegate
+    {
+        var directoryTVC : DirectoryTableViewController
+        
+        init (directoryTVC : DirectoryTableViewController!)
+        {
+            self.directoryTVC = directoryTVC
+        }
+        
+        func success(data: [AnyObject]?) {
+            DispatchQueue.main.async {
+                self.directoryTVC.contactDataTableView.removeAll()
+                self.directoryTVC.contactDataTableView = data as! [Contact]
+                self.directoryTVC.sortAlphaContact()
+                self.directoryTVC.tableView.reloadData()
+                self.directoryTVC.refresher.endRefreshing()
+            }
+            print("APIController.SearchComtactCompanyDelegate() success")
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.SearchComtactCompanyDelegate() fail")
+            self.directoryTVC.refresher.endRefreshing()
+        }
+    }
+    
     class GetContactDelegate : APIDelegate
     {
         var directoryTVC : DirectoryTableViewController
@@ -100,8 +155,9 @@ class DirectoryTableViewController: UITableViewController {
             DispatchQueue.main.async {
                 self.directoryTVC.contactDataTableView.removeAll()
                 self.directoryTVC.contactDataTableView = data as! [Contact]
+                self.directoryTVC.sortAlphaContact()
                 self.directoryTVC.tableView.reloadData()
-                //self.directoryTVC.refresher.endRefreshing()
+                self.directoryTVC.refresher.endRefreshing()
             }
             if (self.directoryTVC.isUserContact)
             {
@@ -123,16 +179,16 @@ class DirectoryTableViewController: UITableViewController {
             {
                 print("APIController.getContactCompany() fail")
             }
-            //self.directoryTVC.refresher.endRefreshing()
+            self.directoryTVC.refresher.endRefreshing()
         }
     }
     
+    func sortAlphaContact()
+    {
+        contactDataTableView.sort(){$0.sortName < $1.sortName}
+    }
     
-    
-    
-    
-    
-    
+
     
     /*
     // Override to support conditional editing of the table view.

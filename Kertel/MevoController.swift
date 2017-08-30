@@ -48,7 +48,6 @@ class MevoController: UITableViewController, APIControllerProtocol {
     func refresh()
     {
         apiController?.getMevo(delegate: getMevoDelegate)
-       // apiController?.getOutgoingCall(delegate: outgoingDelegate)
     }
     
     //return of GET getMevo

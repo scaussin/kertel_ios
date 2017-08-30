@@ -8,16 +8,17 @@
 
 import UIKit
 
-class DirectoryController: UIViewController, APIControllerProtocol {
+class DirectoryController: UIViewController, APIControllerProtocol, UISearchBarDelegate {
     
     var apiController : APIController? //set by loginViewController
     var directoryPageVC: DirectoryPageViewController?
     @IBOutlet weak var tabSegementControl: UISegmentedControl!
     @IBOutlet weak var addContactButton: UIBarButtonItem!
     
-    
+    @IBOutlet weak var searchBar: UISearchBar!
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchBar.delegate = self
         //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title : "add", style: .plain, target: self, action: #selector(deleteAllButton(sender :)))
     }
 
@@ -32,9 +33,17 @@ class DirectoryController: UIViewController, APIControllerProtocol {
         }
     }
     
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
+        if searchText.characters.count > 0 {
+            directoryPageVC?.search(search: searchText)
+        }
+    }
+    
     @IBAction func addContactAction(_ sender: Any) {
-        
-        print("add contact")
+        let newContactDirectoryVC = storyboard?.instantiateViewController(withIdentifier: "newContactTVC") as! NewContactTableViewController
+        newContactDirectoryVC.apiController = apiController
+        newContactDirectoryVC.directoryTVC = directoryPageVC?.userDirectoryTVC
+        navigationController?.pushViewController(newContactDirectoryVC as UIViewController, animated: true)
     }
     
     @IBAction func onChangeTab(_ sender: UISegmentedControl) {
@@ -47,6 +56,7 @@ class DirectoryController: UIViewController, APIControllerProtocol {
     }
 }
 
+//Embed UIView
 class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
     var companyDirectoryTVC : DirectoryTableViewController!
@@ -56,7 +66,7 @@ class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDa
     
     var companyVC :UIViewController!
     var userVC :UIViewController!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,19 +76,37 @@ class DirectoryPageViewController : UIPageViewController, UIPageViewControllerDa
         companyDirectoryTVC = storyboard?.instantiateViewController(withIdentifier: "TVCDirectory") as! DirectoryTableViewController
         companyDirectoryTVC.apiController = parentDirectoryController.apiController
         companyDirectoryTVC.isUserContact = false
+        companyDirectoryTVC.directoryController = parentDirectoryController
         
         userDirectoryTVC = storyboard?.instantiateViewController(withIdentifier: "TVCDirectory") as! DirectoryTableViewController
         userDirectoryTVC.apiController = parentDirectoryController.apiController
         userDirectoryTVC.isUserContact = true
+        userDirectoryTVC.directoryController = parentDirectoryController
         
         companyVC = companyDirectoryTVC
         userVC = userDirectoryTVC
-
+        
+        
         setViewControllers([companyVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
     }
     
+    func search(search : String) {
+        companyDirectoryTVC.search(search: search)
+        userDirectoryTVC.search(search: search)
+    }
+    
+    // change tabSegementControl when gesture switch page finished
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
     {
+        /*if let currentPageTVC : DirectoryTableViewController = viewControllers?[0] as? DirectoryTableViewController {
+            if currentPageTVC.isUserContact {
+                print("is UserContact")
+            }
+            else {
+                print("is CompanyContact")
+            }
+        }*/
+        
         if pageViewController.viewControllers![0] == userVC {
             parentDirectoryController.tabSegementControl.selectedSegmentIndex = 1
         }

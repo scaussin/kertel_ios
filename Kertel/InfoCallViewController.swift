@@ -8,11 +8,6 @@
 
 import UIKit
 
-/*struct Dog: Codable {
-    var name: String
-    var owner: String
-}*/
-
 class InfoCallViewController: UIViewController {
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -38,7 +33,7 @@ class InfoCallViewController: UIViewController {
 
 }
 
-
+//Embed UIView
 class InfoCallTableViewController: UITableViewController {
     
     var call : CallHistory!

@@ -27,6 +27,7 @@ class Contact {
     var telephone : String?
     var fax : String?
     var mail : String?
+    var sortName : String! = ""
     var shared : Bool?
     var isUserContact : Bool
     var infoToDisplay : [InfoToDisplay] = []
@@ -44,7 +45,18 @@ class Contact {
         self.mail = mail
         self.shared = shared
         self.isUserContact = isUserContact
+        genSortName()
         fillInfoToDisplay()
+    }
+    
+    func genSortName()
+    {
+        if lastname != nil {
+            sortName = lastname?.lowercased()
+        }
+        if firstname != nil {
+            sortName.append((firstname?.lowercased())!)
+        }
     }
     
     func getName() -> String
