@@ -34,9 +34,7 @@ class DirectoryController: UIViewController, APIControllerProtocol, UISearchBarD
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
-        if searchText.characters.count > 0 {
-            directoryPageVC?.search(search: searchText)
-        }
+        directoryPageVC?.search(search: searchText.lowercased().folding(options: .diacriticInsensitive, locale: .current))
     }
     
     @IBAction func addContactAction(_ sender: Any) {
@@ -53,6 +51,10 @@ class DirectoryController: UIViewController, APIControllerProtocol, UISearchBarD
         else {
             directoryPageVC?.secondPage()
         }
+    }
+    
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
     }
 }
 

@@ -14,10 +14,12 @@ class DirectoryTableViewController: UITableViewController {
     var isUserContact : Bool! //set by DirectoryPageViewController (DirectoryController.swift)
     var directoryController : DirectoryController! //set by DirectoryPageViewController (DirectoryController.swift)
     var contactDataTableView : [Contact] = []
+    var allContactDataTableView : [Contact] = [] //this array is not impacted by search
     var getContactDelegate : GetContactDelegate!
     var delContactDelegate : DelContactDelegate!
     var searchContactCompanyDelegate : SearchContactCompanyDelegate!
     var refresher: UIRefreshControl!
+    var search : String! = ""
    // var refresher: UIRefreshControl!
     
     override func viewDidLoad() {
@@ -39,23 +41,44 @@ class DirectoryTableViewController: UITableViewController {
     
     func refresh()
     {
+        print("refresh")
         if (isUserContact)
         {
             apiController?.getContactUser(delegate: getContactDelegate)
         }
         else
         {
-            apiController?.getContactCompany(delegate: getContactDelegate)
+            if search.characters.count > 0 {
+                search(search : search)
+            }
+            else {
+                apiController?.getContactCompany(delegate: getContactDelegate)
+            }
         }
     }
     
     func search(search : String!) {
-        if (isUserContact) {
-            //search
+        self.search = search
+        if search.characters.count > 0 {
+            if (isUserContact) {
+                contactDataTableView = allContactDataTableView.filter({ (contact) -> Bool in
+                    if contact.sortName.lowercased().range(of: search) != nil {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
+                })
+                tableView.reloadData()
+            }
+            else //search for contactCompany
+            {
+                apiController?.PostContactCompany(delegate: searchContactCompanyDelegate, search: search)
+            }
         }
-        else
-        {
-            apiController?.PostContactCompany(delegate: searchContactCompanyDelegate, search: search)
+        else { //empty search
+            contactDataTableView = allContactDataTableView
+            tableView.reloadData()
         }
     }
     
@@ -132,12 +155,12 @@ class DirectoryTableViewController: UITableViewController {
                 self.directoryTVC.tableView.reloadData()
                 self.directoryTVC.refresher.endRefreshing()
             }
-            print("APIController.SearchComtactCompanyDelegate() success")
+            print("APIController.SearchContactCompanyDelegate() success")
         }
         
         func fail(msgError : String)
         {
-            print("APIController.SearchComtactCompanyDelegate() fail")
+            print("APIController.SearchContactCompanyDelegate() fail")
             self.directoryTVC.refresher.endRefreshing()
         }
     }
@@ -153,9 +176,14 @@ class DirectoryTableViewController: UITableViewController {
         
         func success(data: [AnyObject]?) {
             DispatchQueue.main.async {
+                self.directoryTVC.allContactDataTableView.removeAll()
+                self.directoryTVC.allContactDataTableView = data as! [Contact]
                 self.directoryTVC.contactDataTableView.removeAll()
                 self.directoryTVC.contactDataTableView = data as! [Contact]
                 self.directoryTVC.sortAlphaContact()
+                if self.directoryTVC.search.characters.count > 0 {
+                    self.directoryTVC.search(search : self.directoryTVC.search)
+                }
                 self.directoryTVC.tableView.reloadData()
                 self.directoryTVC.refresher.endRefreshing()
             }
@@ -186,6 +214,7 @@ class DirectoryTableViewController: UITableViewController {
     func sortAlphaContact()
     {
         contactDataTableView.sort(){$0.sortName < $1.sortName}
+        allContactDataTableView.sort(){$0.sortName < $1.sortName}
     }
     
 

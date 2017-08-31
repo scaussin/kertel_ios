@@ -39,7 +39,7 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
         {
             subtitleLabel.text = "Nouveau contact"
         }
-        scaussinImage.image = UIImage(named: "42")
+        scaussinImage.image = UIImage(named: "sc")
         saveButton = UIBarButtonItem(title : "Enregistrer", style: .plain, target: self, action: #selector(saveButton(sender :)))
         pathPutContactDelegate = PathPutContactDelegate(newContactTVC: self)
         
@@ -172,7 +172,6 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
                 default:
                     break
                 }
-                
             }
             cell.textField.delegate = self
             if indexPath.row == 5 //return key for email field
@@ -201,14 +200,21 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
     
     @IBAction func switchscaussinAction(_ sender: Any) {
         scaussinCount += 1
-        if scaussinCount % 4 == 0
+        print("Don't panic!")
+        if scaussinCount % 8 == 0
         {
             scaussinImage.isHidden = false
-            print("Don't panic")
         }
         else
         {
             scaussinImage.isHidden = true
+        }
+        if scaussinCount % 16 == 0
+        {
+            let alert = UIAlertController(title: "Don't panic!", message: "scaussin_42", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
         }
     }
 

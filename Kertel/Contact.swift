@@ -52,10 +52,10 @@ class Contact {
     func genSortName()
     {
         if lastname != nil {
-            sortName = lastname?.lowercased()
+            sortName = lastname?.lowercased().folding(options: .diacriticInsensitive, locale: .current)
         }
         if firstname != nil {
-            sortName.append((firstname?.lowercased())!)
+            sortName.append((firstname?.lowercased())!.folding(options: .diacriticInsensitive, locale: .current))
         }
     }
     
