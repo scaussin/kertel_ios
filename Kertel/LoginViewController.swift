@@ -212,9 +212,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate, 
             directoryVC.apiController = self.apiController
             
             // Setting
-            let settingVC = tabBarController.viewControllers![3] as! SettingViewController
+            let settingNC = tabBarController.viewControllers![3] as! UINavigationController
+            let settingVC = settingNC.viewControllers[0] as! SettingVC
             settingVC.apiController = self.apiController
+            settingVC.loginViewController = self
             
+            //navigationController?.removeFromParentViewController()
             /*let vc = segue.destination as! MainTabBarController
             vc.apiController = self.apiController*/
         }

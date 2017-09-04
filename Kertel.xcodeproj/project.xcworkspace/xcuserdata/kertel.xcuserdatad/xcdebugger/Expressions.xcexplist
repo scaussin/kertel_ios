@@ -11,29 +11,13 @@
             <PersistentString
                value = "dataBody.description">
             </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "CallHistoryController.prepare(for : UIStoryboardSegue, sender : Any?) -&gt; ():CallHistoryController.swift">
-         <PersistentStrings>
             <PersistentString
-               value = "(AnyObject)sender">
+               value = "segue.destination">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "APIController.(patchContact(delegate : APIDelegate!, contact : Contact!) -&gt; ()).(closure #2):APIController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "APIController.(doRequest(httpMethod : String, sufixUrl : String, dataBody : NSData?, success : (NSDictionary) -&gt; (), fail : (String) -&gt; ()) -&gt; ()).(closure #1):APIController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "(HTTPURLResponse?)httpResponse">
-            </PersistentString>
-            <PersistentString
-               value = "data.debugDescription">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "ProfileVC.tableView(UITableView, cellForRowAt : IndexPath) -&gt; UITableViewCell:ProfileVC.swift">
       </ContextState>
       <ContextState
          contextName = "APIController.patchContact(delegate : APIDelegate!, contact : Contact!) -&gt; ():APIController.swift">
@@ -47,10 +31,49 @@
          contextName = "NewContactTableViewController.saveButton(sender : UIBarButtonItem) -&gt; ():NewContactTableViewController.swift">
       </ContextState>
       <ContextState
+         contextName = "CallHistoryController.prepare(for : UIStoryboardSegue, sender : Any?) -&gt; ():CallHistoryController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "(AnyObject)sender">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProfileVC.tableView(UITableView, didSelectRowAt : IndexPath) -&gt; ():ProfileVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "navigationController.childViewControllers.first.navigationController.parent.navigationController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "APIController.(patchContact(delegate : APIDelegate!, contact : Contact!) -&gt; ()).(closure #2):APIController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ProfileVC.prepare(for : UIStoryboardSegue, sender : Any?) -&gt; ():ProfileVC.swift">
+      </ContextState>
+      <ContextState
          contextName = "APIController.(getToken(delegate : APIDelegate, username : String?, company : String?, password : String?) -&gt; ()).(closure #1):APIController.swift">
          <PersistentStrings>
             <PersistentString
                value = "(HTTPURLResponse?)httpResponse">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "APIController.(getUser(delegate : APIDelegate) -&gt; ()).(closure #1):APIController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ProfileVC.GetUserDelegate.success(data : [AnyObject]?) -&gt; ():ProfileVC.swift">
+      </ContextState>
+      <ContextState
+         contextName = "APIController.(doRequest(httpMethod : String, sufixUrl : String, dataBody : NSData?, success : (NSDictionary) -&gt; (), fail : (String) -&gt; ()) -&gt; ()).(closure #1):APIController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "(HTTPURLResponse?)httpResponse">
+            </PersistentString>
+            <PersistentString
+               value = "data.debugDescription">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -22,6 +22,7 @@ class InfoMevoController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var playImage: UIImageView!
     @IBOutlet weak var speakerButton: UIImageView!
     
+    @IBOutlet weak var numberLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         print("InfoMevoController -> viewDidLoad")

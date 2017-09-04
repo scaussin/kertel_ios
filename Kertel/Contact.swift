@@ -81,33 +81,33 @@ class Contact {
     {
         if (mobile != nil)
         {
-            infoToDisplay.append(InfoToDisplay.init(title : "portable", data : mobile, action: TypeActionInfoContact.CallMobile))
+            infoToDisplay.append(InfoToDisplay.init(title : "Portable", data : mobile, action: TypeActionInfoContact.CallMobile))
         }
         if (telephone != nil)
         {
-            infoToDisplay.append(InfoToDisplay.init(title : "téléphone", data : telephone, action: TypeActionInfoContact.CallTelephone))
+            infoToDisplay.append(InfoToDisplay.init(title : "Téléphone", data : telephone, action: TypeActionInfoContact.CallTelephone))
         }
         if (fax != nil)
         {
-            infoToDisplay.append(InfoToDisplay.init(title : "fax", data : fax, action: TypeActionInfoContact.NoAction))
+            infoToDisplay.append(InfoToDisplay.init(title : "Fax", data : fax, action: TypeActionInfoContact.NoAction))
         }
         if (company != nil)
         {
-            infoToDisplay.append(InfoToDisplay.init(title : "société", data : company, action:TypeActionInfoContact.NoAction))
+            infoToDisplay.append(InfoToDisplay.init(title : "Société", data : company, action:TypeActionInfoContact.NoAction))
         }
         if (mail != nil)
         {
-            infoToDisplay.append(InfoToDisplay.init(title : "email", data : mail, action:TypeActionInfoContact.WriteMail))
+            infoToDisplay.append(InfoToDisplay.init(title : "Mail", data : mail, action:TypeActionInfoContact.WriteMail))
         }
         if (shared != nil)
         {
             if shared == true
             {
-                infoToDisplay.append(InfoToDisplay.init(title : "partage", data : "contact partagé", action:TypeActionInfoContact.NoAction))
+                infoToDisplay.append(InfoToDisplay.init(title : "Partage", data : "contact partagé", action:TypeActionInfoContact.NoAction))
             }
             else
             {
-                infoToDisplay.append(InfoToDisplay.init(title : "partage", data : "contact non partagé", action:TypeActionInfoContact.NoAction))
+                infoToDisplay.append(InfoToDisplay.init(title : "Partage", data : "contact non partagé", action:TypeActionInfoContact.NoAction))
             }
         }
         if (isUserContact)
