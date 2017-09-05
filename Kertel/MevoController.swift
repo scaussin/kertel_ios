@@ -16,6 +16,7 @@ class MevoController: UITableViewController, APIControllerProtocol {
     var apiController : APIController? //set by loginViewController
     var getMevoDelegate : GetMevoDelegate!
     var delMevoDelegate : DelMevoDelegate!
+    @IBOutlet weak var receivedMsgLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,14 @@ class MevoController: UITableViewController, APIControllerProtocol {
         print("MevoController -> viewDidAppear")
     }
     
+    func refreshReceivedMsg()
+    {
+        DispatchQueue.main.async {
+            self.receivedMsgLabel.text = "Messages reçus : \(self.mevoDataTableView.count)/30"
+        }
+       // print("set receive msg : \(mevoDataTableView.count)")
+        
+    }
     
     func refresh()
     {
@@ -64,6 +73,7 @@ class MevoController: UITableViewController, APIControllerProtocol {
             DispatchQueue.main.async {
             self.mevoDelegate.mevoDataTableView.removeAll()
             self.mevoDelegate.mevoDataTableView = data as! [Mevo]
+            self.mevoDelegate.refreshReceivedMsg()
             self.mevoDelegate.tableView.reloadData()
             self.mevoDelegate.refresher.endRefreshing()
             }
@@ -125,6 +135,7 @@ class MevoController: UITableViewController, APIControllerProtocol {
         }
         
         func success(data: [AnyObject]?) {
+            self.mevoDelegate.refreshReceivedMsg()
             print("APIController.delMevo() success")
         }
         
@@ -138,7 +149,6 @@ class MevoController: UITableViewController, APIControllerProtocol {
         super.didReceiveMemoryWarning()
     }
 
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -148,18 +158,6 @@ class MevoController: UITableViewController, APIControllerProtocol {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        //tableView.rowHeight = UITableViewAutomaticDimension
-        /*if indexPath.row == 0
-        {
-            cell = tableView.dequeueReusableCell(withIdentifier: "headerMevoCell", for: indexPath)
-            tableView.estimatedRowHeight = 140
-        }
-        else
-        {
-            cell = tableView.dequeueReusableCell(withIdentifier: "mevoCell", for: indexPath)
-            //tableView.estimatedRowHeight = 58
-        }*/
         let cell = tableView.dequeueReusableCell(withIdentifier: "mevoCell", for: indexPath) as! MevoTableViewCell
         cell.mevo = mevoDataTableView[indexPath.row]
 

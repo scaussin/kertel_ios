@@ -41,7 +41,6 @@ class DirectoryTableViewController: UITableViewController {
     
     func refresh()
     {
-        print("refresh")
         if (isUserContact)
         {
             apiController?.getContactUser(delegate: getContactDelegate)

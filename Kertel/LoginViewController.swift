@@ -29,28 +29,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate, 
         super.viewDidLoad()
         print("LoginViewController -> viewDidLoad")
         
+        username.delegate = self
+        password.delegate = self
+        company.delegate = self
+        
         apiController = APIController()
         let defaults = UserDefaults.standard
         username.text = defaults.string(forKey: "username")
         company.text = defaults.string(forKey: "company")
         password.text = defaults.string(forKey: "password")
         
-        if (autoConnect && (username.text?.characters.count)! > 0 && (company.text?.characters.count)! > 0 && (password.text?.characters.count)! > 0)
-        {
-            print("auto connect")
-            connectButton(0)
-            return
-        }
-        print("wait")
-        
-        
-        
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
-        
-        
         
         var boolSwitchUsernameCompany = true
         var boolSwitchPassword = true
@@ -66,15 +56,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate, 
         switchUsernameCompany.setOn(boolSwitchUsernameCompany , animated: false)
         switchPassword.setOn(boolSwitchPassword, animated: false)
         
-        username.delegate = self
-        password.delegate = self
-        company.delegate = self
+        if (autoConnect && (username.text?.characters.count)! > 0 && (company.text?.characters.count)! > 0 && (password.text?.characters.count)! > 0)
+        {
+            print("auto connect")
+            connectButton(0)
+            return
+        }
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         print("LoginViewController -> viewDidAppear")
     }
-
     
     func keyboardWillShow(notification : NSNotification){
         print("keyboardWillShow")
@@ -172,8 +165,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate,  APIDelegate, 
     {
         print("APIController.getToken() success")
         print("token: \(apiController?.token ?? "nil")")
+       // self.dismiss(animated: false, completion: nil)
+
         DispatchQueue.main.sync {
-            performSegue(withIdentifier: "toMainSegue", sender: self)
+            self.dismiss(animated: false, completion: {
+                self.performSegue(withIdentifier: "toMainSegue", sender: self)
+            })
         }
     }
     

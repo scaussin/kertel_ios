@@ -11,13 +11,24 @@ import UIKit
 class SettingCallVC: UIViewController, APIControllerProtocol{
 
     var apiController : APIController? //set by SettingEmbedPVC (in SettingVC.swift)
+    //var refresher: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //refresh
+        /*refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
+        view.addSubview(refresher)*/
+
         // Do any additional setup after loading the view.
     }
 
+    func refresh(){
+        //refresher.endRefreshing()
+        print("refresh")
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

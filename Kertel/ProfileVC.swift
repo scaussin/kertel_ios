@@ -14,14 +14,20 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, A
     var user : User?
     var getUserDelegate : GetUserDelegate!
     var loginViewController : LoginViewController?
+    var refresher: UIRefreshControl!
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print("ProfileVC -> viewDidLoad")
+        
+        //refresh
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refresher)
+        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -34,6 +40,7 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, A
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -99,33 +106,15 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, A
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if (tableView.cellForRow(at: indexPath) as? TitleClickableTableViewCell) != nil{
-            print("##################################")
-            print("disconnect")
+        if (tableView.cellForRow(at: indexPath) as? TitleClickableTableViewCell) != nil {
+            print("#### disconnect ####")
             apiController!.token = nil
-            /*let newContactDirectoryVC = storyboard?.instantiateViewController(withIdentifier: "newContactTVC") as! NewContactTableViewController
-            newContactDirectoryVC.apiController = apiController
-            newContactDirectoryVC.contact = contact
-            navigationController?.pushViewController(newContactDirectoryVC as UIViewController, animated: true)*/
-            //navigationController.remo
-            
             loginViewController?.autoConnect = false
-            
-            navigationController?.dismiss(animated: true, completion: {
-                
-            })
-            //performSegue(withIdentifier: "toLoginSegue", sender: self)
+            navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toLoginSegue" {
-            let vc = segue.destination.childViewControllers.first as! LoginViewController
-            
-            vc.autoConnect = false
-        }
-    }
-    
+       
     func refresh() {
         apiController?.getUser(delegate: getUserDelegate)
     }
@@ -146,14 +135,14 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, A
                 self.profileVC.user = users[0]
                 self.profileVC.nameLabel.text = users[0].getName()
                 self.profileVC.tableView.reloadData()
+                self.profileVC.refresher.endRefreshing()
             }
-            //self.directoryTVC.refresher.endRefreshing()
         }
         
         func fail(msgError : String)
         {
             print("APIController.getUser() fail")
-            //self.directoryTVC.refresher.endRefreshing()
+            self.profileVC.refresher.endRefreshing()
         }
     }
 
