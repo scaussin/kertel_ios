@@ -45,7 +45,7 @@ class SettingVC: UIViewController, APIControllerProtocol{
 class SettingEmbedPVC: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     var profileVC : ProfileVC!
-    var settingCallVC : SettingCallVC!
+    var settingCallTVC : SettingCallTVC!
     var parentDirectoryController : SettingVC! //set by SettingVC (segue: settingPageEmbed)
     
     override func viewDidLoad() {
@@ -58,8 +58,8 @@ class SettingEmbedPVC: UIPageViewController, UIPageViewControllerDataSource, UIP
         profileVC.apiController = parentDirectoryController.apiController
         profileVC.loginViewController = parentDirectoryController.loginViewController
         
-        settingCallVC = storyboard?.instantiateViewController(withIdentifier: "settingCallVC") as! SettingCallVC
-        settingCallVC.apiController = parentDirectoryController.apiController
+        settingCallTVC = storyboard?.instantiateViewController(withIdentifier: "settingCallVC") as! SettingCallTVC
+        settingCallTVC.apiController = parentDirectoryController.apiController
 
         setViewControllers([profileVC], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
     }
@@ -67,7 +67,7 @@ class SettingEmbedPVC: UIPageViewController, UIPageViewControllerDataSource, UIP
     // change tabSegementControl when gesture switch page finished
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
     {
-        if pageViewController.viewControllers![0] == settingCallVC {
+        if pageViewController.viewControllers![0] == settingCallTVC {
             parentDirectoryController.tabSegementControl.selectedSegmentIndex = 1
         }
         else {
@@ -82,15 +82,15 @@ class SettingEmbedPVC: UIPageViewController, UIPageViewControllerDataSource, UIP
     
     func secondPage()
     {
-        setViewControllers([settingCallVC], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
+        setViewControllers([settingCallTVC], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if viewController == settingCallVC
+        if viewController == settingCallTVC
         {
             return nil
         }
-        return settingCallVC
+        return settingCallTVC
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		110693DE1F604D17003EAE7E /* TitleTextFieldTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110693DD1F604D17003EAE7E /* TitleTextFieldTVC.swift */; };
 		11240AD01F4AEA59005B080A /* DirectoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11240ACF1F4AEA59005B080A /* DirectoryController.swift */; };
 		11240B131F4C2BB4005B080A /* DirectoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11240B121F4C2BB4005B080A /* DirectoryTableViewController.swift */; };
 		11368EE11EB8943800E0F82F /* InfoCallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11368EE01EB8943800E0F82F /* InfoCallTableViewCell.swift */; };
@@ -29,7 +30,8 @@
 		1192ADA41ED332E10008C554 /* MevoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA31ED332E10008C554 /* MevoController.swift */; };
 		1192ADAB1ED43AC00008C554 /* bdd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1192ADA91ED43AC00008C554 /* bdd.xcdatamodeld */; };
 		1192D2471EE59B0400D35D33 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1192D2461EE59B0400D35D33 /* SettingVC.swift */; };
-		11A1BB951F5D4A32000C1C44 /* SettingCallVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A1BB941F5D4A32000C1C44 /* SettingCallVC.swift */; };
+		11A1BB951F5D4A32000C1C44 /* SettingCallTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A1BB941F5D4A32000C1C44 /* SettingCallTVC.swift */; };
+		11A1BB991F6001BD000C1C44 /* TransfertChoiceTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A1BB981F6001BD000C1C44 /* TransfertChoiceTVC.swift */; };
 		11D79AF21F4C7F1400A2D6B0 /* ContactDirectoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D79AF11F4C7F1400A2D6B0 /* ContactDirectoryTableViewCell.swift */; };
 		11D79AF41F4DC0C000A2D6B0 /* InfoContactDirectoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D79AF31F4DC0C000A2D6B0 /* InfoContactDirectoryController.swift */; };
 		11D79AF61F4DD45E00A2D6B0 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D79AF51F4DD45E00A2D6B0 /* Contact.swift */; };
@@ -45,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		110693DD1F604D17003EAE7E /* TitleTextFieldTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleTextFieldTVC.swift; sourceTree = "<group>"; };
 		11240ACF1F4AEA59005B080A /* DirectoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryController.swift; sourceTree = "<group>"; };
 		11240B121F4C2BB4005B080A /* DirectoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryTableViewController.swift; sourceTree = "<group>"; };
 		11368EE01EB8943800E0F82F /* InfoCallTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCallTableViewCell.swift; sourceTree = "<group>"; };
@@ -67,7 +70,8 @@
 		1192ADA31ED332E10008C554 /* MevoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MevoController.swift; sourceTree = "<group>"; };
 		1192ADAA1ED43AC00008C554 /* bdd.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = bdd.xcdatamodel; sourceTree = "<group>"; };
 		1192D2461EE59B0400D35D33 /* SettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
-		11A1BB941F5D4A32000C1C44 /* SettingCallVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingCallVC.swift; sourceTree = "<group>"; };
+		11A1BB941F5D4A32000C1C44 /* SettingCallTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingCallTVC.swift; sourceTree = "<group>"; };
+		11A1BB981F6001BD000C1C44 /* TransfertChoiceTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransfertChoiceTVC.swift; sourceTree = "<group>"; };
 		11D79AF11F4C7F1400A2D6B0 /* ContactDirectoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDirectoryTableViewCell.swift; sourceTree = "<group>"; };
 		11D79AF31F4DC0C000A2D6B0 /* InfoContactDirectoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoContactDirectoryController.swift; sourceTree = "<group>"; };
 		11D79AF51F4DD45E00A2D6B0 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
@@ -215,6 +219,7 @@
 				113BBB901F1E5EC10000264E /* TitleClickableTableViewCell.swift */,
 				117DAB491F540BBF00ACB92D /* TextFieldTableViewCell.swift */,
 				117DAB4B1F540DD100ACB92D /* TitleSwitchTableViewCell.swift */,
+				110693DD1F604D17003EAE7E /* TitleTextFieldTVC.swift */,
 				113BBB881F1E050A0000264E /* CallHistory */,
 				113BBB891F1E051B0000264E /* Mevo */,
 				11D79AF11F4C7F1400A2D6B0 /* ContactDirectoryTableViewCell.swift */,
@@ -238,7 +243,8 @@
 			children = (
 				1192D2461EE59B0400D35D33 /* SettingVC.swift */,
 				11F7F3E11F5991080030FFB7 /* ProfileVC.swift */,
-				11A1BB941F5D4A32000C1C44 /* SettingCallVC.swift */,
+				11A1BB941F5D4A32000C1C44 /* SettingCallTVC.swift */,
+				11A1BB981F6001BD000C1C44 /* TransfertChoiceTVC.swift */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -321,9 +327,11 @@
 				11368EE51EC1CCD600E0F82F /* InfoCallViewController.swift in Sources */,
 				11240B131F4C2BB4005B080A /* DirectoryTableViewController.swift in Sources */,
 				11F7F3E21F5991080030FFB7 /* ProfileVC.swift in Sources */,
+				11A1BB991F6001BD000C1C44 /* TransfertChoiceTVC.swift in Sources */,
 				11F7F3E81F59A7CC0030FFB7 /* User.swift in Sources */,
 				113BBB8D1F1E0DF10000264E /* CallFormatter.swift in Sources */,
 				117DAB481F506A1A00ACB92D /* NewContactTableViewController.swift in Sources */,
+				110693DE1F604D17003EAE7E /* TitleTextFieldTVC.swift in Sources */,
 				11D79AF21F4C7F1400A2D6B0 /* ContactDirectoryTableViewCell.swift in Sources */,
 				1160E5E81F15198C0096A4ED /* InfoMevoController.swift in Sources */,
 				117DAB4A1F540BBF00ACB92D /* TextFieldTableViewCell.swift in Sources */,
@@ -331,7 +339,7 @@
 				11F6C15F1EAE0729001376BC /* CallHistoryController.swift in Sources */,
 				1160E5E41F13D9CA0096A4ED /* Mevo.swift in Sources */,
 				11D79AF41F4DC0C000A2D6B0 /* InfoContactDirectoryController.swift in Sources */,
-				11A1BB951F5D4A32000C1C44 /* SettingCallVC.swift in Sources */,
+				11A1BB951F5D4A32000C1C44 /* SettingCallTVC.swift in Sources */,
 				11F6C1671EAF4BFA001376BC /* CallHistoryTableViewCell.swift in Sources */,
 				113BBB8F1F1E5E4A0000264E /* TitleDataClickableTableViewCell.swift in Sources */,
 				1192D2471EE59B0400D35D33 /* SettingVC.swift in Sources */,
