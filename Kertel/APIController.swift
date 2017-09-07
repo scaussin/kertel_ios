@@ -28,6 +28,7 @@ class APIController {
     let contactUserUrl = "contact/user"
     let contactCompanyUrl = "contact/company"
     let userURL = "user"
+    let forwardURL = "forward"
     
     
     func getToken(delegate : APIDelegate, username : String!, company : String!, password : String!)
@@ -537,6 +538,31 @@ class APIController {
             delegate.fail(msgError: err)
         })
     }
+    
+    func getForward(delegate : APIDelegate)
+    {
+        doRequest(httpMethod: "GET", sufixUrl : forwardURL, dataBody: nil,
+                  success : {(data) -> () in
+                    
+                    var user : [User] = []
+                    if let datas = data["data"] as? [String: Any] {
+                        
+                        user.append(User(id : datas["user_id"] as? String,
+                                         firstname : datas["firstname"] as? String,
+                                         lastname : datas["lastname"] as? String,
+                                         mobile : datas["company"] as? String,
+                                         telephone : (datas["e164"] as? [String])?[0],
+                                         fax : (datas["fax"] as? [String])?[0],
+                                         mail : datas["mail"] as? String,
+                                         shortNumber : (datas["s164"] as? [String])?[0]))
+                    }
+                    delegate.success(data: user as [AnyObject] )
+                    
+        }, fail : {(err) -> () in
+            delegate.fail(msgError: err)
+        })
+    }
+
 
     func disconnect()
     {

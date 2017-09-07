@@ -18,10 +18,17 @@ class SettingCallTVC: UITableViewController, APIControllerProtocol{
 
     var apiController : APIController? //set by SettingEmbedPVC (in SettingVC.swift)
     //var refresher: UIRefreshControl!
+    @IBOutlet weak var busyChoiceLabel: UILabel!
+    @IBOutlet weak var closeChoiceLabel: UILabel!
+    @IBOutlet weak var incomingChoiceLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        busyChoiceLabel.text = ""
+        closeChoiceLabel.text = ""
+        incomingChoiceLabel.text = ""
+        
         //refresh
         /*refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
@@ -104,20 +111,39 @@ class SettingCallTVC: UITableViewController, APIControllerProtocol{
      }
      */
 
+    func updateChoice(typeTransfert : TypeTransfert, selectedChoice : TypeChoice, numberCustom : String? = nil){
+        var labelToUpdate : UILabel?
+        
+        switch typeTransfert {
+        case .Incoming:
+            labelToUpdate = incomingChoiceLabel
+        case .Close:
+            labelToUpdate = closeChoiceLabel
+        case .Busy:
+            labelToUpdate = busyChoiceLabel
+        }
+        switch selectedChoice {
+        case .CustomNumber:
+            labelToUpdate?.text = numberCustom //do formate number
+        default:
+            labelToUpdate?.text = choiceTable[selectedChoice]?[0]
+        }
+    }
     
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let transfertChoiceTVC =  segue.destination as! TransfertChoiceTVC
+        let transfertChoiceTVC = segue.destination as! TransfertChoiceTVC
         
+        transfertChoiceTVC.settingCallTVC = self
         switch segue.identifier! {
         case "toIncomingChoiceSegue":
             transfertChoiceTVC.typeTransfert = TypeTransfert.Incoming
-            transfertChoiceTVC.selectedChoice = 3 //TODO
+            transfertChoiceTVC.selectedChoice = TypeChoice.Phone //TODO
         case "toCloseChoiceSegue":
             transfertChoiceTVC.typeTransfert = TypeTransfert.Close
-            transfertChoiceTVC.selectedChoice = 0 //TODO
+            transfertChoiceTVC.selectedChoice = TypeChoice.CustomNumber //TODO
         case "toBusyChoiceSegue":
             transfertChoiceTVC.typeTransfert = TypeTransfert.Busy
-            transfertChoiceTVC.selectedChoice = 0 //TODO
+            transfertChoiceTVC.selectedChoice = TypeChoice.Mevo //TODO
         default:
             break
         }

@@ -13,26 +13,43 @@ enum TypeChoice {
     case Mevo
     case Mobile
     case CustomNumber
-    case None
+    case Other //config complexe
+    case None //ne rien faire
 }
+
+let phoneChoice = "Mon poste"
+let mobileChoice = "Mon mobile"
+let mevoChoice = "Messagerie vocale"
+let customNumberChoice = "Numéro :"
+let noneChoice = "Aucun"
+let noneChoiceDescription = "(ne rien faire)"
+let otherChoice = "Autre"
+let otherChoiceDescription = "(configuration personnalisée)"
+
+let choiceTable : [TypeChoice: [String?]] = [TypeChoice.Phone : [phoneChoice],
+                                             TypeChoice.Mevo : [mevoChoice],
+                                             TypeChoice.Mobile : [mobileChoice],
+                                             TypeChoice.CustomNumber : [customNumberChoice],
+                                             TypeChoice.Other : [otherChoice, otherChoiceDescription],
+                                             TypeChoice.None : [noneChoice, noneChoiceDescription]]
 
 class TransfertChoiceTVC: UITableViewController, UITextFieldDelegate {
 
     var typeTransfert : TypeTransfert! //set by SettingCallTVC (segue)
-    var selectedChoice : Int?  //set by SettingCallTVC (segue)
+    var selectedChoice : TypeChoice!  //set by SettingCallTVC (segue) and updated by user choice
+    var settingCallTVC : SettingCallTVC! //set by SettingCallTVC (segue)
+
     @IBOutlet weak var titleLabel: UILabel!
     
     var typeChoiceCell : [TypeChoice] = []
     var selectedCell : UITableViewCell?
-    
-    let phoneChoice  = "Mon poste"
-    let mobileChoice  = "Mon mobile"
-    let mevoChoice  = "Messagerie vocale"
-    let noneChoice  = "Aucun (ne rien faire)"
+
+    var customNumberTF : UITextField?
+    var indexPathCustomNumber : IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         switch typeTransfert! {
         case .Incoming:
             titleLabel.text = "Transférer tous les appels entrants vers :"
@@ -54,7 +71,7 @@ class TransfertChoiceTVC: UITableViewController, UITextFieldDelegate {
             typeChoiceCell.append(TypeChoice.None)
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -80,14 +97,18 @@ class TransfertChoiceTVC: UITableViewController, UITextFieldDelegate {
             cell.textLabel?.text = mobileChoice
         case .None:
             cell.textLabel?.text = noneChoice
+        case .Other:
+            cell.textLabel?.text = otherChoice
         case .CustomNumber:
-            let TTFC : TitleTextFieldTVC = tableView.dequeueReusableCell(withIdentifier: "customNumberCell", for: indexPath) as! TitleTextFieldTVC
+            cell.textLabel?.text = noneChoice
+            indexPathCustomNumber = indexPath
+            let TTFC : TitleTextFieldTableViewCell = tableView.dequeueReusableCell(withIdentifier: "titleTextFieldCell", for: indexPath) as! TitleTextFieldTableViewCell
             TTFC.customNumber.delegate = self
+            customNumberTF = TTFC.customNumber
             cell = TTFC as UITableViewCell
-            //cell.textLabel?.text = noneChoice
         }
         
-        if selectedChoice == indexPath.row {
+        if selectedChoice == typeChoiceCell[indexPath.row] {
             selectedCell = cell
             cell.accessoryType = .checkmark
         }
@@ -97,71 +118,35 @@ class TransfertChoiceTVC: UITableViewController, UITextFieldDelegate {
         return cell
     }
     
-    override func didMove(toParentViewController parent: UIViewController?) {
+    override func willMove(toParentViewController parent: UIViewController?) {
         if (!(parent?.isEqual(self.parent) ?? false)) {
-            print("Parent view loaded")
+            if selectedChoice == TypeChoice.CustomNumber {
+                settingCallTVC.updateChoice(typeTransfert : typeTransfert, selectedChoice : selectedChoice, numberCustom: customNumberTF?.text)
+            }
+            else {
+                settingCallTVC.updateChoice(typeTransfert : typeTransfert, selectedChoice : selectedChoice)
+            }
         }
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("okok")
+        updateSelectedCell(indexPath: indexPathCustomNumber!)
     }
     
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+    func updateSelectedCell(indexPath: IndexPath){
         
-        
-    
         selectedCell?.accessoryType = .none
-        selectedChoice = indexPath.row
+        selectedChoice = typeChoiceCell[indexPath.row]
         
         selectedCell = tableView.cellForRow(at: indexPath)
         selectedCell?.accessoryType = .checkmark
+    }
         
-        /*for i in 0...typeChoiceCell.count {
-            if i == indexPath.row {
-                tableView.
-            }
-        }*/
-        //tableView.reloadData()
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        customNumberTF?.resignFirstResponder()
+        updateSelectedCell(indexPath: indexPath)
     }
- 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-
 
 }

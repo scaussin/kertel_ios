@@ -1,18 +1,16 @@
 //
-//  TitleTextFieldTCV.swift
+//  TitleTextFieldTableViewCell.swift
 //  Kertel
 //
-//  Created by Kertel on 06/09/2017.
+//  Created by Kertel on 07/09/2017.
 //  Copyright © 2017 Kertel. All rights reserved.
 //
 
 import UIKit
 
-class TitleTextFieldTVC: UITableViewCell {
+class TitleTextFieldTableViewCell: UITableViewCell {
 
-    
     @IBOutlet weak var customNumber: UITextField!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
