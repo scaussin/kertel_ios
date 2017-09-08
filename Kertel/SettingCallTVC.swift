@@ -21,6 +21,7 @@ class SettingCallTVC: UITableViewController, APIControllerProtocol{
     @IBOutlet weak var busyChoiceLabel: UILabel!
     @IBOutlet weak var closeChoiceLabel: UILabel!
     @IBOutlet weak var incomingChoiceLabel: UILabel!
+    var getForwardDelegate : GetForwardDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,11 +34,15 @@ class SettingCallTVC: UITableViewController, APIControllerProtocol{
         /*refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(self.refresh), for: UIControlEvents.valueChanged)
         view.addSubview(refresher)*/
-
-        // Do any additional setup after loading the view.
+        
+        getForwardDelegate = GetForwardDelegate(settingCallTVC: self)
+        
+        refresh()
     }
 
     func refresh(){
+        
+        apiController?.getForward(delegate: getForwardDelegate)
         //refresher.endRefreshing()
         print("refresh")
     }
@@ -66,50 +71,32 @@ class SettingCallTVC: UITableViewController, APIControllerProtocol{
         }
     }
     
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-     
-     // Configure the cell...
-     
-     return cell
-     }
-     */
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
+    class GetForwardDelegate : APIDelegate
+    {
+        var settingCallTVC : SettingCallTVC
+        
+        init (settingCallTVC : SettingCallTVC!)
+        {
+            self.settingCallTVC = settingCallTVC
+        }
+        
+        func success(data: [AnyObject]?) {
+            print("APIController.getForward() success")
+            /*DispatchQueue.main.async {
+                let users = data as! [User]
+                self.profileVC.user = users[0]
+                self.profileVC.nameLabel.text = users[0].getName()
+                self.profileVC.tableView.reloadData()
+                self.profileVC.refresher.endRefreshing()
+            }*/
+        }
+        
+        func fail(msgError : String)
+        {
+            print("APIController.getForward() fail")
+            //self.profileVC.refresher.endRefreshing()
+        }
+    }
 
     func updateChoice(typeTransfert : TypeTransfert, selectedChoice : TypeChoice, numberCustom : String? = nil){
         var labelToUpdate : UILabel?

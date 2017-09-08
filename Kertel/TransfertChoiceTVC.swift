@@ -117,6 +117,7 @@ class TransfertChoiceTVC: UITableViewController, UITextFieldDelegate {
         }
         return cell
     }
+
     
     override func willMove(toParentViewController parent: UIViewController?) {
         if (!(parent?.isEqual(self.parent) ?? false)) {

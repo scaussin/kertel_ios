@@ -27,7 +27,7 @@ class NewContactTableViewController: UITableViewController, UITextFieldDelegate,
                                                                             (placeholder : "Téléphone", type: .phonePad),
                                                                             (placeholder : "Société", type: .default),
                                                                             (placeholder : "Mail", type: .emailAddress),
-                                                                            (placeholder : "Partager le contact avec l\'entrepise", type: nil)]
+                                                                            (placeholder : "Partager le contact avec l\'entreprise", type: nil)]
    
     override func viewDidLoad() {
         super.viewDidLoad()
